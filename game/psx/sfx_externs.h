@@ -33,7 +33,7 @@ extern void  ChangeTPage(u_short *tpage, int abr);
 #define gte_ldv3(v0,v1,v2)    ((void)0)
 #define gte_lwc2(r,v)         ((void)0)
 #define gte_swc2(r,p)         ((void)0)
-#define gte_mvmva(...)        ((void)0)
+#define gte_mvmva(args...)        ((void)0)
 #define gte_rtps()            ((void)0)
 #define gte_rtpt()            ((void)0)
 #define gte_avsz4()           ((void)0)
