@@ -70,7 +70,7 @@ int AITrigger_TriggerManager::InsertTrigger(trigger_t *trigger,bool fromFile)
   this->DescribeTrigger(trigger);
   iVar1 = *(int *)trigger;
   if (iVar1 == 5) {
-    if (fromFile != (void *)0x0) {
+    if (fromFile) {   /* @0x80072984: if(fromFile) bool test (disasm-v3) */
       *(trigger_t **)(trigger + 0x3c) = trigger + 0x40;
     }
     this->triggers_[this->numTriggers_] = trigger;
@@ -198,11 +198,11 @@ AITrigger_TriggerManager::GetTrigger(int trigger,int *used)
 int AITrigger_TriggerManager::CheckForClosestTriggerOfType(int slice,triggerType type,int direction)
 {
   int tLoop;
-  union*prevTrigger;
-  union*firstTrigger;
+  trigger_t *prevTrigger;
+  trigger_t *firstTrigger;
   int prevTriggerIndex;
   int firstTriggerIndex;
-  union*thisTrigger;
+  trigger_t *thisTrigger;
   int *piVar1;
   int iVar2;
   trigger_t *ptVar3;
@@ -266,8 +266,8 @@ void AITrigger_TriggerManager::DescribeTrigger(trigger_t *trigger)
 /* ---- AITrigger_Compare  [@0x80072e18] ---- */
 int AITrigger_Compare(void *op1,void *op2)
 {
-  union*ta;
-  union*tb;
+  trigger_t *ta;
+  trigger_t *tb;
   return *(int *)(*(int *)op1 + 4) - *(int *)(*(int *)op2 + 4);
 }
 
