@@ -491,7 +491,7 @@ int AudioEng_StartUp(int player,char *carname)
         pAVar3->bhandle = (char)gSndBnk[player].bnkID;
       }
     }
-LAB_8007c190:
+LAB_8007c190: ;   /* empty stmt: gcc2.7.2 rejects label before '}' */
   }
   FILE_closesync();
   purgememadr(pcVar9);
