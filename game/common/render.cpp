@@ -521,7 +521,7 @@ void Render_InsertDepthOfField(void)
     pkt_addr24_b = (u_int)Render_gPacketPtr & 0xffffff;
     Render_gPacketPtr = Render_gPacketPtr + 0xc;
     *puVar1 = *puVar1 & 0xff000000 | pkt_addr24_b;
-    SetDrawStp(cur_pkt_stp,1);
+    SetDrawStp((DR_STP *)cur_pkt_stp,1);
     cur_pkt_drm = Render_gPacketPtr;
     puVar1 = (u_int *)(Render_gPalettePtr + Render_gBlurEffectDepth1 * 4);
     *(u_int *)Render_gPacketPtr = *(u_int *)Render_gPacketPtr & 0xff000000 | *puVar1 & 0xffffff;
