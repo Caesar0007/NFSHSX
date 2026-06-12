@@ -45,7 +45,7 @@ void Sim_StartUp(void)
   AIInit_StartUp2();
   Loading_UpdateLoadingScreen(10);
   AudioCmn_Init();
-  Sched_AddFunction(simGlobal.schedule64Hz,Camera_Update,(void *)0x0,100);
+  Sched_AddFunction(simGlobal.schedule64Hz,(void (*)(void *))Camera_Update,(void *)0x0,100);
   return;
 }
 
@@ -84,7 +84,7 @@ void Sim_CleanUp(void)
 {
   Force_Disable();
   SimQueue_CleanUp();
-  Sched_DeleteFunction(simGlobal.schedule64Hz,Camera_Update,(void *)0x0);
+  Sched_DeleteFunction(simGlobal.schedule64Hz,(void (*)(void *))Camera_Update,(void *)0x0);
   AIInit_CleanUp2();
   AIHigh_CleanUp();
   Cars_CleanUp();
