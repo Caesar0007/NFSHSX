@@ -3,6 +3,13 @@
  *   Canonical signatures harvested from the best existing tree decl per fn (typed > varargs);
  *   the 5 reconstructed defs are pinned. C linkage => stable symbol, no mangling.
  *   NOTE: for syslib/PsyQ SDK fns the REAL header is libgpu.h/libgte.h/... (see disasm-v3 // proto).
+ *
+ *   PsyQ-SDK split (B-integration): under ccpsx (NFS4_PSYQ_HEADERS, set in nfs4_types.h),
+ *   the PsyQ standard-library functions (libgpu/libgte/libetc/libapi/libpad) are supplied by the
+ *   REAL PsyQ headers — declaring them here too would clash (return-type / macro / linkage), so they
+ *   are gated OFF. Under the modern-gcc pre-gate they stay ON as the varargs boundary decls.
+ *   EA eaclib/syslib (FILE_*, SND*, fixed-point, loaders) + libc + libgcc soft-float are ALWAYS on
+ *   (no PsyQ header declares them, so no conflict in either toolchain).
  */
 #ifndef _LIB_LIBFNS_H_
 #define _LIB_LIBFNS_H_
@@ -10,11 +17,69 @@
 
 extern "C" {
 
-int CdDiskReady(...);   /* (int mode) */
+/* =====================================================================
+ *  PsyQ SDK functions -- libgpu / libgte / libetc / libapi / libpad.
+ *  Gated OFF under ccpsx (real PsyQ headers provide these).
+ * ===================================================================== */
+#ifndef NFS4_PSYQ_HEADERS
+/* ---- libgpu (graphics) ---- */
 int ClearImage(...);   /* (RECT *rect, u_char r, u_char g, u_char b) */
 u_long * ClearOTagR(...);   /* (u_long *ot, int n) */
 void DrawOTag(...);   /* (u_long *) */
 long DrawSync(...);   /* (long mode) */
+unsigned short GetClut(...);   /* (int,int) */
+int GetTPage(...);   /* (int,int,int,int) */
+int LoadImage(...);   /* (RECT * recp, u_long * p) */
+int MoveImage(...);   /* (RECT *rect, int x, int y) */
+DISPENV * PutDispEnv(...);   /* (DISPENV *) */
+DRAWENV * PutDrawEnv(...);   /* (DRAWENV *) */
+DISPENV * SetDefDispEnv(...);   /* (DISPENV *, int, int, int, int) */
+DRAWENV * SetDefDrawEnv(...);   /* (DRAWENV *, int, int, int, int) */
+void SetDispMask(...);   /* (int) */
+void SetDrawArea(...);   /* (DR_AREA *p, RECT *r) */
+void SetDrawEnv(...);   /* (void *, DRAWENV *) */
+void SetDrawMode(...);   /* (void*,int,int,int,RECT*) */
+void SetDrawStp(...);   /* (void *p,int stp) */
+void SetPolyF3(...);   /* (POLY_F3 *p = 0) */
+void SetPolyF4(...);   /* (void*) */
+void SetPolyFT4(...);   /* (void*) */
+void SetPolyG4(...);   /* (POLY_G4 *p) */
+void SetPolyGT4(...);   /* (POLY_GT4 *p) */
+void SetSemiTrans(...);   /* (void*,int) */
+void SetShadeTex(...);   /* (void*,int) */
+void SetTexWindow(...);   /* (void *prim, RECT *tw) */
+int StoreImage(...);   /* (RECT *rect, u_long *p) */
+/* ---- libgte (geometry) ---- */
+void InitGeom(...);   /* (void) */
+MATRIX * RotMatrix(...);   /* (SVECTOR *r,MATRIX *m) */
+MATRIX * RotMatrixZ(...);   /* (long r,MATRIX *m) */
+void SetFarColor(...);   /* (int r, int g, int b) */
+void SetFogNear(...);   /* (int a, int otz) */
+void SetGeomScreen(...);   /* (int h) */
+int VectorNormal(...);   /* (VECTOR *v0, VECTOR *v1) */
+long VectorNormalS(...);   /* (VECTOR *v0, SVECTOR *v1) */
+/* ---- libetc (callback / vsync / rcnt / video) ---- */
+int GetRCnt(...);   /* (int spec) */
+void ResetCallback(...);   /* (void) */
+void SetVideoMode(...);   /* (int) */
+int VSync(...);   /* (int) */
+void VSyncCallback(...);   /* (void *cb) */
+/* ---- libapi (kernel) ---- */
+void FlushCache(...);   /* (void) */
+/* ---- libpad ---- */
+int PadGetState(...);   /* (int port) */
+int PadInfoMode(...);
+void PadSetAct(...);   /* (int port, const void *table, int len) */
+int PadSetActAlign(...);   /* (int port, const void *table) */
+void PadSetMainMode(...);
+void PadStartCom(...);   /* (void) */
+#endif /* !NFS4_PSYQ_HEADERS */
+
+/* =====================================================================
+ *  EA eaclib / syslib  +  libc  +  libgcc soft-float -- ALWAYS declared.
+ *  (No PsyQ header declares these; safe under both toolchains.)
+ * ===================================================================== */
+int CdDiskReady(...);   /* (int mode) -- EA wrapper, not PsyQ CdReady */
 int FILE_addbigsync(...);   /* (char *name, void *a, int b, int *handle) */
 int FILE_closesync(...);   /* (int h) */
 int FILE_completeop(...);   /* (int oph) */
@@ -25,27 +90,9 @@ int FILE_operror(...);   /* (int oph) */
 int FILE_opstatus(...);   /* (int oph) */
 int FILE_read(...);   /* (int arg0) */
 int FILE_readsync(...);   /* (int h, void *dst, int n) */
-void FlushCache(...);   /* (void) */
-unsigned short GetClut(...);   /* (int,int) */
-int GetRCnt(...);   /* (int spec) */
-int GetTPage(...);   /* (int,int,int,int) */
-void InitGeom(...);   /* (void) */
-int LoadImage(...);   /* (RECT * recp, u_long * p) */
-int MoveImage(...);   /* (RECT *rect, int x, int y) */
 void PAD_restore(...);
 u_int PAD_state(...);   /* (int port) */
 void PAD_update(...);
-int PadGetState(...);   /* (int port) */
-int PadInfoMode(...);
-void PadSetAct(...);   /* (int port, const void *table, int len) */
-int PadSetActAlign(...);   /* (int port, const void *table) */
-void PadSetMainMode(...);
-void PadStartCom(...);   /* (void) */
-DISPENV * PutDispEnv(...);   /* (DISPENV *) */
-DRAWENV * PutDrawEnv(...);   /* (DRAWENV *) */
-void ResetCallback(...);   /* (void) */
-MATRIX * RotMatrix(...);   /* (SVECTOR *r,MATRIX *m) */
-MATRIX * RotMatrixZ(...);   /* (long r,MATRIX *m) */
 int SND3dpos(...);   /* (u_int tag, u_int x, int y) */
 int SNDSTRM_autovol(...);   /* (int handle, int ticks, int flag) */
 void SNDSTRM_create(...);   /* (void * arg0) */
@@ -85,31 +132,7 @@ int SNDsetlimits(...);   /* (int *opts) */
 int SNDstop(...);   /* (int handle) */
 int SNDtimeremaining(...);   /* (int handle) */
 void SNDvol(...);   /* (int handle, int vol) */
-DISPENV * SetDefDispEnv(...);   /* (DISPENV *, int, int, int, int) */
-DRAWENV * SetDefDrawEnv(...);   /* (DRAWENV *, int, int, int, int) */
-void SetDispMask(...);   /* (int) */
-void SetDrawArea(...);   /* (DR_AREA *p, RECT *r) */
-void SetDrawEnv(...);   /* (void *, DRAWENV *) */
-void SetDrawMode(...);   /* (void*,int,int,int,RECT*) */
-void SetDrawStp(...);   /* (void *p,int stp) */
-void SetFarColor(...);   /* (int r, int g, int b) */
-void SetFogNear(...);   /* (int a, int otz) */
-void SetGeomScreen(...);   /* (int h) */
-void SetPolyF3(...);   /* (POLY_F3 *p = 0) */
-void SetPolyF4(...);   /* (void*) */
-void SetPolyFT4(...);   /* (void*) */
-void SetPolyG4(...);   /* (POLY_G4 *p) */
-void SetPolyGT4(...);   /* (POLY_GT4 *p) */
-void SetSemiTrans(...);   /* (void*,int) */
-void SetShadeTex(...);   /* (void*,int) */
-void  * SetSp(...);   /* (void *sp) */
-void SetTexWindow(...);   /* (void *prim, RECT *tw) */
-void SetVideoMode(...);   /* (int) */
-int StoreImage(...);   /* (RECT *rect, u_long *p) */
-int VSync(...);   /* (int) */
-void VSyncCallback(...);   /* (void *cb) */
-int VectorNormal(...);   /* (VECTOR *v0, VECTOR *v1) */
-long VectorNormalS(...);   /* (VECTOR *v0, SVECTOR *v1) */
+void  * SetSp(...);   /* (void *sp) -- EA, not PsyQ */
 double __adddf3(...);   /* (double, double) */
 double __divdf3(...);   /* (double, double) */
 float __divsf3(...);   /* (float a, float b) */
