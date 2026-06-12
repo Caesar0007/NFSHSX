@@ -22,7 +22,7 @@
 #define gte_ctc2(v,r)           ((void)0)
 #define gte_lwc2(r,v)           ((void)0)
 #define gte_swc2(r,p)           ((void)0)
-#define gte_mvmva(...)          ((void)0)
+#define gte_mvmva(args...)          ((void)0)
 
 /* ---- Weather state globals (SYM Globals.jsonl) ---- */
 extern int               Weather_gDensityTbl[4];               /* 0x80123384 */
