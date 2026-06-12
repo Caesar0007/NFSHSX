@@ -1009,7 +1009,7 @@ void freeVoiceChannel(int sndPlayer)
   
   if (sndPlayer != -1) {
     pThis = gaChannel[sndPlayer].Partial;
-    if (pThis != 0xffffffff) {
+    if (pThis != (void *)0xffffffff) {   /* @0x80078108: Partial == -1 sentinel (disasm-v3) */
       SNDautovol(pThis,5,-1);
       gaChannel[sndPlayer].Partial = -1;
       gaChannel[sndPlayer].SFXnum = -1;
