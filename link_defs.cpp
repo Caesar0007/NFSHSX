@@ -1,0 +1,52 @@
+/* link_defs.cpp -- AGGREGATION TU: storage definitions for module-owned globals
+ * that were declared `extern` (a promise) but never given a home in any TU.
+ * Surfaced by the whole-tree LINK harness (link_harness.py). All BSS (zero-init);
+ * types taken from each symbol's extern decl; buffer-bases sized to the SYM v3
+ * object size. Stage 1 of self-containment (nfs4-f.exe not needed to link). */
+#include "nfs4_types.h"
+
+extern "C" {
+
+/* ---- Stage 1: 34 BSS-zero (.bss/.sbss/front.bss) ---- */
+int gDataRate;                                             /* @80148434 4B */
+int gEventDats[4];                                         /* @80148048 16B */
+int gFilterSetting;                                        /* @8014842c 4B */
+int gGameNum;                                              /* @80148428 4B */
+unsigned short gLastSubTick;                               /* @80148430 4B */
+int gLastTick;                                             /* @80148438 4B */
+fMemCardInfo_def gMemCardInfo;                             /* @80052d68 6112B */
+tPadModuleState gPadinfo;                                  /* @8013e89c 84B */
+int gPreLoadTicks;                                         /* @80148044 4B */
+int gSentenceChoice;                                       /* @8014843c 64B */
+int gVoxEvents;                                            /* @80148060 968B */
+int gVoxInGame;                                            /* @80148058 8B */
+short ispch_gChoice[72];                                   /* @801484e4 144B */
+unsigned char ispch_gPickSamples[100];                     /* @8014847c 100B */
+int maxot;                                                 /* @8013de7c 4B */
+int maxprim;                                               /* @8013de8c 4B */
+int memclass;                                              /* @8013e900 64B */
+short mutexbuf[64];                                        /* @801477e0 128B */
+char * nextprim;                                           /* @8013de78 4B */
+char * otbl;                                               /* @8013de70 8B */
+int oti;                                                   /* @8013de68 4B */
+int otp;                                                   /* @8013de6c 4B */
+char * primbase;                                           /* @8013de84 8B */
+char * primptr;                                            /* @8013de80 4B */
+int reentryflag;                                           /* @8013dec0 4B */
+unsigned char sndchanreserved[4];                          /* @80147914 4B */
+int sndgs[45];                                             /* @80147860 180B */
+/* gSndState: EA/engine semantic alias for the SndState block; SAME object as sndgs @0x80147860
+ *   (snd.h: #define SND ((SndState*)gSndState)).  Aliased so both names resolve to one buffer. */
+extern unsigned char gSndState[] __attribute__((alias("sndgs")));
+/* CF_DVLC @0x80123838-region NAME COLLISION NOTE: the game-side CF_DVLC is a 49096-byte BSS
+ *   load/overlay buffer (asyncloadfileat target; speech-bank-pool overlay), NOT the MDEC table.
+ *   psxfront/video/nfs3/draww take its address; zero-init BSS is faithful. */
+unsigned char CF_DVLC[49096];                              /* @BSS : 49096B load buffer */
+int sndmm;                                                 /* @80148780 588B */
+unsigned char sndpd;                                       /* @80147918 1836B FIXME storage undersized vs SYM 1836B (decl is scalar; buffer-base) */
+int sndpp;                                                 /* @80148578 52B */
+int sndpps;                                                /* @80148574 4B */
+int sndss[2];                                              /* @8013ea80 8B */
+int timerevent;                                            /* @8013dec4 4B */
+
+}

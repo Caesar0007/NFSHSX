@@ -1,0 +1,33 @@
+# Build artifacts
+*.o
+*.obj
+*.a
+*.lib
+*.exe
+*.elf
+_link_obj/
+build/
+
+# Backups / snapshots
+*.bak
+*.bak.*
+*.bak-*
+*.orig
+nfs4_types.h.2026*
+*~
+
+# Reverse-engineering oracles (copyrighted / large — NOT redistributed)
+*.EXE
+*.exe
+NFS4.EXE*
+nfs4-f.exe*
+*.i64
+*.idb
+*.sym
+disasm*.txt
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
