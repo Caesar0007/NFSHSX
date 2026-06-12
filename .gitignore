@@ -32,3 +32,6 @@ disasm*.txt
 .idea/
 .DS_Store
 Thumbs.db
+_ccpsx_gate.json
+_link_report.json
+_link_analysis.json
