@@ -75,8 +75,12 @@ def main():
     npass = 0
     for i, tu in enumerate(tus):
         rel = os.path.relpath(tu, ROOT).replace('\\', '/')
+        # Our type system (nfs4_types.h) is C++-unified (classes/ctors/(*pfn)(...)):
+        # the handful of .c TUs must be driven through the C++ frontend, exactly as the
+        # original EA unified build did. (.cpp files auto-select C++.)
+        lang = ['-x', 'c++'] if tu.endswith('.c') else []
         try:
-            r = subprocess.run([CCPSX] + FLAGS + [tu, '-o', os.devnull],
+            r = subprocess.run([CCPSX] + lang + FLAGS + [tu, '-o', os.devnull],
                                env=ENV, capture_output=True, text=True, timeout=60)
             ok = (r.returncode == 0)
             if ok:

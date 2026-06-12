@@ -35,8 +35,8 @@ typedef unsigned int size_t;
 #endif
 /* Ghidra-ism scalar aliases (used in some recovered eaclib param hints) */
 typedef unsigned char byte;
-#ifndef NFS4_PSYQ_HEADERS  /* uint/ushort also provided by PsyQ <sys/types.h> */
-typedef unsigned int uint;
+typedef unsigned int uint;   /* PsyQ <sys/types.h> guards `uint` behind #ifndef __psx__ => NOT defined on PSX, keep ours */
+#ifndef NFS4_PSYQ_HEADERS    /* `ushort` (sysIII) IS defined unconditionally by PsyQ <sys/types.h> => gate ours off under ccpsx */
 typedef unsigned short ushort;
 #endif
 typedef unsigned char uchar;
