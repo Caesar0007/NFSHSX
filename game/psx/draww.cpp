@@ -1227,7 +1227,7 @@ gte_swc2(0x8,&depthcue);
         tu4 = (u_int)Render_gPacketPtr & 0xffffff;
         Render_gPacketPtr = Render_gPacketPtr + 0xc;
         *(u_int *)(tp18 + sd->otz * 4) = *(u_int *)(tp18 + sd->otz * 4) & 0xff000000 | tu4;
-        SetTexWindow(tp19,&r);
+        SetTexWindow((DR_TWIN *)tp19,&r);
       }
       if ((bool)bVar4) {
         prim = (POLY_GT4 *)(sd->head).cprim.PrimPtr;
@@ -1370,7 +1370,7 @@ gte_SetTransMatrix(((char *)sd + 0x14));
         uVar3_00 = (u_int)Render_gPacketPtr & 0xffffff;
         Render_gPacketPtr = Render_gPacketPtr + 0xc;
         *(u_int *)(tp20 + sd->otz * 4) = *(u_int *)(tp20 + sd->otz * 4) & 0xff000000 | uVar3_00;
-        SetTexWindow(p,&r);
+        SetTexWindow((DR_TWIN *)p,&r);
       }
     }
   }
