@@ -687,7 +687,7 @@ void ScaleGouraudShape(tTexture_ShapeInfo *shp,int flags,int x,int y,int scalex,
   *(int *)(prim + 0x10) = color[1];
   *(int *)(prim + 0x1c) = color[2];
   *(int *)(prim + 0x28) = color[3];
-  SetPolyGT4(prim);
+  SetPolyGT4((POLY_GT4 *)prim);
   SetSemiTrans(prim,flags & 1);
   clut = GetClut((shp->clutID & 0x3fU) << 4,shp->clutID >> 6);
   *(short *)(prim + 0xe) = clut;
@@ -895,7 +895,7 @@ void PSXDrawGouraudSquare(int x,int y,int w,int h,int c1,int c2,int c3,int c4)
   *(int *)(prim + 0xc) = c2;
   *(int *)(prim + 0x14) = c3;
   *(int *)(prim + 0x1c) = c4;
-  SetPolyG4(prim);
+  SetPolyG4((POLY_G4 *)prim);
   x_s = (short)x;
   x_plus_w = x_s + (short)w;
   y_s = (short)y;
