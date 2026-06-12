@@ -1589,7 +1589,7 @@ R_ICFt_partVisibilityJoin:
         if (uVar4 != 0) {
 switchD_800b03ec_caseD_f:
           cVar15 = '\0';
-switchD_800b03ec_caseD_8:
+switchD_800b03ec_caseD_8: ;   /* empty stmt: gcc2.7.2 rejects label before '}' */
         }
         break;
       case 0xc:
