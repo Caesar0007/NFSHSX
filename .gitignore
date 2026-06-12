@@ -13,6 +13,7 @@ build/
 *.bak.*
 *.bak-*
 *.orig
+backup/
 nfs4_types.h.2026*
 *~
 
