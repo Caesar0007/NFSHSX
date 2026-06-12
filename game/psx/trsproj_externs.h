@@ -10,7 +10,7 @@
 #define SetGeomScreen(h)        gte_SetGeomScreen(h)   /* source spelling (syslib::libgte::REG13) */
 #define gte_SetGeomOffset(x,y)  ((void)0)
 #define gte_ldv0(v)             ((void)(v))
-#define gte_mvmva(...)          ((void)0)
+#define gte_mvmva(args...)          ((void)0)
 #define gte_stlvnl(p)           ((void)(p))
 #define gte_ctc2(v,r)           ((void)0)
 
