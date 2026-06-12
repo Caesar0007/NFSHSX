@@ -67,7 +67,7 @@ void MenuNFS4_DrawTextBox(int helpText,RECT &r,int initialWidth,short drawOffset
     pkt_addr24 = (u_int)Render_gPacketPtr & 0xffffff;
     Render_gPacketPtr = Render_gPacketPtr + 0xc;
     *(u_int *)prev_pkt = *(u_int *)prev_pkt & 0xff000000 | pkt_addr24;
-    SetDrawArea(daprim,&temp);
+    SetDrawArea((DR_AREA *)daprim,&temp);
     FETextRender_SetFont(0);
     wordText = TextSys_Word(helpText);
     sprintf(buffer,"%s",wordText);
@@ -133,7 +133,7 @@ void MenuNFS4_DrawTextBox(int helpText,RECT &r,int initialWidth,short drawOffset
     tu8 = (u_int)Render_gPacketPtr & 0xffffff;
     Render_gPacketPtr = Render_gPacketPtr + 0xc;
     *(u_int *)prev_pkt = *(u_int *)prev_pkt & 0xff000000 | tu8;
-    SetDrawArea(daprim,&temp);
+    SetDrawArea((DR_AREA *)daprim,&temp);
   }
   shape = gHelpShapes;
   pbVar8 = (u_char *)((char *)&r + 1);
