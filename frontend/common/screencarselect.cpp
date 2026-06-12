@@ -1583,7 +1583,7 @@ void tScreenCarSelectDuel::DrawBackground()
   pkt_addr24 = (uint)Render_gPacketPtr & 0xffffff;
   Render_gPacketPtr = Render_gPacketPtr + 0xc;
   *(uint *)prev_pkt = *(uint *)prev_pkt & 0xff000000 | pkt_addr24;
-  SetDrawArea(daprim,&temp);
+  SetDrawArea((DR_AREA *)daprim,&temp);
   r.x = 0x122;
   r.w = 200;
   r.h = 0xc;
@@ -1642,7 +1642,7 @@ void tScreenCarSelectDuel::DrawBackground()
   pkt_addr24_2 = (uint)Render_gPacketPtr & 0xffffff;
   Render_gPacketPtr = Render_gPacketPtr + 0xc;
   *(uint *)cur_pkt_2 = *(uint *)cur_pkt_2 & 0xff000000 | pkt_addr24_2;
-  SetDrawArea(daprim,&temp);
+  SetDrawArea((DR_AREA *)daprim,&temp);
   PSXDrawSquare(0,0,screenheight / 2,0x200,screenheight / 2);
   screenVtbl2 = (int)(this->_base_tScreenCarSelect)._base_tScreen._vf;
   ti8 = (**(code **)(screenVtbl2 + 0x6c))
@@ -1961,7 +1961,7 @@ void tScreenCarSelectTwoPlayer::DrawBackground()
   pkt_addr24 = (uint)Render_gPacketPtr & 0xffffff;
   Render_gPacketPtr = Render_gPacketPtr + 0xc;
   *(uint *)cur_pkt = *(uint *)cur_pkt & 0xff000000 | pkt_addr24;
-  SetDrawArea(daprim,&temp);
+  SetDrawArea((DR_AREA *)daprim,&temp);
   r.x = 0x122;
   r.y = 0x19;
   if (FEApp->fPlayer == '\x01') {
@@ -2066,7 +2066,7 @@ void tScreenCarSelectTwoPlayer::DrawBackground()
   pkt_addr24_2 = (uint)Render_gPacketPtr & 0xffffff;
   Render_gPacketPtr = Render_gPacketPtr + 0xc;
   *(uint *)cur_pkt_2 = *(uint *)cur_pkt_2 & 0xff000000 | pkt_addr24_2;
-  SetDrawArea(daprim,&temp);
+  SetDrawArea((DR_AREA *)daprim,&temp);
   return;
 }
 
