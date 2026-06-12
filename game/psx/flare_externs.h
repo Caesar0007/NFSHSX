@@ -18,9 +18,9 @@ extern void gte_swc2(int reg, void *ptr);
 #define gte_stsv(p)             ((void)(p))   /* mfc2 IR1..3 -> short-vector (3 mfc2)   */
 #define gte_stsxy(p)            ((void)(p))   /* mfc2 SXY2 -> DVECTOR (screen xy)       */
 #define gte_stsz(p)             ((void)(p))   /* mfc2 SZ3  -> short   (projected depth) */
-#define gte_rtir(...)           ((void)0)   /* RotIR / mvmva (transform IR vector)     */
-#define gte_ldtr(...)           ((void)0)   /* load translation vector to cop2         */
-#define gte_rtps_b(...)         ((void)0)   /* RTPS variant (buffered)                 */
+#define gte_rtir(args...)           ((void)0)   /* RotIR / mvmva (transform IR vector)     */
+#define gte_ldtr(args...)           ((void)0)   /* load translation vector to cop2         */
+#define gte_rtps_b(args...)         ((void)0)   /* RTPS variant (buffered)                 */
    /* PsyQ libgte RotMatrixZ */
 typedef void (code)(void);
 typedef long long undefined8;
