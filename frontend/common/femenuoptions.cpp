@@ -1067,7 +1067,7 @@ void tMenuItemSlidingMenu::Draw(int offx,int offy,bool selected)
     pkt_addr24 = (u_int)Render_gPacketPtr & 0xffffff;
     Render_gPacketPtr = Render_gPacketPtr + 0xc;
     *(u_int *)cur_pkt = *(u_int *)cur_pkt & 0xff000000 | pkt_addr24;
-    SetDrawArea(daprim,&full);
+    SetDrawArea((DR_AREA *)daprim,&full);
     width = hh >> 0x11;
     gray = 0x505050;
     SubtractiveBox(xx,yy,ww,width,gray,gray,0,0);
@@ -1106,7 +1106,7 @@ void tMenuItemSlidingMenu::Draw(int offx,int offy,bool selected)
     *(u_int *)cur_pkt = *(u_int *)cur_pkt & 0xff000000 | tu1;
     temp.w = sVar1;
     temp.h = uVar2;
-    SetDrawArea(daprim,&temp);
+    SetDrawArea((DR_AREA *)daprim,&temp);
     if (fHelpText != -1) {
       tstr10 = (int)TextSys_Word(fHelpText);
       iVar7 = TextSys_WordX(fHelpText);
