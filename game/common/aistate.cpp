@@ -2279,7 +2279,7 @@ AIState_Purgatory::~AIState_Purgatory()
 
 
 {
-  int __in_chrg;
+  /* removed unused `int __in_chrg;` — shadowed cfront's implicit dtor in-charge param */
   int search;
   Car_tObj*test;
 
