@@ -271,7 +271,7 @@ DrawTV_emitTinted:
       *(u_int *)cur_pkt_a = *(u_int *)cur_pkt_a & 0xff000000 | pkt_addr24_b;
       tu15 = 0x40 - ((destBrightness << 0x10) >> 0x11);
       *(u_int *)(tp10 + 4) = tu15 * 0x10000 | tu15 * 0x100 | tu15;
-      SetPolyFT4(tp10);
+      SetPolyFT4((POLY_FT4 *)tp10);
       SetSemiTrans(tp10,1);
       SetShadeTex(tp10,0);
       *(short *)(tp10 + 8) = ts1;
@@ -411,7 +411,7 @@ DrawTV_emitTinted:
       Render_gPacketPtr = Render_gPacketPtr + 0x28;
       *(u_int *)cur_pkt_a = *(u_int *)cur_pkt_a & 0xff000000 | tu15;
       *(u_int *)(tp10 + 4) = tu24;
-      SetPolyFT4(tp10);
+      SetPolyFT4((POLY_FT4 *)tp10);
       SetSemiTrans(tp10,0);
       SetShadeTex(tp10,do_tint ^ 1);
       *(short *)(tp10 + 8) = ts1;
