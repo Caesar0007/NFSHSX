@@ -314,7 +314,7 @@ void Hud_BuildF3(POLY_F3 *prim,HudPmx_tShape *shape,int x,int y,u_long color)
   prim->g0 = ((u_char *)&(color))[1];
   prim->b0 = ((u_char *)&(color))[2];
   prim->code = ((u_char *)&(color))[3];
-  SetPolyF3();
+  SetPolyF3(prim);
   uVar1 = y << 0x10 | x;
   prim->x0 = (short)uVar1;
   prim->y0 = (short)(uVar1 >> 0x10);
