@@ -345,7 +345,7 @@ void Draw_StopRenderingView(int viewid)
   Render_gPacketPtr = Render_gPacketPtr + 0x40;
   *(u_int *)(prev_pkt + *(int *)viewSlot * 4 + -4) =
        *(u_int *)(prev_pkt + *(int *)viewSlot * 4 + -4) & 0xff000000 | pkt_addr24;
-  SetDrawEnv(cur_pkt,&LEnv);
+  SetDrawEnv((DR_ENV *)cur_pkt,&LEnv);
   return;
 }
 
