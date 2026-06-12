@@ -986,7 +986,7 @@ void DrawSlider(short value,short min,short max,short fX,short fY,short fWidth,s
         tickColor = CalcFadeVal(interp_color,amount_00);
       }
       pkt[1] = tickColor;
-      SetPolyF4(pkt);
+      SetPolyF4((POLY_F4 *)pkt);
       SetSemiTrans(pkt,0);
       x_pack = x_pack + (u_int)(u_short)rectwidth + (u_int)(u_short)rectspace;
       pkt = (u_int *)Render_gPacketPtr;
@@ -1037,7 +1037,7 @@ void DrawSlider(short value,short min,short max,short fX,short fY,short fWidth,s
           ti6 = CalcFadeVal(col1,amount_00);
         }
         *(int *)(pkt2 + 4) = ti6;
-        SetPolyF4(pkt2);
+        SetPolyF4((POLY_F4 *)pkt2);
         SetSemiTrans(pkt2,0);
         iVar2 = iVar2 - ((u_int)(u_short)rectwidth + (u_int)(u_short)rectspace);
       } while (ti2 <= iVar2 * 0x10000 >> 0x10);
