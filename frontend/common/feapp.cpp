@@ -358,7 +358,7 @@ void tFEApplication::Redraw()
   pkt_addr24_p1 = (u_int)Render_gPacketPtr & 0xffffff;
   Render_gPacketPtr = Render_gPacketPtr + 0xc;
   *(u_int *)prev_pkt_p1 = *(u_int *)prev_pkt_p1 & 0xff000000 | pkt_addr24_p1;
-  SetDrawArea(daprim,&r);
+  SetDrawArea((DR_AREA *)daprim,&r);
   do {
     this->fPlayer = (char)i;
     this->fYOffset = ((u_short)i & 0xff) * height;
@@ -428,7 +428,7 @@ Redraw_vtableCallback9:
     Render_gPacketPtr = Render_gPacketPtr + 0xc;
     *(u_int *)prev_pkt_p1 = *(u_int *)prev_pkt_p1 & 0xff000000 | pkt_addr24_p2;
     r.h = height;
-    SetDrawArea(daprim,&r);
+    SetDrawArea((DR_AREA *)daprim,&r);
     i = i - 1;
     if (i * 0x10000 < 0) {
       this->fPlayer = saveFPlayer;
