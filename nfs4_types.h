@@ -35,8 +35,10 @@ typedef unsigned int size_t;
 #endif
 /* Ghidra-ism scalar aliases (used in some recovered eaclib param hints) */
 typedef unsigned char byte;
+#ifndef NFS4_PSYQ_HEADERS  /* uint/ushort also provided by PsyQ <sys/types.h> */
 typedef unsigned int uint;
 typedef unsigned short ushort;
+#endif
 typedef unsigned char uchar;
 typedef unsigned char undefined;
 
