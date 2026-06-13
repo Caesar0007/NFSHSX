@@ -6,7 +6,7 @@
 extern "C" void SetGeomScreen(int h)
 {
 #if defined(__mips__)
-    __asm__ volatile("ctc2 %0,$26" :: "r"(h));
+    __asm__ volatile("ctc2 %0,$26" : : "r"(h));
 #else
     (void)h;
 #endif
