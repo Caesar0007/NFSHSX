@@ -13,6 +13,7 @@
 extern "C" int sndgs[];
 extern "C" int DAT_80147e28;        /* SPU voice register base (address)   */
 extern "C" int DAT_80147e2c;        /* SPU control register base (address) */
+extern "C" int DAT_801479f0;        /* packet-voice table base; entry +0x00 = SPU start addr, +0x04 idx src, +0x08 sample-rate src */
 /* packet-voice table fields (0x2c stride, indexed [chan*0x2c]) */
 extern "C" unsigned char DAT_80147a0c;   /* +0x1c playstate */
 extern "C" unsigned char DAT_80147a0d;   /* +0x1d           */
@@ -23,6 +24,7 @@ extern "C" unsigned char DAT_80147a12;   /* +0x22 fx send level */
 extern "C" unsigned char DAT_80147a14;   /* +0x24 L cache */
 extern "C" unsigned char DAT_80147a15;   /* +0x25 R cache */
 extern "C" unsigned char DAT_80147a16;   /* +0x26 flag */
+extern "C" unsigned char DAT_80147a17;   /* +0x27 partner-addr mode (bit7) / table index */
 
 extern "C" void iSNDvol(int chan, int level);            /* sdriver */
 extern "C" void iSNDplatformfxlevel(int chan);
@@ -194,20 +196,36 @@ extern "C" int iSNDsetslot(int chan, int addr, int pitch)
  *   ADSR slot, set the initial volume + fx level, and return the SPU key-on mask. */
 extern "C" unsigned int iSNDstartvoice(unsigned int chan)
 {
-    int          vt = chan * 0x2c;
+    int          vt  = chan * 0x2c;
+    char        *vte = (char *)&DAT_801479f0 + vt;   /* &voicetable[chan] */
+    int          f0  = *(int *)vte;                  /* +0x00 SPU start address / tag */
+    /* H08: pitch = MULT_HI((uint)voicetable[chan].+0x08, 0x4A4DC96F) >> 7 (oracle 0x800FF41C-434); shared by both calls */
+    int          pitch = (int)((unsigned int)(((unsigned long long)(unsigned int)*(int *)(vte + 8) * 0x4A4DC96FuLL) >> 32) >> 7);
     unsigned int mask;
 
     SB(DAT_80147a14, vt) = 0;
     SB(DAT_80147a15, vt) = 0;
-    iSNDsetslot(chan, 0, 0);
+    iSNDsetslot((int)chan, f0, pitch);               /* H08: was (chan,0,0) -> addr+pitch were zeroed (oracle 0x800FF438) */
     mask = 1u << (chan & 0x1f);
     SB(DAT_80147a0c, vt) = 2;
     SB(DAT_80147a0d, vt) = 2;
     SB(DAT_80147a16, vt) = 0;
     if (SB(DAT_80147a0f, vt) == 2) {                 /* linked pair -> arm the partner too */
-        char link = (char)SB(DAT_80147a10, vt);
-        int  vt2 = link * 0x2c;
-        iSNDsetslot((int)link, 0, 0);
+        char        link = (char)SB(DAT_80147a10, vt);
+        int         vt2  = link * 0x2c;
+        signed char f27  = (signed char)SB(DAT_80147a17, vt);   /* +0x27 partner-addr mode */
+        int         a3;                              /* linked-partner start-addr offset (oracle 0x800FF468-50C) */
+        if (f27 < 0) {                               /* bit7 set: index from +0x04 via 1/0x1c reciprocal (oracle 0x800FF4C8-50C) */
+            int          f4 = *(int *)(vte + 4);
+            unsigned int q  = (unsigned int)(((unsigned long long)((unsigned int)f4 >> 2) * 0x24924925uLL) >> 32);
+            a3 = (int)q;
+            if (f4 != (int)(q * 0x1c)) a3 = a3 + 1;  /* round up to the 0x1c stride */
+            a3 = a3 << 4;
+        } else {                                     /* bit7 clear: ptr table at base+0x420 indexed by f27 (oracle 0x800FF4A0-BC) */
+            int *pt = *(int **)((char *)&DAT_801479f0 + (int)f27 * 4 + 0x420);
+            a3 = *(int *)((char *)pt + 8);
+        }
+        iSNDsetslot((int)link, f0 + a3, pitch);      /* H08: was (link,0,0); addr = f0 + a3 (oracle 0x800FF524/528) */
         SB(DAT_80147a0c, vt2) = 2;
         SB(DAT_80147a0d, vt2) = 2;
         SB(DAT_80147a16, vt2) = 0;
