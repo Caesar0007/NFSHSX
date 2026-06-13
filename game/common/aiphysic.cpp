@@ -1908,13 +1908,13 @@ void AIPhysic_FinishUp(Car_tObj *carObj)
   (carObj->angularAcc).x = iVar1 + iVar2 + iVar3;
   (carObj->angularAcc).y = iVar9 + iVar4 + iVar5;
   (carObj->angularAcc).z = iVar6 + iVar7 + iVar8;
-  iVar1 = fixedmult((carObj->linearAcc).x,0);
+  iVar1 = fixedmult((carObj->linearAcc).x,AIPhysic_iTime);   /* H31: 2nd arg was 0 (oracle 0x8006C624 $a1=AIPhysic_iTime); 0 nullified accel->vel integration */
   iVar2 = (carObj->linearAcc).y;
   (carObj->N).linearVel.x = (carObj->N).linearVel.x + iVar1;
-  iVar1 = fixedmult(iVar2,0);
+  iVar1 = fixedmult(iVar2,AIPhysic_iTime);   /* H31: 2nd arg was 0 (oracle AIPhysic_iTime) */
   iVar2 = (carObj->linearAcc).z;
   (carObj->N).linearVel.y = (carObj->N).linearVel.y + iVar1;
-  iVar1 = fixedmult(iVar2,0);
+  iVar1 = fixedmult(iVar2,AIPhysic_iTime);   /* H31: 2nd arg was 0 (oracle AIPhysic_iTime) */
   iVar2 = carObj->drag;
   (carObj->N).linearVel.z = (carObj->N).linearVel.z + iVar1;
   for (iVar1 = 0; (iVar2 != 0 && (iVar1 < 0)); iVar1 = iVar1 + 1) {
