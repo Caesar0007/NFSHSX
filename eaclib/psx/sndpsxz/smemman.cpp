@@ -19,7 +19,7 @@ extern "C" void           trap(unsigned int code);
 
 extern "C" int  iSNDmemconstrain(int *block, int *size);   /* @0x801061A8 */
 extern "C" int *iSNDmeminit(int membase, int memsize);     /* @0x801061D4 */
-extern "C" void iSNDmemrestore(void);                      /* @0x801061F4 */
+extern "C" unsigned int iSNDmemrestore(void);              /* @0x801061F4 */
 extern "C" int  iSNDmalloc(int size);                      /* @0x80106238 */
 
 /* iSNDmemconstrain @0x801061A8 : clamp a candidate [block, size] so block+size stays within the pool top. */
@@ -41,11 +41,12 @@ extern "C" int *iSNDmeminit(int membase, int memsize)
     return &sndmm;
 }
 
-/* iSNDmemrestore @0x801061F4 : tear-down sanity check (the pool must have been initialised). */
-extern "C" void iSNDmemrestore(void)
+/* iSNDmemrestore @0x801061F4 : return pool utilisation percent = high_water*100/poolsize.
+ *   The unsigned divide auto-emits the BREAK 0x1c00 div-by-zero guard (oracle 0x80106228),
+ *   so the trap only fires when the pool was never initialised (poolsize==0). */
+extern "C" unsigned int iSNDmemrestore(void)
 {
-    if (DAT_80148786 == 0)
-        trap(0x1c00);
+    return (unsigned int)(DAT_80148788 * 100) / (unsigned int)(unsigned short)DAT_80148786;
 }
 
 /* iSNDmalloc @0x80106238 : first-fit allocate `size` bytes (rounded to words) from the sndmm pool,
