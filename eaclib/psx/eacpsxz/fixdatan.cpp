@@ -44,7 +44,7 @@ static const int kAtanTbl[257] = {
 };
 
 extern "C" void make64(int *out, int y, unsigned int shift);   /* @0x800FE488 math64a.obj */
-extern "C" int  divu64(int hi, int lo, unsigned int den);      /* @0x800FE4E0 math64a.obj */
+extern "C" int  divu64(int lo, int hi, unsigned int den);      /* @0x800FE4E0 math64a.obj; ABI $a0=lo,$a1=hi,$a2=den */
 
 extern "C" int fixedatan(int x, int y)   /* @0x800ED528 */
 {
@@ -61,7 +61,7 @@ extern "C" int fixedatan(int x, int y)   /* @0x800ED528 */
         else       { num = (unsigned)x; den = (unsigned)y; }
         int buf[2];                                       /* min/max ratio: EA make64 + divu64       */
         make64(buf, (int)num, 32);                        /* (@0x800FE488/E4E0; NOT libgcc __udivdi3) */
-        unsigned r    = (unsigned)divu64(buf[1], buf[0], den);  /* (num<<32)/den as a 0.32 fraction   */
+        unsigned r    = (unsigned)divu64(buf[0], buf[1], den);  /* (num<<32)/den as a 0.32 fraction; $a0=buf[0]=lo=0,$a1=buf[1]=hi=num per oracle 0x800ED594/598 (H01) */
         unsigned idx  = r >> 24;
         unsigned frac = (r >> 8) & 0xFFFF;
         int d = kAtanTbl[idx + 1] - kAtanTbl[idx];
