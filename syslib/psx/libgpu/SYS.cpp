@@ -232,7 +232,7 @@ static int _gpu_que_push(QueFunc func, u_long *arg, int n, int extra)
                 ;
             func(arg, extra);
             SetIntrMask(_q_saved_mask);
-            return (_qin - _qout) & 0x3f;
+            return 0;
         }
     }
     DMACallback(2, (int)_gpu_que_drain);         /* (re)attach drain to channel-2 interrupt */
