@@ -5,9 +5,9 @@
 #if defined(__mips__)
 extern "C" __attribute__((naked)) void GPU_cw(unsigned long cw)
 { __asm__ __volatile__(".set noreorder
-	 li $t2,0xA0
-	 jr $t2
-	 li $t1,0x49
+	 li $10,0xA0
+	 jr $10
+	 li $9,0x49
 	 .set reorder"); }
 #else
 extern "C" void GPU_cw(unsigned long cw)

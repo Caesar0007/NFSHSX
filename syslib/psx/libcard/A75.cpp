@@ -5,6 +5,6 @@
 extern "C" void StartCARD2(void)
 {
 #if defined(__mips__)
-    __asm__ volatile("li $t2,0xB0\n\t jr $t2\n\t li $t1,0x4B\n\t");
+    __asm__ volatile("li $10,0xB0\n\t jr $10\n\t li $9,0x4B\n\t");
 #endif
 }

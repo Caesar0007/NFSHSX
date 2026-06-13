@@ -4,7 +4,7 @@
  */
 #if defined(__mips__)
 extern "C" __attribute__((naked, returns_twice)) int setjmp(long *env)
-{ __asm__ __volatile__(".set noreorder\n\t li $t2,0xA0\n\t jr $t2\n\t li $t1,0x13\n\t .set reorder"); }
+{ __asm__ __volatile__(".set noreorder\n\t li $10,0xA0\n\t jr $10\n\t li $9,0x13\n\t .set reorder"); }
 #else
 extern "C" int setjmp(long *env) { (void)env; return 0; }
 #endif
