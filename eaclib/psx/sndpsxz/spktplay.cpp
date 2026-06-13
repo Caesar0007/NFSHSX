@@ -24,7 +24,10 @@ extern "C" int  iSNDplatformrate;         /* @0x80147840 -- platform sample rate
 /* ---- backends ---- */
 extern "C" int  iSNDplatformpacketoverhead(void);                           /* sdpacket */
 extern "C" int  iSNDplatformpacketplaycreate(int slot, int *mem);
-extern "C" int  iSNDplatformpacketplay(int p, int note, int len, int dur, int rate, int hdr);
+/* H10: 9-arg per oracle call @0x80102C94 (a0..a3 + sp+16/20/24/28/32). sdpacket's def reads 8
+ *   (volAngle,level,pitch,a6,fxlevel,hdr-ptr); a9=hdr+0xc is pushed-but-unused, matching the binary. */
+extern "C" int  iSNDplatformpacketplay(int p, int note, int volAngle, int level,
+                                       int pitch, int a6, int fxlevel, int hdr, int a9);
 extern "C" void iSNDplatformpacketplaydestroy(int p);
 extern "C" int  iSNDallocchan(int a, int b, int c, int *out);               /* salloc */
 extern "C" void iSNDfreechan(int note);
@@ -167,7 +170,10 @@ extern "C" int SNDPKTPLAY_start(int p, int rate, int hdr, int params)
         long long pr = (long long)v1 * (int)0x82061029;
         dur = (((int)(pr >> 32) + v1) >> 0xD) - (v1 >> 0x1f);
     }
-    r = iSNDplatformpacketplay(p, note, s3len, dur, rate, hdr + 0xc);
+    /* H10: oracle (0x80102C94) passes 9 args; was 6 with dur/rate/hdr+0xc in the wrong slots and
+       ch[0x2d]/ch[0x62]/params[0xe] missing.  a0..a3 + sp+16/20/24/28/32. */
+    r = iSNDplatformpacketplay(p, note, s3len, MSB(ch, 0x2d), MUH(ch, 0x62),
+                               MUH(params, 0xe), dur, rate, hdr + 0xc);
     if (r < 0) {
         iSNDfreechan(note);
         iSNDleaveaudio();
