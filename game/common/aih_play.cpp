@@ -5,7 +5,7 @@
  *   __vtbl_ptr_type entries); deleting dtors. Each ctor/dtor installs AIState_<C>_vtable.
  *   Faithful C++ (option A). NOT original source; SYM-faithful, recompilable. vs disasm-v2.
  */
-#include <new>
+#include "../../lib/nfs4_new.h"
 #include "../../nfs4_types.h"
 #include "aih_play_externs.h"
 
@@ -210,7 +210,7 @@ void AIHigh_Player::SetupBlockade()
   int copLoop;
   int blockadeHandle;
   copLevel_t*pLevel;
-  union*blockade;
+  trigger_t *blockade;
   int used;
   int nCopsNeeded[2];
   int requestSpikeBeltAtSlice;
@@ -317,7 +317,7 @@ void AIHigh_Player::SetupBlockade()
 
   local_4c = pcVar17->copBlockaders[1];
 
-  iVar14 = triggerManagerCops->CheckForClosestTriggerOfType(iVar14, 2, ((this->_base_AIHigh_BasicPerp)._base_AIHigh_Base.carObj_)->direction);
+  iVar14 = triggerManagerCops->CheckForClosestTriggerOfType(iVar14, (triggerType)2, ((this->_base_AIHigh_BasicPerp)._base_AIHigh_Base.carObj_)->direction);
 
   if (iVar14 == -1) {
 
@@ -359,7 +359,7 @@ LAB_80062130:
 
       }
 
-      iVar14 = triggerManagerCops->CheckForClosestTriggerOfType(iVar14, 2, ((this->_base_AIHigh_BasicPerp)._base_AIHigh_Base.carObj_)->direction);
+      iVar14 = triggerManagerCops->CheckForClosestTriggerOfType(iVar14, (triggerType)2, ((this->_base_AIHigh_BasicPerp)._base_AIHigh_Base.carObj_)->direction);
 
       if (iVar14 == -1) goto LAB_80062130;
 
@@ -745,7 +745,7 @@ LAB_80062130:
 
       }
 
-LAB_800620e8:
+LAB_800620e8: ;   /* empty stmt: gcc2.7.2 label before brace */
 
     }
 
