@@ -1018,14 +1018,14 @@ u_int * Speech_ct(u_int *param_1)
     iVar8 = iVar8 + -1;
     puVar3 = puVar3 + 4;
   } while (iVar8 != -1);
-  pvVar4 = __builtin_new((u_int)puVar2);
+  pvVar4 = __builtin_new(0x64);
   *(void ***)((int)pvVar4 + 0x4c) = (void**)Speaker_vtable;
   *(u_int *)((int)pvVar4 + 0x48) = 0;
   *(void ***)((int)pvVar4 + 0x4c) = (void**)DispatchSpeaker_vtable;
   param_1[0xe8] = pvVar4;
   puVar3 = param_1;
   for (iVar8 = 0; iVar10 = 0, iVar8 < 4; iVar8 = iVar8 + 1) {
-    pvVar4 = __builtin_new((u_int)puVar2);
+    pvVar4 = __builtin_new(0x68);
     *(void ***)((int)pvVar4 + 0x4c) = (void**)Speaker_vtable;
     *(u_int *)((int)pvVar4 + 0x48) = 0;
     *(void ***)((int)pvVar4 + 0x4c) = (void**)MobileSpeaker_vtable;
