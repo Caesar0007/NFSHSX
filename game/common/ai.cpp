@@ -1071,7 +1071,7 @@ void AI_AddCollidableObjects(Car_tObj *carObj,Group *groupSimObjs)
     local_48.y = pGVar8[1].m_num_elements;
     local_48.z = pGVar8[2].m_num_elements;
     BWorldSm_FindClosestSlice(&local_48,(BWorldSm_Pos *)&spos);
-    iVar1 = AIWorld_ApxSplineDistance(0,carObj);
+    iVar1 = AIWorld_ApxSplineDistance(spos.slice,carObj);   /* H17: arg0 was 0; oracle 0x800597B4 $a0=*(short*)spos=spos.slice */
     if (iVar1 * carObj->direction - 1U < 0x63ffff) {
       piVar2 = (int *)((carObj->N).simRoadInfo.slice * 0x20 + BWorldSm_slices);
       local_38 = *piVar2;
@@ -1111,7 +1111,7 @@ void AI_AddCollidableObjects(Car_tObj *carObj,Group *groupSimObjs)
         importance = -0x280000;
       }
       iVar3 = (int)(short)pGVar8[3].m_num_elements;
-      AI_SubmitObstacle(carObj,importance,iVar1 + iVar3 * -0x200,iVar1 + iVar3 * 0x200,0);
+      AI_SubmitObstacle(carObj,importance,iVar1 + iVar3 * -0x200,iVar1 + iVar3 * 0x200,spos.slice);   /* H17: 5th arg (slice) was 0; oracle 0x800598E4 reload spos.slice -> feeds AIWorld_LaneIndex */
     }
     pGVar8 = pGVar8 + 5;
   }
