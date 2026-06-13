@@ -8,6 +8,10 @@
 #include "../../nfs4_types.h"
 #include "aih_basiccop_externs.h"
 
+/* H18: not in this TU's externs -- needed by the ShouldIPerformCutOffBlock reconstruction */
+extern int AI_elapsedTime;                              /* ai.cpp @0x8013C554 */
+int AIWorld_SplineDistance(Car_tObj *a, Car_tObj *b);   /* AIWORLD.obj */
+
 
 /* ---- __15AIHigh_BasicCopP8Car_tObji  AIHigh_BasicCop::ctor  [AIH_BASICCOP.CPP:18-34] SLD-VERIFIED ---- */
 AIHigh_BasicCop::AIHigh_BasicCop(Car_tObj *carObj,int copIndex)
@@ -125,12 +129,33 @@ int AIHigh_BasicCop::ShouldIPerformCutOffBlock(int chancePerSecond,Car_tObj *tar
   int absRelLatPosition;
   int metersBetween;
   int carLength;
+  Car_tObj *myCar;
 
-  randtemp = fastRandom * randSeed;
+  /* H18: full body reconstructed from oracle 0x8005C2B4-0x8005C410 (was stubbed `return 0`, so the
+     cut-off block could never fire). chancePerSecond=$a1, target=$s0, cop car=_base_AIHigh_Base.carObj_. */
+  chanceForElapsedTime = (chancePerSecond / 32) * AI_elapsedTime;          /* 0x8005C2DC-E4 */
+  chanceOutOf1000 = (chanceForElapsedTime * 1000) / 0x10000;              /* *125<<3 then signed >>16, 0x8005C2E8-F8 / C320 */
 
-  fastRandom = fastRandom * randSeed & 0xffff;
+  randtemp = fastRandom * randSeed;                                        /* 0x8005C31C/330 */
+  fastRandom = fastRandom * randSeed & 0xffff;                             /* 0x8005C328/340 */
+  random1000 = (int)((((randtemp >> 8) & 0xffff) * 1000) >> 16);           /* 0x8005C334-358 (randtemp u_int -> logical shifts) */
 
-  return 0;
+  if (random1000 < chanceOutOf1000) {                                      /* 0x8005C35C/360 */
+    myCar = (this->_base_AIHigh_Base).carObj_;                             /* *(int*)this @0x8005C368 */
+    relLatPosition = *(int *)((char *)myCar  + 1396) -
+                     *(int *)((char *)target + 1396);                      /* 0x8005C36C-378 */
+    absRelLatPosition = (relLatPosition < 0) ? -relLatPosition : relLatPosition;   /* 0x8005C37C-384 */
+    if ((*(int *)((char *)target + 308) + 0x10000) < absRelLatPosition &&  /* 0x8005C388-398 */
+        absRelLatPosition <= 0x3FFFF) {                                    /* 0x8005C39C-3A8 */
+      metersBetween = AIWorld_SplineDistance(myCar, target);              /* 0x8005C3B0 */
+      carLength = metersBetween * *(int *)((char *)myCar + 1364);          /* 0x8005C3B8-C8/DC */
+      if ((*(int *)((char *)target + 316) * 2 + 0x20000) < carLength &&    /* 0x8005C3CC-E4 */
+          0xBFFFF < carLength) {                                          /* 0x8005C3E8-F4 */
+        return 1;                                                          /* 0x8005C3F8 */
+      }
+    }
+  }
+  return 0;                                                                /* 0x8005C3FC / C400 */
 
 }
 
