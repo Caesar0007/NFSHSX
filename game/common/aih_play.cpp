@@ -1525,7 +1525,8 @@ void AIHigh_Player::HandleCops()
 
           (this->perpChaseInfo_).totalEngagementPercent_ =
 
-               (this->perpChaseInfo_).totalEngagementPercent_;
+               (this->perpChaseInfo_).totalEngagementPercent_ +
+               (this->perpChaseInfo_).engagementPercentIncreasePerTick_ * AI_elapsedTime;   /* H27: += dropped (m2c self-assign fold); oracle 0x80062C08-24 */
 
         }
 
