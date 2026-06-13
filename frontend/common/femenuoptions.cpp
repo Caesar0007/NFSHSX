@@ -2877,7 +2877,7 @@ int tMemoryCardMenuItem::Draw(bool selected)
       FETextRender_FullTextRGB(sMenuText,(short)x,(short)y,iVar6,'\0',0);
     }
     shape = gHelpShapes;
-    fWidth = fWidth * 0x96;
+    fWidth = fEnableFade * 0x96;   /* H14: was fWidth (uninitialized); oracle 0x80020A30 __MULT($s3=fEnableFade,0x96) */
     if (fWidth < 0) {
       fWidth = fWidth + 0x7f;
     }
