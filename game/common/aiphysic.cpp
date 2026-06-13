@@ -117,7 +117,16 @@ void AIPhysic_RevEngine(Car_tObj *carObj)
     iVar2 = iVar2 + 0xffff;
   }
   iVar1 = carObj->flywheelRpm;
-  carObj->flywheelRpm = iVar1;
+  /* H30: was a self-assign no-op; restore the rev increase (oracle 0x80069314-0x8006938C):
+     increase = ((carIndex%2)+1)*AIPhysic_elapsedTime*0x8C; if flywheelRpm is odd, increase = -(increase>>1)
+     rounded down to even.  flywheelRpm += increase (then the existing redline/0x1F5 clamps). */
+  increase = (((*(int *)((char *)carObj + 596) % 2) + 1) * AIPhysic_elapsedTime) * 0x8C;
+  if ((iVar1 & 1) != 0) {                                /* 0x80069354-7C */
+    increase = -(increase >> 1);
+    if ((increase & 1) != 0) increase = increase - 1;
+  }
+  iVar1 = iVar1 + increase;                              /* 0x80069388 flywheelRpm += increase */
+  carObj->flywheelRpm = iVar1;                           /* 0x8006938C */
   if (iVar2 >> 0x10 < iVar1) {
     carObj->flywheelRpm = (iVar2 >> 0x10) - (iVar2 >> 0x1f) >> 1 | 1;
   }
