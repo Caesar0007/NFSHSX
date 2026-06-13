@@ -1107,17 +1107,17 @@ int AISpeeds_GetUpgradeAccMult(int carIndex)
   int accMult;
   int a;
   Car_tObj *pCVar1;
-  
+
   pCVar1 = Cars_gList[carIndex];
   a = 0x10000;
   if (pCVar1->carInfo->EngineMods == 1) {
-    a = fixedmult(0x10000,0);
+    a = fixedmult(0x10000,engineUpgrade.accMult);   /* @0x8006F150 $a1=*(&engineUpgrade)[+0]=accMult (H36) */
   }
   if (pCVar1->carInfo->WeightTransfer == 1) {
-    a = fixedmult(a,0);
+    a = fixedmult(a,suspensionUpgrade.accMult);   /* @0x8006F178 $a1=*(&suspensionUpgrade)[+0] */
   }
   if (pCVar1->carInfo->GroundEffects == 1) {
-    a = fixedmult(a,0);
+    a = fixedmult(a,aeroUpgrade.accMult);   /* @0x8006F1A0 $a1=*(&aeroUpgrade)[+0] */
   }
   return a;
 }
