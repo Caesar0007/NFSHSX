@@ -48,7 +48,10 @@ have_quad:
     if ((unsigned int)(angle - 0x4000U) < 0x8000) {
         newdir = 4;
         if (*out_l < *out_r) newdir = 3;
-        if ((unsigned int)quad < 3 && (which = 2, newdir == 3) && quad == 2) which = 1;
+        if ((unsigned int)quad < 3 && newdir == 3) {   /* H05: which=2 only AFTER newdir==3 (oracle 0x8010AFC8 follows the newdir!=3 branch; asymmetric vs 2nd branch) */
+            which = 2;
+            if (quad == 2) which = 1;
+        }
     } else {
         newdir = 1;
         if (*out_l < *out_r) newdir = 2;
