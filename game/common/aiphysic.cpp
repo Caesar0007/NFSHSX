@@ -1996,7 +1996,10 @@ int AIPhysic_HitWallCheck(Car_tObj *carObj)
     return 0;
   }
   if (carObj->driveDirection == -1) {
-    carObj->timeOffRoad = carObj->timeOffRoad;
+    /* @0x8006C8D4-E8: timeOffRoad += AIPhysic_elapsedTime. m2c folded the addition into a self-assign,
+     * so timeOffRoad never accumulated -> the if(timeOffRoad < 9) check always took the on-road path
+     * and the AI never reacted to being stuck off-road (M21). */
+    carObj->timeOffRoad = carObj->timeOffRoad + AIPhysic_elapsedTime;
   }
   else {
     carObj->timeOffRoad = 0;
