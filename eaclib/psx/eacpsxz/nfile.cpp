@@ -427,8 +427,12 @@ extern "C" void FILE_cancelop(unsigned int id)
         }
     } else if (action == 2) {                    /* removed from queue -> notify */
         if (op->callback) {
-            void (*cb)(int, int) = (void (*)(int, int))op->callback;
-            cb((int)op->id, op->param);
+            /* @0x800EC198-1A4: callback(op->id, -1, op->param) -- $a0=*op(id), $a2=*(20+op)(param),
+             * and $a1=-1 (status) in the JAL delay slot. The recon called the 2-arg form cb(id,param),
+             * putting param in the status slot and dropping the real 3rd param arg (M02). 3-arg
+             * (id,status,param) convention per iFILE_CommandCompleteCallback (see line 462). */
+            void (*cb)(int, int, int) = (void (*)(int, int, int))op->callback;
+            cb((int)op->id, -1, op->param);
         }
     }
     FILE_leaveCS();
