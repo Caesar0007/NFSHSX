@@ -5,7 +5,7 @@
  *   __vtbl_ptr_type entries); deleting dtors. Each ctor/dtor installs AIState_<C>_vtable.
  *   Faithful C++ (option A). NOT original source; SYM-faithful, recompilable. vs disasm-v2.
  */
-#include <new>
+#include "../../lib/nfs4_new.h"
 #include "../../nfs4_types.h"
 #include "aih_btcperp_externs.h"
 
@@ -1945,7 +1945,7 @@ void AIHigh_BTC_AIPerp::NewStage(AIHigh_BTC_HumanCop *chaserCop)
 
     pAVar5 = operator new(0x14);
 
-    pAVar5 = (new(pAVar5) AIState_Cruise((this->_base_AIHigh_BTC_Perp)._base_AIHigh_BasicPerp._base_AIHigh_Base.carObj_,1,0x8000
+    pAVar5 = (new(pAVar5) AIState_Cruise((this->_base_AIHigh_BTC_Perp)._base_AIHigh_BasicPerp._base_AIHigh_Base.carObj_,(cruiseMode_t)1,0x8000
 
                        ));
 
