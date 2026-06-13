@@ -5,6 +5,8 @@
 #include "../../nfs4_types.h"
 #include "aispeeds_externs.h"
 
+extern char *DAT_80116470;   /* @0x80116470 -- AI bigfile path prefix for the "%s...bin" sprintf (H34; unmaterialized, #75) */
+
 
 /* ---- aispeeds.obj-owned globals (.bss zero) ---- */
 AISpeeds_Upgrade_t engineUpgrade;   /* @0x8010dce0  (bss(zero)) */
@@ -91,7 +93,7 @@ void AISpeeds_ReadTuningInfo(void)
   char acStack_98 [112];
   int local_28 [4];
   
-  sprintf(acStack_98,"%stuning.bin");
+  sprintf(acStack_98,"%stuning.bin",DAT_80116470);   /* H34: 3rd arg (path prefix) was omitted; oracle 0x8006D5FC $a2=*(int*)&DAT_80116470 */
   handle = Udff_Opena(acStack_98,(char *)0x0,1);
   Udff_GetInt(handle);
   pAVar6 = CaravanInfo;
