@@ -9,6 +9,8 @@
 #include "../../nfs4_types.h"
 #include "aih_play_externs.h"
 
+extern int AI_elapsedTime;   /* H26-H29: ai.cpp @0x8013C554 (not in this TU's externs) */
+
 /* ---- aistate.obj-owned globals (.bss zero) ---- */
 int          AIHigh_Player_kNumArrestsByLap[3] = { 3, 5, 8 };   /* @0x8010ce98 */
 char         gBlockadeTypes[5] = { 5, 6, 4, 2, 0 };   /* @0x8013c568 */
@@ -1494,7 +1496,14 @@ void AIHigh_Player::HandleCops()
 
       if (-2 < iVar1 >> 0x10) {
 
-        (this->perpChaseInfo_).engagementTime_ = iVar2;
+        {
+          Car_tObj *pCar = (this->_base_AIHigh_BasicPerp)._base_AIHigh_Base.carObj_;
+          /* H26: decrement dropped (m2c self-assign fold). Oracle 0x80062BA4: engagementTime_ = iVar2 -
+             (AI_elapsedTime << shift), shift = 0xF if carObj[1380]*carObj[1364] < 0 else 0x10 (the
+             0x80062B9C <<0xF delay slot is used on the product<0 path; 0x80062BA0 <<0x10 otherwise). */
+          (this->perpChaseInfo_).engagementTime_ = iVar2 - (AI_elapsedTime <<
+              ((*(int *)((char *)pCar + 1380) * *(int *)((char *)pCar + 1364)) < 0 ? 0xF : 0x10));
+        }
 
         iVar1 = (this->perpChaseInfo_).engagementTime_;
 
