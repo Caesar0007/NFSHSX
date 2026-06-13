@@ -372,8 +372,8 @@ void FeAudio_InitCommentary(int language,int arg1)
   ginfo.lastSpeechData = (char *)0x0;
   ginfo.vivHandle = 0;
   *(u_int *)ginfo.name = (*(u_int*)((char*)&bigBuf + 364));
-  sprintf("",(char *)(bigBuf + 0x170),Paths_Paths[0x26],allLanguages[language]);
-  speechfileHeader = FeAudio_InitViv("");
+  sprintf(currentSpeechViv,(char *)(bigBuf + 0x170),Paths_Paths[0x26],allLanguages[language]);  /* H11: dest was "" (oracle 0x800160EC $a0=$s0=&currentSpeechViv @0x80051510) */
+  speechfileHeader = FeAudio_InitViv(currentSpeechViv);  /* H11: arg was "" (oracle 0x8001615C $a0=$s0) */
   return;
 }
 
