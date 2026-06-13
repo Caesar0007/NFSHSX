@@ -153,7 +153,10 @@ void DrawC_NightHeadlight(Car_tObj *carObj)
   coorddef tmp;
   coorddef tmp2;
   int *light;
-  
+
+  /* @0x800BE9A8-AC: light = &carObj->render.light, set unconditionally (before the lights&6 test);
+   * used by the Night_AdditiveNightCalc call and by the lightning-tint block below. */
+  light = (int *)&(carObj->render).light;
   if (((Cars_gList[gCView.player]->control).lights & 6U) != 0) {
     ppCVar1 = Cars_gHumanRaceCarList + gCView.player;
     tmp.x = (carObj->N).position.x - ((*ppCVar1)->N).position.x;
@@ -170,6 +173,31 @@ gte_swc2(0x19,&nightV);
     gte_swc2(0x1a,((char *)&nightV + 0x4));
     gte_swc2(0x1b,((char *)&nightV + 0x8));
     Night_AdditiveNightCalc(v,(CVECTOR *)&(carObj->render).light);
+  }
+  /* @0x800BEA80-EB10: weather/lightning RGB tint -- ALWAYS runs (fall-through from the lights&6 test).
+   * Adds Night_gWeatherColor[Night_gLightningType] (read as 3 bytes R/G/B) to the low 3 bytes of the
+   * `light` local, clamps each channel to 0xFF, and writes back. The binary reads/writes the bytes of
+   * the `light` POINTER slot itself (104+$sp = &light), NOT *light -- gcc-2.7.2 preserved these stores
+   * because &light escapes. Reproduced byte-faithfully; this whole block was missing (H46). */
+  if (Night_gDrawLightning != '\0') {
+    newR = (short)((int)*(u_char *)&light +
+                   (int)*(u_char *)&Night_gWeatherColor[Night_gLightningType]);
+    newG = (short)((int)((u_char *)&light)[1] +
+                   (int)((u_char *)&Night_gWeatherColor[Night_gLightningType])[1]);
+    newB = (short)((int)((u_char *)&light)[2] +
+                   (int)((u_char *)&Night_gWeatherColor[Night_gLightningType])[2]);
+    if (0xff < newR) {
+      newR = 0xff;
+    }
+    if (0xff < newG) {
+      newG = 0xff;
+    }
+    if (0xff < newB) {
+      newB = 0xff;
+    }
+    *(char *)&light = (char)newR;
+    ((char *)&light)[1] = (char)newG;
+    ((char *)&light)[2] = (char)newB;
   }
   return;
 }

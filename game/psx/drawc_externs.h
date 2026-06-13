@@ -3,6 +3,11 @@
 #ifndef DRAWC_EXTERNS_H
 #define DRAWC_EXTERNS_H
 
+/* ---- Night.obj globals (defined in night.cpp) -- weather/lightning tint, DrawC_NightHeadlight (H46) ---- */
+extern char Night_gDrawLightning;     /* @0x8013d9e0 (bss=0) */
+extern int  Night_gLightningType;     /* @0x8013da44 (bss=0) */
+extern long Night_gWeatherColor[2];   /* @0x8013da88 (bss=0) -- per-type RGB tint (bytes 0/1/2 = R/G/B) */
+
 /* ---- GTE intrinsics (no-op symbolic; faithful cop2 source) ---- */
 extern void gte_rtps(void);
 extern void gte_rtpt(void);
