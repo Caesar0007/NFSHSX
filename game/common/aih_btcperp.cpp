@@ -9,6 +9,8 @@
 #include "../../nfs4_types.h"
 #include "aih_btcperp_externs.h"
 
+extern int AI_elapsedTime;   /* H21: ai.cpp @0x8013C554 (not in this TU's externs) */
+
 /* ---- aistate.obj-owned globals (.bss zero) ---- */
 u_char       strategyChart[5][3] = { 4u, 4u, 4u, 0, 0, 0, 1u, 0, 1u, 1u, 1u, 1u, 2u, 2u, 2u };   /* @0x8010ce7c */
 int          AIHigh_BTC_uTurnProb1000Skills[3] = { 3, 4, 5 };   /* @0x8010ce8c */
@@ -290,7 +292,7 @@ void AIHigh_BTC_Perp::HandlePullOver()
 
     this->NotifyCopsOfArrest();
 
-    iVar2 = (this->_base_AIHigh_BasicPerp).beatingTicksLeft_;
+    iVar2 = (this->_base_AIHigh_BasicPerp).beatingTicksLeft_ - AI_elapsedTime;   /* H21: decrement dropped (m2c self-assign fold); oracle 0x8005FA94 v0=beatingTicksLeft_-AI_elapsedTime, 0x8005FA9C store */
 
     (this->_base_AIHigh_BasicPerp).beatingTicksLeft_ = iVar2;
 
