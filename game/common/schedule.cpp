@@ -126,7 +126,7 @@ void Sched_AddFunction(Sched_tSchedule *schedule,fn_void *function,void *var1,in
       iVar1 = i * 0x10;
     } while (i < schedule->numFunctions);
   }
-  ppuVar2 = &schedule->func[iVar3 + -1].var1;
+  ppuVar2 = (u_char **)&schedule->func[iVar3 + -1].var1;
   ppuVar2[2] = (u_char *)priority;
   ppuVar2[3] = (u_char *)function;
   ppuVar2[4] = (u_char *)var1;
