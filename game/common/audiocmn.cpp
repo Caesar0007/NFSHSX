@@ -414,22 +414,26 @@ void AudioCmn_Init(void)
   int *piVar6;
   int *piVar7;
   
-  AudioCmn_InitChannelArray();
-  iVar2 = GameSetup_gData.track;
-  if ((GameSetup_gData.track & 0x10U) != 0) {
-    iVar2 = (GameSetup_gData.track & 0xfU) + 5;
+  /* @0x80076A7C: if(AudioCmn_kAudioOn==0) goto lbl_80076AF0 (the per-player loop, which always runs).
+   * The channel-array init + false-lap-trigger select + backwards-direction are audio-on-guarded (H42). */
+  if (AudioCmn_kAudioOn != 0) {
+    AudioCmn_InitChannelArray();
+    iVar2 = GameSetup_gData.track;
+    if ((GameSetup_gData.track & 0x10U) != 0) {
+      iVar2 = (GameSetup_gData.track & 0xfU) + 5;
+    }
+    if (GameSetup_gData.reverseTrack == 0) {
+      paiVar1 = falseLapTrigNumsForward;
+    }
+    else {
+      paiVar1 = falseLapTrigNumsBackward;
+    }
+    falseLapTrigCur = paiVar1[iVar2][0];
+    flaseLapTrigTrack = paiVar1[iVar2][1];
+    falseLapCounter = 0;
+    intensityFalseLapCounter = 0;
+    audioBackwardsDirection = GameSetup_gData.reverseTrack;
   }
-  if (GameSetup_gData.reverseTrack == 0) {
-    paiVar1 = falseLapTrigNumsForward;
-  }
-  else {
-    paiVar1 = falseLapTrigNumsBackward;
-  }
-  falseLapTrigCur = paiVar1[iVar2][0];
-  flaseLapTrigTrack = paiVar1[iVar2][1];
-  falseLapCounter = 0;
-  intensityFalseLapCounter = 0;
-  audioBackwardsDirection = GameSetup_gData.reverseTrack;
   iVar2 = 0;
   piVar7 = AudioCmn_gPlayerArrested;
   piVar6 = gtotallaptimes;
