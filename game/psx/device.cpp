@@ -291,12 +291,16 @@ int Device_Analog(u_long param)
       }
       iVar3 = uVar4 - uVar5;
 DevAnalog_scaledByteCalc:
-      iVar6 = (iVar1 * 0xff) / iVar3;
+      /* @0x800BDA34-38 / 0x800BDA64-68: numerator = raw analog byte uVar2 * 0xff ($v1<<8 - $v1),
+       * NOT the min-subtracted iVar1. iVar1 (=uVar2-uVar5 / uVar5-uVar2) is the MIPS dead-store at
+       * 0x800BDA28 / 0x800BDA58 that is overwritten by 0xFF/0 on the clamp paths and never reaches
+       * the (signed) divide. Reconstruction fed iVar1*0xff into the scale instead of uVar2*0xff (H45). */
+      iVar6 = ((int)uVar2 * 0xff) / iVar3;
       if (iVar3 == 0) {
         trap(0x1c00);
       }
       if (iVar3 == -1) {
-        if (iVar1 * 0xff == -0x80000000) {
+        if ((int)uVar2 * 0xff == -0x80000000) {
           trap(0x1800);
           return iVar6;
         }
