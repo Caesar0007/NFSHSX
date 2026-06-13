@@ -14,17 +14,17 @@ struct _PadDev {
     char           *flag_ptr;     /* +0x30 : ptr to a live status-flag byte */
     unsigned int    status;       /* +0x34 : status word (hi 16 bits = error/connect) */
     unsigned char   connected;    /* +0x38 */
-    unsigned char   mode3;        /* +0x39 : PadInfoMode term 3 */
-    unsigned char   mode1;        /* +0x3a : PadInfoMode term 1 */
+    char            _pad39[0x02]; /* +0x39 */
     char            _pad3b[0x0e]; /* +0x3b */
     unsigned char   state;        /* +0x49 : controller state code */
     char            _pad4a[0x02]; /* +0x4a */
     int             term100;      /* +0x4c : PadInfoMode term 100 */
     char            _pad50[0x93]; /* +0x50 */
     unsigned char   nmode;        /* +0xe3 : mode count */
-    char            _pade4[0x02]; /* +0xe4 */
+    unsigned char   mode3;        /* +0xe4 : PadInfoMode term 3 */
+    char            _pade5[0x01]; /* +0xe5 */
     unsigned short  modeword;     /* +0xe6 : PadInfoMode term 2 */
-    char            _pade8[0x01]; /* +0xe8 */
+    unsigned char   mode1;        /* +0xe8 : PadInfoMode term 1 */
     unsigned char   nact;         /* +0xe9 : actuator count */
 };                                /* the touched fields land at their @-offsets above */
 
