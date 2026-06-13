@@ -605,8 +605,6 @@ void DrawShapeExtended(int index,int flags,int x,int y,int fade,int abr,tDrawSha
 
 {
   tTexture_ShapeInfo *shapeTbl;
-  tTexture_ShapeInfo *shp;
-  int abrv;
   tTexture_ShapeInfo *tShp;
   int color [4];
 
@@ -620,14 +618,18 @@ void DrawShapeExtended(int index,int flags,int x,int y,int fade,int abr,tDrawSha
   if ((flags & 0x200) != 0) {
     shapeTbl = extra->custom_shapes;
   }
-  AdjustShapeDrawing
-            (shp,&x,&y,&flags,(0x80 - fade) * 0x10000 >> 0x10,color,extra);
+  /* @0x8004E6C4-C8: tShp = shapeTbl + index (index*0x20; sizeof tTexture_ShapeInfo=32), computed once
+   * and passed to all three calls. (M16) the gouraud branch @0x8004E740 passed uninitialized abrv (as
+   * flags) and (int)extra (as x) -> use the real flags/x. The shape pointer also used an uninitialized
+   * Ghidra local `shp` for shapeTbl+(int)shp -> use tShp. (The shp/index uninit was a side-finding NOT
+   * in the audit's M16, confirmed vs oracle: $s0=tShp=shapeTbl+index, passed to all 3 calls.) */
+  tShp = shapeTbl + index;
+  AdjustShapeDrawing(tShp,&x,&y,&flags,(0x80 - fade) * 0x10000 >> 0x10,color,extra);
   if ((flags & 0xc0U) == 0) {
-    DrawFlatShape(shapeTbl + (int)shp,flags,x,y,color,abr);
+    DrawFlatShape(tShp,flags,x,y,color,abr);
   }
   else {
-    DrawGouraudShape(shapeTbl + (int)shp,abrv,(int)extra,y,color,abr)
-    ;
+    DrawGouraudShape(tShp,flags,x,y,color,abr);
   }
   return;
 }
