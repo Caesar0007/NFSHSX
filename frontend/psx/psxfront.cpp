@@ -587,14 +587,15 @@ void DrawFlatShape(tTexture_ShapeInfo *shp,int flags,int x,int y,int *color,int 
 
 {
   int c0;
-  int flagsv;
-  int abrv;
-  
+
   c0 = *color;
   color[3] = c0;
   color[2] = c0;
   color[1] = c0;
-  DrawGouraudShape(shp,abrv,flagsv,y,color,abr);
+  /* @0x8004E660: tail-call DrawGouraudShape with the SAME incoming args -- shp/flags/x/y/color/abr are
+   * never modified in DrawFlatShape. The recon passed uninitialized Ghidra locals abrv/flagsv in the
+   * flags/x slots, dropping the real flags and x parameters (M14). */
+  DrawGouraudShape(shp,flags,x,y,color,abr);
   return;
 }
 
