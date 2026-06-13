@@ -5,7 +5,7 @@
  *   AIHigh_BTC_<C>_vtable. Faithful C++ (option A). NOT original; SYM-faithful, recompilable.
  *   vs disasm-v2.
  */
-#include <new>
+#include "../../lib/nfs4_new.h"
 #include "../../nfs4_types.h"
 #include "aih_btccop_externs.h"
 
@@ -61,7 +61,7 @@ void AIHigh_BTC_Cop::AssignToPlayer(AIHigh_BTC_Perp *target)
 
     (&this->perpTarget_->_base_AIHigh_BasicPerp)->RemoveChaser((this->_base_AIHigh_BasicCop).copIndex_,
 
-               ((this->_base_AIHigh_BasicCop)._base_AIHigh_Base.carObj_)->carIndex,(this->_base_AIHigh_BasicCop).type_);
+               ((this->_base_AIHigh_BasicCop)._base_AIHigh_Base.carObj_)->carIndex,(copType)(this->_base_AIHigh_BasicCop).type_);
 
   }
 
@@ -71,7 +71,7 @@ void AIHigh_BTC_Cop::AssignToPlayer(AIHigh_BTC_Perp *target)
 
     (&target->_base_AIHigh_BasicPerp)->AddChaser((this->_base_AIHigh_BasicCop).copIndex_,
 
-               ((this->_base_AIHigh_BasicCop)._base_AIHigh_Base.carObj_)->carIndex,(this->_base_AIHigh_BasicCop).type_);
+               ((this->_base_AIHigh_BasicCop)._base_AIHigh_Base.carObj_)->carIndex,(copType)(this->_base_AIHigh_BasicCop).type_);
 
   }
 
@@ -2607,7 +2607,7 @@ int AIHigh_BTC_Wingman::CheckForActivation()
 
   if (this->newHumanBoss_ != (AIHigh_BTC_HumanCop *)0x0) {
 
-    (this->newHumanBoss_)->UpdateWingmanRole(this->currentRole_);
+    (this->newHumanBoss_)->UpdateWingmanRole((Wingman_Role)this->currentRole_);
 
   }
 
