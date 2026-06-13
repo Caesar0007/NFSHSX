@@ -17,6 +17,7 @@ typedef unsigned char  u_char;
 typedef unsigned short u_short;
 
 #include <stdarg.h>
+#include <stddef.h>   /* NULL */
 
 extern "C" void  TermPrim(void *p);          /* libgpu P09 @0x80107020 */
 extern "C" void  AddPrim(void *ot, void *p); /* libgpu P06 @0x80107040 */
