@@ -448,8 +448,8 @@ extern "C" int iFILE_delbigclosecallback(unsigned int id, int a1, void *cmd)
 }
 
 /* iFILE_CommandCompleteCallback @0x800ED020 : the CD/device completion driver (handed to CD_Init).
- *   Resolves the final status of the in-flight op (mgr.curop): a pending cancel keeps its code, else
- *   result==0 -> -1 (fail), result!=0 -> 1 (ok).  Clears mgr.curop, fires the op's completion callback
+ *   Resolves the final status of the in-flight op (mgr.curop): a pending cancel -> -1 (cancelled), else
+ *   result==0 -> -2 (device fail), result!=0 -> 1 (ok).  Clears mgr.curop, fires the op's completion callback
  *   (id, status, param) bracketed by mgr.cbpending, then dispatches the next command if nothing nested. */
 extern "C" int iFILE_CommandCompleteCallback(int result)
 {
@@ -457,8 +457,10 @@ extern "C" int iFILE_CommandCompleteCallback(int result)
     int status;
     if (cmd == 0)
         return 0;
-    if (cmd->cancelreq != 0) status = cmd->cancelreq;   /* cancel in flight -> keep its code */
-    else if (result == 0)    status = -1;               /* device reported failure */
+    /* @0x800ED040-50: delay slots set the stored value -- cancelreq!=0 -> -1, result==0 -> -2, else 1.
+     * The recon stored cmd->cancelreq (the flag value, ~1) instead of -1, and -1 instead of -2 (M03). */
+    if (cmd->cancelreq != 0) status = -1;               /* cancel in flight -> cancelled */
+    else if (result == 0)    status = -2;               /* device reported failure */
     else                     status = 1;                /* success */
     cmd->status = status;
     gFileMgr.curop = 0;
