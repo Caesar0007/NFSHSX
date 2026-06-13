@@ -9,6 +9,8 @@
 #include "../../nfs4_types.h"
 #include "aih_btccop_externs.h"
 
+extern int AI_elapsedTime;   /* H19: ai.cpp @0x8013C554 (not in this TU's externs) */
+
 /* ---- aih_btccop.obj-owned .data statics (8-byte run @0x8013c560, byte-exact vs NFS4.EXE = {0,1}) ---- */
 /* cfront fn-local static AIHigh_BTC_HumanCop::lastInputRequestTick_ (dotted SYM
    _19AIHigh_BTC_HumanCop.lastInputRequestTick_). Image value 0; reset to 0 each ::reset. */
@@ -1118,7 +1120,7 @@ void AIHigh_BTC_HumanCop::UpdateAndCheckTimeLeft()
 
   if ((_Var3 != 3) && (_Var3 != 1)) {
 
-    this->timeLeft_ = this->timeLeft_;
+    this->timeLeft_ = this->timeLeft_ - AI_elapsedTime;   /* H19: subtraction dropped (m2c self-assign fold); oracle 0x8005D9E8-FC timeLeft_ -= AI_elapsedTime */
 
   }
 
