@@ -4,7 +4,8 @@
  *   (full circle = 0x10000, 0x4000 = 90 deg).  Octant-reduces to ratio = min/max, looks up
  *   atan(ratio) in a 257-entry table (@0x80137868, obj-local -> inlined) with 16-bit interpolation
  *   over a 64-bit ratio (the EA make64/divu64 path), then maps the octant back to the full circle.
- *   (The 8-way octant remap is reconstructed via the atan2 identity and cross-checked vs atan2.)
+ *   (The 8-way octant remap is taken directly from the oracle jump table @0x80056CB8 / blocks
+ *    0x800ED610-0x800ED658, delay-slots resolved -- see the switch below.)
  */
 
 static const int kAtanTbl[257] = {
@@ -68,14 +69,14 @@ extern "C" int fixedatan(int x, int y)   /* @0x800ED528 */
         a2 = kAtanTbl[idx] + (int)(((long long)d * (long long)frac) >> 16);
     }
 
-    switch (oct) {                         /* octant -> full circle (0x4000 == 90 deg) */
-    case 0:  return 0x4000 - a2;           /* q1, y dominant */
-    case 1:  return a2;                    /* q1, x dominant */
-    case 2:  return a2 - 0x4000;           /* q4, y dominant */
-    case 3:  return -a2;                   /* q4, x dominant */
-    case 4:  return 0x4000 + a2;           /* q2, y dominant */
-    case 5:  return 0x8000 - a2;           /* q2, x dominant */
-    case 6:  return 0xC000 - a2;           /* q3, y dominant */
-    default: return 0x8000 + a2;           /* 7: q3, x dominant */
+    switch (oct) {                         /* octant -> full circle; oracle jump table @0x80056CB8 (H02) */
+    case 0:  return a2;                    /* 0x800ED658 v0=a2                       */
+    case 1:  return 0x4000 - a2;           /* 0x800ED610 v0=-a2; a2=v0+0x4000; v0=a2 */
+    case 2:  return 0x8000 - a2;           /* 0x800ED61C v0=0x8000; v0-=a2           */
+    case 3:  return a2 + 0x4000;           /* 0x800ED628 v0=a2+0x4000                */
+    case 4:  return -a2;                   /* 0x800ED630 v0=-a2                      */
+    case 5:  return a2 - 0x4000;           /* 0x800ED638 v0=a2-0x4000                */
+    case 6:  return a2 - 0x8000;           /* 0x800ED640 v0=-0x8000; v0=a2+v0        */
+    default: return -a2 - 0x4000;          /* 7: 0x800ED64C v0=-a2; v0+=-0x4000      */
     }
 }
