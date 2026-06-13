@@ -4,7 +4,7 @@
  *   Blockade_AddObject/PlacePointOnRoad). Composition-modeled inheritance (_base_AIHigh_Base);
  *   manual _vf vtable. Faithful C++ (option A). NOT original; SYM-faithful, recompilable. vs disasm-v2.
  */
-#include <new>
+#include "../../lib/nfs4_new.h"
 #include "../../nfs4_types.h"
 #include "aih_basiccop_externs.h"
 
