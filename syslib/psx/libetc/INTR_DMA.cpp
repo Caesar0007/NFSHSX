@@ -49,11 +49,9 @@ extern "C" void _dma_isr(void)   /* @0x801066F8 */
     }
     if (((DICR & 0xff000000) == 0x80000000) || ((DICR & 0x8000) != 0)) {
         printf("DMA bus error: code=%08x\n", DICR);
-        int i = 0;
-        do {
-            i = i + 1;
+        int i;
+        for (i = 0; i < 7; i++)              /* MADR[0..6]; oracle $s0=0..6, base+$s0*0x10 @0x8010681c-684c */
             printf("MADR[%d]=%08x\n", i, *(volatile unsigned int *)(0x1F801080 + i * 0x10));
-        } while (i < 7);
     }
 }
 
