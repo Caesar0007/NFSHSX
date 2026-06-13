@@ -36,7 +36,7 @@ void AICop_StartUp(void)
   
   if (GameSetup_gData.cops != 0) {
     triggerManagerCops = (AITrigger_TriggerManager *)operator new(0x34c);
-    sprintf(acStack_70,"%sTr%02d.cop");
+    sprintf(acStack_70,"%sTr%02d.cop",Paths_Paths[22],GameSetup_gData.track);
     AICop_rawTriggers = (u_char *)loadfileadrz(acStack_70,(void *)0x0);
     rawTriggers = AICop_rawTriggers;
     if (AICop_rawTriggers == (char *)0x0) {

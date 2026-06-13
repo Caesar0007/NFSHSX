@@ -8,6 +8,7 @@
 extern AITrigger_TriggerManager *triggerManagerCops;
 extern Car_tObj           *Cars_gCopCarList[];
 extern GameSetup_tData   GameSetup_gData;
+extern char               *Paths_Paths[];          /* 0x80116468 (paths.obj) */
 extern int                 Cars_gNumCopCars;
 int AIWorld_ApxSplineDistance(Car_tObj *a, Car_tObj *b);
 /* AITrigger_TriggerManager::Init now called as C++ member (aitriger.obj) -- flat extern removed */
