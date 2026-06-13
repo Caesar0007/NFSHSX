@@ -394,12 +394,16 @@ extern "C" void CD_systaskfunc(void)
 
     ready = CdDiskReady(1);
     if (ready == 5) {                     /* CdlDiskError -> run down the watchdog */
-        int wasZero = (CD_timeout == 0);
-        CD_timeout = CD_timeout - 1;
-        if (wasZero)
+        /* @0x800F9B48-B74: the watchdog only writes back at the boundaries -- CD_timeout==0 re-arms to
+         * timerhz*5; CD_timeout==1 stores 0 + done=1; for CD_timeout>=2 the branch at 0x800F9B6C exits
+         * WITHOUT storing, so the timeout is left UNCHANGED here (decremented elsewhere). The recon
+         * decremented unconditionally, persisting timeout-1 for >=2 (M01). */
+        if (CD_timeout == 0)
             CD_timeout = timerhz * 5;     /* re-arm */
-        else if (CD_timeout == 0)
+        else if (CD_timeout == 1) {
+            CD_timeout = 0;
             done = 1;
+        }
     } else if (ready == 2) {              /* CdlComplete -> a disc settled */
         int t = CdGetDiskType();
         done = ((unsigned)(t - 1) < 2);   /* disc type 1 or 2 == a usable disc */
