@@ -804,9 +804,11 @@ extern "C" void  ResetCallback(void);                /* libetc INTR.obj @0x800F2
 static char  _genv_mode;             /* @0x8012369C : current video mode (GEnv+0) */
 static char  _genv_drawenv[0x5c];    /* @0x801236AC : last-set DRAWENV cache (GEnv+0x10) */
 
-/* per-video-mode VRAM clip extents (original: interleaved u16 @0x8012371C/0x80123728, stride 4). */
-static const u_short _vmode_w[3] = { 1024, 1024, 1024 };   /* @0x8012371C */
-static const u_short _vmode_h[3] = {  512,  512, 1024 };   /* @0x80123728 */
+/* per-video-mode VRAM clip extents: stride-4 in .data (low u16 = value, high u16 = 0
+   padding); @0x8012371C (_vmode_w) / 0x80123728 (_vmode_h). EXE bytes 00 04 00 00.. confirm
+   4-byte stride; oracle ResetGraph reads u_short @ base + mode*4 (sll 2, lhu). */
+static const struct { u_short v, pad; } _vmode_w[3] = { {1024,0}, {1024,0}, {1024,0} };  /* @0x8012371C */
+static const struct { u_short v, pad; } _vmode_h[3] = { { 512,0}, { 512,0}, {1024,0} };  /* @0x80123728 */
 
 /* display H/V overscan ranges, indexed (videomode*5 + resIdx); @0x80123770 (base/end u16 pairs). */
 static const struct { u_short base, end; } _disp_overscan[10] = {
@@ -861,8 +863,8 @@ extern "C" int ResetGraph(int mode)
             int u = _reset(mode);
             _genv_mode = (char)u;
             _gpu_active = 1;
-            _screenW = (short)_vmode_w[u & 0xff];
-            _screenH = (short)_vmode_h[u & 0xff];
+            _screenW = (short)_vmode_w[u & 0xff].v;
+            _screenH = (short)_vmode_h[u & 0xff].v;
         }
         _memset(_genv_drawenv, -1, 0x5c);
         _memset(_genv_dispenv, -1, 0x14);
