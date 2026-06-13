@@ -4,6 +4,10 @@
  */
 #include "screentournselect.h"
 
+/* M13: DrawVideoWall (below) now indexes the real trophyTVOrder[4]={1,2,0,3} @0x80052058 (already
+ * materialized in screentournselect_externs.h, EXE bytes 01 02 00 03) instead of an inlined truncated
+ * literal "\x01\x02" (={1,2,0}+NUL) that read OUT OF BOUNDS at i=3 where the real table holds 3. */
+
 
 /* ---- tScreenTournSelect::ctor  [SCREENTOURNSELECT.CPP:64] ---- */
 tScreenTournSelect::tScreenTournSelect()
@@ -186,8 +190,8 @@ void tScreenTournSelect::DrawVideoWall()
       onState = true;
       do {
         if (!onState) break;
-        if (this->trophyTV[(byte)"\x01\x02"[i]].state == tv_StateOn) {
-          TurnOffTV(this->trophyTV + (byte)"\x01\x02"[i]);
+        if (this->trophyTV[trophyTVOrder[i]].state == tv_StateOn) {
+          TurnOffTV(this->trophyTV + trophyTVOrder[i]);
         }
         i = i + 1;
         onState = i < 4;
@@ -203,8 +207,8 @@ void tScreenTournSelect::DrawVideoWall()
       onState = true;
       do {
         if (!onState) break;
-        if (this->trophyTV[(byte)"\x01\x02"[i]].state == tv_StateOff) {
-          TurnOnTV(this->trophyTV + (byte)"\x01\x02"[i]);
+        if (this->trophyTV[trophyTVOrder[i]].state == tv_StateOff) {
+          TurnOnTV(this->trophyTV + trophyTVOrder[i]);
         }
         i = i + 1;
         onState = i < 4;
