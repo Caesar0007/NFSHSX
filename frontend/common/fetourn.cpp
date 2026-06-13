@@ -771,7 +771,7 @@ long tTournamentManager::GetTrackFinishPrize(short position)
   int aiStack_c0 [42];
   
   iVar10 = 0;
-  piVar1 = gTrackFinishPrizes;
+  piVar1 = (int *)gTrackFinishPrizes;
   piVar2 = aiStack_c0;
   do {
     piVar5 = piVar2;
@@ -844,7 +844,7 @@ void tTournamentManager::GetAwardInformation(tAwardInformation *info)
   byte tc2;
   byte tu3;
   
-  src_walk = &(this->fAwards).fMoney;
+  src_walk = (int *)&(this->fAwards).fMoney;
   do {
     tourn_money = src_walk[1];
     flags_pack = src_walk[2];
