@@ -367,8 +367,11 @@ void tScreenCongrats::CalculatePrizes()
   this->smallSpinningThing = kSpinningNone;
   this->fCarPlayer = 0;
   this->TotalCash = 0;
-  this->fCarCX = 4.0;
+  /* @0x80048A04: fCarCX=4.0 is written ONLY inside the congratsMessage==Eliminated branch (dead here --
+   * congratsMessage was just set to Congrats=0 @0x800489E0). The recon hoisted it to an UNCONDITIONAL
+   * store, so fCarCX always became 4.0 instead of retaining its prior value (M12). */
   if (this->congratsMessage == kScreenCongrats_Eliminated) {
+    this->fCarCX = 4.0;
     this->fCarX = 0x120;
     this->fCarY = 0x49;
     this->fCarCY = -8.2;
