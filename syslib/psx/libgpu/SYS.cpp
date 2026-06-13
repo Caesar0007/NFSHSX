@@ -627,6 +627,7 @@ static u_long _move_prim[5] = {      /* @0x80123734 : MoveImage's VRAM->VRAM cop
 };
 
 static int _reset(int mode);                     /* @0x800EF86C (fwd; defined in SG4b-ii) */
+static int _sync(int mode);                      /* @0x800EF9BC (fwd; defined below) */
 
 struct GpuTbl {                                  /* @0x80123654 */
     const char *id;                              /* +0  */
@@ -644,12 +645,13 @@ struct GpuTbl {                                  /* @0x80123654 */
     int  (*get_gpuinfo)(u_long);                 /* +48 _get_gpuinfo */
     int  (*reset)(int);                          /* +52 _reset */
     int  (*get_status)(void);                    /* +56 _get_status */
+    int  (*sync)(int);                           /* +60 _sync (DrawSync backend) */
 };
 static const GpuTbl _gpu_tbl = {                 /* the live driver table */
     "GPU",                                        /* @0x80056cd8 */
     _que_ref, _gpu_que_push, (QueFunc)_BlitClear, _send_gp1, _send_gp0,
     _gpu_dma_chain, (QueFunc)_drs, (QueFunc)_dws, _gpu_que_drain, _get_gp1, _clearOTagR_dma,
-    _get_gpuinfo, _reset, _get_status
+    _get_gpuinfo, _reset, _get_status, _sync
 };
 static const GpuTbl *GEnv_drv = &_gpu_tbl;        /* @0x80123694 -> @0x80123654 */
 
@@ -728,7 +730,7 @@ extern "C" void SetDispMask(int mask)
 /* @0x800ED87C : DrawSync */
 extern "C" int DrawSync(int mode)
 {
-    return _sync(mode);
+    return GEnv_drv->sync(mode);
 }
 
 /* @0x800EDA00 : ClearImage(RECT*, r, g, b) */
