@@ -199,9 +199,9 @@ void AIDataRecord_t::StartUp1(void)
 
   } while (-1 < iVar2);
 
-  AIDataRecord_BestLine = new AIDataRecord_BestLine_t(5);
+  AIDataRecord_BestLine = new AIDataRecord_BestLine_t((AIDataRecord_WhichRecord_t)5);
 
-  AIDataRecord_TrackCurve = new AIDataRecord_TrackCurve_t(6);
+  AIDataRecord_TrackCurve = new AIDataRecord_TrackCurve_t((AIDataRecord_WhichRecord_t)6);
 
   return;
 
