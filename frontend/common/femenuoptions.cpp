@@ -2323,8 +2323,15 @@ void tInsideBoxTwoWaySlider::Calibrate()
       if (range < uVar7) {
         uVar8 = uVar7;
       }
+      /* @0x8001FB80: first (unclamped) J2MAX write; @0x8001FB84-94: second write stores
+       * (uVar8>=0 ? uVar8 : 0) -- a clamp-to-nonnegative (delay-slot store). The recon wrote the
+       * unclamped (char)uVar8 twice, dropping the negative->0 clamp (mirror J2MIN below) (M11). */
       frontEnd.J2MAX[player] = (char)uVar8;
-      frontEnd.J2MAX[player] = (char)uVar8;
+      cVar4 = (char)uVar8;
+      if ((int)uVar8 < 0) {
+        cVar4 = '\0';
+      }
+      frontEnd.J2MAX[player] = cVar4;
     }
   }
   else if (sVar2 == 3) {
