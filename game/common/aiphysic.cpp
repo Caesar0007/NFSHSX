@@ -1930,9 +1930,11 @@ void AIPhysic_FinishUp(Car_tObj *carObj)
     iVar2 = carObj->drag;
     (carObj->N).linearVel.z = iVar3;
   }
-  (carObj->N).angularVel.x = (carObj->N).angularVel.x;
-  (carObj->N).angularVel.y = (carObj->N).angularVel.y;
-  (carObj->N).angularVel.z = (carObj->N).angularVel.z;
+  /* H33: angular-velocity integration was dropped (self-assigns); oracle 0x8006C6C8-74C
+     angularVel.{x,y,z} += fixedmult(angularAcc.{x,y,z}, AIPhysic_iTime). */
+  (carObj->N).angularVel.x = (carObj->N).angularVel.x + fixedmult((carObj->angularAcc).x,AIPhysic_iTime);
+  (carObj->N).angularVel.y = (carObj->N).angularVel.y + fixedmult((carObj->angularAcc).y,AIPhysic_iTime);
+  (carObj->N).angularVel.z = (carObj->N).angularVel.z + fixedmult((carObj->angularAcc).z,AIPhysic_iTime);
   return;
 }
 
