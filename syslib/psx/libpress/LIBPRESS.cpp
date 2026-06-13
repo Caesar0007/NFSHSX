@@ -94,6 +94,7 @@ extern "C" int DecDCToutCallback(int func)
 static int MDEC_rest(u_long mode)
 {
     if (mode == 0) {
+        MDEC1 = 0x80000000;   /* @0x800F8B24-28: MDEC software-reset command, must precede reconfigure (H49) */
         D0_CHCR = 0;
         D1_CHCR = 0;
         MDEC1 = 0x60000000;
@@ -101,6 +102,7 @@ static int MDEC_rest(u_long mode)
         return (int)(long)_MDEC_in_dma((u_long *)_mdec_idcttab, 0x20);
     }
     if (mode == 1) {
+        MDEC1 = 0x80000000;   /* @0x800F8B7C-88: MDEC software-reset ($v0 from delay slot @0x800F8B10) (H49) */
         D0_CHCR = 0;
         D1_CHCR = 0;
         MDEC1 = 0x60000000;
