@@ -436,7 +436,6 @@ void DrawGouraudShape(tTexture_ShapeInfo *shp,int flags,int x,int y,int *color,i
   int remW;
   int c3;
   short w1;
-  byte flagsb;
   int bpp;
   int bitOff;
   short xoff;
@@ -469,13 +468,13 @@ void DrawGouraudShape(tTexture_ShapeInfo *shp,int flags,int x,int y,int *color,i
   tmpH = shp->height;
   shpW = shp->width;
   bpp = (int)(byte)shp->depth;
-  if ((flagsb & 2) != 0) {
+  if ((flags & 2) != 0) {
     dstY0 = dstY0 + tmpH;
     tmpH = -tmpH;
   }
   u_byte = (byte)shp->shapey;
   srcH = shp->height;
-  if ((flagsb & 2) != 0) {
+  if ((flags & 2) != 0) {
     u_byte = u_byte - 1;
   }
   accW = 0;
@@ -520,7 +519,7 @@ void DrawGouraudShape(tTexture_ShapeInfo *shp,int flags,int x,int y,int *color,i
     *(int *)(prim + 0x10) = color[1];
     *(int *)(prim + 0x1c) = color[2];
     c3 = color[3];
-    prim[7] = (flagsb & 1) * '\x02' + '<';
+    prim[7] = (flags & 1) * '\x02' + '<';
     prim[3] = 0xc;
     *(int *)(prim + 0x28) = c3;
     clut = GetClut((shp->clutID & 0x3fU) << 4,shp->clutID >> 6);
@@ -530,7 +529,7 @@ void DrawGouraudShape(tTexture_ShapeInfo *shp,int flags,int x,int y,int *color,i
          (short)(shp->shapey & 0x100U) >> 4 | (ushort)((texX & 0x3c0U) >> 6) |
          (shp->shapey & 0x200U) << 2;
     tmpH = 0;
-    if (((flagsb & 4) != 0) && (shp->width < 0xff)) {
+    if (((flags & 4) != 0) && (shp->width < 0xff)) {
       shape_x = shape_x + -1;
       tmpH = 1;
     }
@@ -549,7 +548,7 @@ void DrawGouraudShape(tTexture_ShapeInfo *shp,int flags,int x,int y,int *color,i
       stripW = 1;
     }
     uvAdj = tmpH + -1;
-    if ((flagsb & 4) == 0) {
+    if ((flags & 4) == 0) {
       tmpH = colX + xoff;
       x1 = (short)stripW + tmpH;
       *(short *)(prim + 8) = tmpH;
@@ -607,23 +606,20 @@ void DrawShapeExtended(int index,int flags,int x,int y,int fade,int abr,tDrawSha
 {
   tTexture_ShapeInfo *shapeTbl;
   tTexture_ShapeInfo *shp;
-  uint flagsv;
-  int xv;
-  int yv;
   int abrv;
   tTexture_ShapeInfo *tShp;
   int color [4];
-  
+
+  /* @0x8004E678: the incoming flags/x/y params are forwarded to AdjustShapeDrawing (via &flags/&x/&y)
+   * and the draw calls. The recon overwrote them with never-assigned Ghidra locals flagsv/xv/yv right
+   * before the call, feeding garbage flags/x/y. Use the real params (M15). */
   shapeTbl = gCurrentShapes;
-  if ((flagsv & 8) != 0) {
+  if ((flags & 8) != 0) {
     shapeTbl = gHelpShapes;
   }
-  if ((flagsv & 0x200) != 0) {
+  if ((flags & 0x200) != 0) {
     shapeTbl = extra->custom_shapes;
   }
-  flags = flagsv;
-  x = xv;
-  y = yv;
   AdjustShapeDrawing
             (shp,&x,&y,&flags,(0x80 - fade) * 0x10000 >> 0x10,color,extra);
   if ((flags & 0xc0U) == 0) {
@@ -773,24 +769,20 @@ void ScaleShapeExtended(int index,int flags,int x,int y,int fade,int abr,tDrawSh
 {
   tTexture_ShapeInfo *shapeTbl;
   int shp;
-  uint flagsv;
-  int xv;
-  int yv;
   tTexture_ShapeInfo *tShp;
   int scalex;
   int scaley;
   int color [4];
-  
+
+  /* ScaleShapeExtended: same uninit-local-shadow pattern -- forward the real flags/x/y params to
+   * AdjustShapeDrawing, not the never-assigned Ghidra locals flagsv/xv/yv (M15). */
   shapeTbl = gCurrentShapes;
-  if ((flagsv & 8) != 0) {
+  if ((flags & 8) != 0) {
     shapeTbl = gHelpShapes;
   }
-  if ((flagsv & 0x200) != 0) {
+  if ((flags & 0x200) != 0) {
     shapeTbl = extra->custom_shapes;
   }
-  flags = flagsv;
-  x = xv;
-  y = yv;
   AdjustShapeDrawing
             ((tTexture_ShapeInfo *)(0x80 - fade),&x,&y,&flags,(0x80 - fade) * 0x10000 >> 0x10,color,
              extra);
