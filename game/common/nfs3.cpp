@@ -444,12 +444,12 @@ int main(void)
   (&carManager)->Initialize();
   (&carManager)->LoadDescription();
   FECheat_ActivateBonus(cheat_Roadster);
-  (&carManager)->SetClassViewable(0, 1);
-  (&carManager)->SetClassViewable(1, 1);
-  (&carManager)->SetClassViewable(2, 1);
-  (&carManager)->SetClassViewable(3, 1);
-  (&carManager)->SetClassViewable(4, 1);
-  (&carManager)->SetClassViewable(5, 1);
+  (&carManager)->SetClassViewable((tCarClassType)0, 1);
+  (&carManager)->SetClassViewable((tCarClassType)1, 1);
+  (&carManager)->SetClassViewable((tCarClassType)2, 1);
+  (&carManager)->SetClassViewable((tCarClassType)3, 1);
+  (&carManager)->SetClassViewable((tCarClassType)4, 1);
+  (&carManager)->SetClassViewable((tCarClassType)5, 1);
   (&tournamentManager)->Initialize();
   (&missionManager)->Initialize();
   (&trackManager)->Initialize();
