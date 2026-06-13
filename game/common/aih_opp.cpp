@@ -433,7 +433,7 @@ LAB_800638c0:
 
     else if ((AVar3 == 3) &&
 
-            (iVar5 = this->attackTicksLeft_, this->attackTicksLeft_ = iVar5, iVar5 < 1)) {
+            (iVar5 = this->attackTicksLeft_ - AI_elapsedTime, this->attackTicksLeft_ = iVar5, iVar5 < 1)) {   /* H25: decrement dropped (m2c self-assign fold); oracle 0x80063A38 $v0-=AI_elapsedTime, 0x80063A40 store, test on decremented value */
 
       this->attackMode_ = 0;
 
