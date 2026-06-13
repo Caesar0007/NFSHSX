@@ -1811,7 +1811,7 @@ void tInsideBoxSongMenu::DrawOneSong(short songnum,short x,short y,short w,short
   sVar1 = w;
   w = (u_int)(u_short)w;
   iVar4 = (int)x;
-  Col = CalcFadeVal(0x551e00,iVar4);
+  Col = CalcFadeVal(0x551e00,0x28);   /* H13: 2nd arg is the literal 0x28 (oracle 0x8001EC84 $a1=0x28), not x */
   CalcOnOffFade(textType_Options,fOnOffFade,fSelFade,0,&ColTextOn,&ColTextOff);
   ColText = CalcTextFadeSelToHi(textType_Options,fSelFade,0);
   iVar5 = (int)((u_int)(u_short)songnum << 0x10) >> 10;
