@@ -20,16 +20,17 @@ void TextSys_UnloadWords(void);
 void TextSys_LoadWordsGeneric(int language,char *path)
 
 {
-  char *pcVar1;
   char string [250];
-  
+
   if (language < 7) {
     if (wordFile != (char *)0x0) {
       purgememadr(wordFile);
     }
-    pcVar1 = (char *)sprintf(string,"%s%s",path,langFileName[language]);
-    loadfileadr(string,0);
-    wordFile = pcVar1;
+    /* @0x800B91B0 sprintf(string,"%s%s",path,langFileName[language]) -- return discarded;
+     * @0x800B91BC/C4 wordFile = loadfileadr(string,0) ($v0). The reconstruction captured
+     * sprintf's byte-count return into wordFile and discarded loadfileadr's pointer (H44). */
+    sprintf(string,"%s%s",path,langFileName[language]);
+    wordFile = (char *)loadfileadr(string,0);
   }
   return;
 }
