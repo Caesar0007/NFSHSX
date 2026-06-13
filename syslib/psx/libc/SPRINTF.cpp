@@ -10,6 +10,7 @@
  *   Conversions: c d i o p u x X s n ; length-mods h l L.  Variadic frame (local_30/local_res8) == va_list.
  */
 #include <stdarg.h>
+#include <stddef.h>   /* NULL */
 
 extern "C" int    strlen(const char *s);                        /* libc C27   */
 extern "C" void  *memchr(const void *s, int c, unsigned n);     /* libc C46   */
