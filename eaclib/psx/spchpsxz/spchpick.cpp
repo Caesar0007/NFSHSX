@@ -638,7 +638,10 @@ extern "C" int iSPCH_ChooseSentence(unsigned int *eventArgs)
             }
             {
                 unsigned int useLen = (unsigned int)VoxEvent_GetFilterLengthFlag(event);
-                if ((filterFlag & 0xff) != 0 && filterMode == 1)
+                /* @0x801017F4-808: gate is (useLen & 0xFF) != 0 && filterMode == 1 -- $v0 tested at
+                 * 0x801017F8 is the VoxEvent_GetFilterLengthFlag return (&0xFF), NOT filterFlag. The
+                 * recon gated on filterFlag (a distinct var from the DAT_80148064 branch) (M09). */
+                if ((useLen & 0xff) != 0 && filterMode == 1)
                     filterMode = 0;
                 iSPCH_GetRuleSettings((short *)event, (int *)eventArgs, &local_30);
                 iSPCH_OrderSentences(event, (int)local_order);
