@@ -2097,6 +2097,7 @@ void AIPhysic_CheckForGripReduction(Car_tObj *carObj)
   
   iVar4 = carObj->gripFactor;
   if (iVar4 < 0x10000) {
+    iVar4 = iVar4 + AIPhysic_elapsedTime * carObj->personality->gripLossRecoveryPerTick;
     iVar2 = (carObj->N).collision.lastTime;
     carObj->gripFactor = iVar4;
     if ((simGlobal.gameTicks - iVar2 < 0x40) &&
@@ -2104,7 +2105,7 @@ void AIPhysic_CheckForGripReduction(Car_tObj *carObj)
       carObj->gripFactor = 0x10000;
     }
     else {
-      iVar3 = *(int *)(carObj->personality + 0x3c);
+      iVar3 = carObj->personality->gripLossMinFactor;
       iVar2 = -iVar3;
       iVar1 = iVar2 + 0x10000;
       if (iVar1 < 0) {
@@ -2125,8 +2126,13 @@ void AIPhysic_CheckForGripReduction(Car_tObj *carObj)
       iVar4 = AIWorld_CalcRoadBend(carObj,1);
     }
     if (2000 < iVar4) {
+      perTickProb = AIPhysic_elapsedTime * carObj->personality->gripLossProbPerSecond;
       randtemp = fastRandom * randSeed;
+      randVal = (int)((randtemp >> 8) & 0xffff);
       fastRandom = randtemp & 0xffff;
+      if (randVal < perTickProb / 32) {
+        carObj->gripFactor = carObj->personality->gripLossMinFactor;
+      }
     }
   }
   return;
