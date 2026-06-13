@@ -5,9 +5,9 @@
 #if defined(__mips__)
 extern "C" __attribute__((naked)) int erase(const char *name)
 { __asm__ __volatile__(".set noreorder
-	 li $t2,0xB0
-	 jr $t2
-	 li $t1,0x45
+	 li $10,0xB0
+	 jr $10
+	 li $9,0x45
 	 .set reorder"); }
 #else
 extern "C" int erase(const char *name)

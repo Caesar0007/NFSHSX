@@ -5,9 +5,9 @@
 #if defined(__mips__)
 extern "C" __attribute__((naked)) void ExitCriticalSection(void)
 { __asm__ __volatile__(".set noreorder
-	 li $a0,0x2
+	 li $4,0x2
 	 syscall 0
-	 jr $ra
+	 jr $31
 	 nop
 	 .set reorder"); }
 #else
