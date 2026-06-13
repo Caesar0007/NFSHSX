@@ -1436,7 +1436,7 @@ tListIteratorCarColor::~tListIteratorCarColor()
 
 /* ---- tListIteratorCarColor::Value  [FECARS.CPP:1189-1196] SLD-VERIFIED ---- */
 
-int tListIteratorCarColor::Value(tPlayer arg1)
+char tListIteratorCarColor::Value(tPlayer arg1)
 
 {
   int offset;

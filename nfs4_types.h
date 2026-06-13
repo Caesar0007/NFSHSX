@@ -4862,7 +4862,7 @@ struct tListIteratorCarColor {   /* 32 bytes */
     /* FECars methods */
     tListIteratorCarColor(char *value,char *player,char *playerCar,int indexSize, tCarManager *carManager);
     ~tListIteratorCarColor();
-    int Value(tPlayer arg1);
+    char Value(tPlayer arg1);
     int TextValue(tPlayer arg1);
     int Increment(tPlayer arg1);
     int Decrement(tPlayer arg1);
