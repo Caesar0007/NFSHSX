@@ -22,17 +22,18 @@ static int *_bios_b0_table(int idx)
 /* @0x8010CBC0 : _ExitCard -- un-patch the card handler and flush. */
 extern "C" int _ExitCard(void)
 {
+    char *evt = (char *)0;
     EnterCriticalSection();
 #if defined(__mips__)
     {
         int *tbl = _bios_b0_table(0x56);
-        int *evt = (int *)tbl[6];                /* *(24+tbl) */
+        evt = (char *)tbl[6];                    /* *(24+tbl) ; $v0 @0x8010cbe0 */
         int  i;
         for (i = 0; i < 3; i++)                  /* restore the 3 overlaid words to 0 */
-            ((unsigned int *)((char *)evt + 112))[i] = 0;
+            ((unsigned int *)(evt + 112))[i] = 0;
     }
 #endif
     FlushCache();
     ExitCriticalSection();
-    return 0;
+    return (int)(evt + 4);   /* incidental $v0 leftover = evt+4 (oracle @0x8010cc08 $v0+=4); discarded */
 }
