@@ -1214,7 +1214,10 @@ void AI_HandleTrafficHonking(Car_tObj *carObj)
     if (GameSetup_gData.reverseTrack == 0) {
       uVar2 = carObj->direction ^ 1;
     }
-    if (((uVar2 != 0) && (pCVar1 != (Car_tObj *)0x0)) && (-0x30000 < AI_Info.laneSpeeds[1])) {
+    /* @0x80059BC8: signed slt -- honk only when 0 < (int)uVar2 (uVar2 = ~direction / direction^1, which
+     * can be negative, e.g. -2). The recon used an UNSIGNED `uVar2 != 0` test, true for those negative
+     * values where the signed oracle test is false (M17). */
+    if (((0 < (int)uVar2) && (pCVar1 != (Car_tObj *)0x0)) && (-0x30000 < AI_Info.laneSpeeds[1])) {
       randtemp = fastRandom * randSeed;
       fastRandom = randtemp & 0xffff;
       if (((GameSetup_gData.commMode != 1) && ((randtemp >> 8 & 0xffff) * 1000 >> 0x10 < 5)) &&
