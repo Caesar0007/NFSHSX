@@ -9,6 +9,8 @@
 #include "../../nfs4_types.h"
 #include "aih_cop_externs.h"
 
+extern int AI_elapsedTime;   /* H22: ai.cpp @0x8013C554 (not in this TU's externs) */
+
 /* ---- aistate.obj-owned globals (.bss zero) ---- */
 int          *AIHigh_Cop_HighExecute_jt[11];   /* @0x8005516c */
 tCopMurderThresholds AIHigh_Cop_AggressionData[3] = { {10, 655360, 851968, 512, 512}, {8, 917504, 983040, 768, 512}, {4, 1179648, 1179648, 1152, 1024} };   /* @0x8010cea4 */
@@ -1580,15 +1582,25 @@ LAB_800654b8:
   iVar2 = 0;
 
   if (!bVar1) {
+    int       randVal, thisTargetLevel, perTickProb;
+    Car_tObj *copCar = (this->_base_AIHigh_BasicCop)._base_AIHigh_Base.carObj_;
 
-    randtemp = fastRandom * randSeed;
+    /* H22: reconstructed pre-loop RNG/threshold + per-human-race-car wipe-out roll
+       (oracle 0x800654C0-0x8006559C; recon had an EMPTY loop -> cop never scheduled a wipe-out). */
+    thisTargetLevel = *(int *)((char *)*(int **)((char *)this + 88) + 148);  /* $t0 = *(148 + *(88+this)) 0x800654F4/65514 */
+    randtemp   = fastRandom * randSeed;                                      /* 0x800654E0 / 65528 */
+    fastRandom = randtemp & 0xffff;                                          /* 0x8006552C-34 */
+    randVal    = (int)((randtemp >> 8) & 0xffff);                            /* $a0 = (randtemp>>8)&0xffff 0x8006551C-20 */
+    perTickProb = AI_elapsedTime * 89;                                       /* $t1+$a2 = ae*88 + ae 0x80065500-510 / 65574 */
 
-    fastRandom = randtemp & 0xffff;
-
-    for (; iVar2 < Cars_gNumHumanRaceCars; iVar2 = iVar2 + 1) {
-
+    for (iVar2 = 0; iVar2 < Cars_gNumHumanRaceCars; iVar2 = iVar2 + 1) {     /* 0x80065538 */
+      Car_tObj    *carObj_h = Cars_gHumanRaceCarList[iVar2];                 /* *(int*)$a1 0x80065544 */
+      AIHigh_Base *aiObj    = highLevelAIObjs[*(int *)((char *)carObj_h + 596)]; /* highLevelAIObjs[carIndex] 0x8006554C-5C */
+      if (thisTargetLevel < *(int *)((char *)aiObj + 148) &&                 /* state, 0x80065564-6C */
+          randVal < perTickProb) {                                          /* 0x80065574-7C */
+        copCar->wipeOutEndTick = simGlobal.gameTicks + 0x280;               /* 0x80065584-90 */
+      }
     }
-
   }
 
   return;
