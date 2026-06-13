@@ -56,7 +56,7 @@ void start(void)
         /* $sp = 0x80200000 (top of 2 MiB), $gp = 0x8013C54C (small-data anchor), $fp = $sp. */
         register unsigned int sp asm("$sp") = sp_phys | 0x80000000u;   /* @0x800E4074/78 */
         __asm__ volatile("la $gp, 0x8013C54C\n\tmove $fp, $sp"
-                         : : "r"(sp) : "$gp", "$fp");                   /* @0x800E40AC..B4 */
+                         : : "r"(sp) : "gp", "fp");                   /* @0x800E40AC..B4 */
 #endif
         InitHeap(heap_base, heap_size);                                /* @0x800E40B8 jal InitHeap */
     }
