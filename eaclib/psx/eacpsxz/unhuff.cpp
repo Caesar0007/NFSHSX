@@ -573,17 +573,19 @@ extern "C" int unhuff(unsigned char *comp, unsigned char *out, int doDecode)
     }
 }
 
-/* memcpyl @0x800F51C0 : copy `n` bytes (rounded up to 4) word-at-a-time via geti/puti.  Returns dst+n. */
+/* memcpyl @0x800F51C0 : copy `n` bytes (rounded up to 4) word-at-a-time via geti/puti.  Returns dst+n.
+ * src ($s2) is loop-INVARIANT: geti is the bitstream reader (advances its own stream position), so the
+ * same `src` base is passed every pass while dst advances; src is bumped once after the loop. */
 extern "C" char *memcpyl(char *dst, char *src, int n)
 {
     char *end = dst + n;
     do {
-        unsigned int val = geti(src, 4);
+        unsigned int val = geti(src, 4);   /* @0x800F51E8 $a0=$s2 reloaded -- fixed src each iteration */
         puti((unsigned char *)dst, val, 4);
         dst = dst + 4;
         n   = n - 4;
-        src = src + 4;
     } while (0 < n);
+    src = src + 4;   /* @0x800F5210: src advanced ONCE, after the loop (recon advanced it per-iter -- M04) */
     return end;
 }
 
