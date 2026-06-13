@@ -504,7 +504,7 @@ void AI_CheckForBarriers(Car_tObj *carObj)
     if (iVar10 == 0) {
       iVar10 = 1;
     }
-    carObj->barrierThinkHarder = carObj->barrierThinkHarder;
+    carObj->barrierThinkHarder = carObj->barrierThinkHarder - AI_elapsedTime;   /* H16: subtraction dropped (m2c self-assign fold); oracle 0x8005855C $v0=$a0-AI_elapsedTime, 0x80058560 store */
     for (; iVar5 < iVar7; iVar5 = iVar5 + iVar10) {
       iVar9 = slice + iVar5 * iVar8;
       if (iVar5 * iVar8 < 0) {
