@@ -5,9 +5,9 @@
 #if defined(__mips__)
 extern "C" __attribute__((naked)) long EnableEvent(long event)
 { __asm__ __volatile__(".set noreorder
-	 li $t2,0xB0
-	 jr $t2
-	 li $t1,0xC
+	 li $10,0xB0
+	 jr $10
+	 li $9,0xC
 	 .set reorder"); }
 #else
 extern "C" long EnableEvent(long event)
