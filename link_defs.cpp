@@ -36,8 +36,12 @@ int reentryflag;                                           /* @8013dec0 4B */
 unsigned char sndchanreserved[4];                          /* @80147914 4B */
 int sndgs[45];                                             /* @80147860 180B */
 /* gSndState: EA/engine semantic alias for the SndState block; SAME object as sndgs @0x80147860
- *   (snd.h: #define SND ((SndState*)gSndState)).  Aliased so both names resolve to one buffer. */
+ *   (snd.h: #define SND ((SndState*)gSndState)).  Aliased so both names resolve to one buffer.
+ *   gcc2.7.2/ccpsx has no __attribute__((alias)); keep for the modern pre-gate, resolve the
+ *   gSndState symbol bridge in the deferred linkage/hygiene pass. */
+#ifndef NFS4_PSYQ_HEADERS
 extern unsigned char gSndState[] __attribute__((alias("sndgs")));
+#endif
 /* CF_DVLC @0x80123838-region NAME COLLISION NOTE: the game-side CF_DVLC is a 49096-byte BSS
  *   load/overlay buffer (asyncloadfileat target; speech-bank-pool overlay), NOT the MDEC table.
  *   psxfront/video/nfs3/draww take its address; zero-init BSS is faithful. */
