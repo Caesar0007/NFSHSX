@@ -6,6 +6,7 @@
 #include "aispeeds_externs.h"
 
 extern char *DAT_80116470;   /* @0x80116470 -- AI bigfile path prefix (char*); materialized (bss=0) in materialized_data.cpp */
+extern int AI_elapsedTime;   /* @0x8013C554 (ai.cpp:15) -- AI frame elapsed-time global; used by GetCaravanFactor caravanTimer decrement (H35) */
 
 
 /* ---- aispeeds.obj-owned globals (.bss zero) ---- */
@@ -637,7 +638,7 @@ LAB_8006e3b0:
   }
 LAB_8006e444:
   if (CaravanInfo[uVar5].distanceMaintainTime32 != 0) {
-    carObj->caravanTimer = carObj->caravanTimer;
+    carObj->caravanTimer = carObj->caravanTimer - AI_elapsedTime;
   }
   if (carObj->caravanTimer < 0) {
     iVar3 = CaravanInfo[uVar5].distanceMaintainTime32 / 2;
