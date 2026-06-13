@@ -1876,11 +1876,11 @@ int AIHigh_Cop::GetCheckChasePosition(coorddef *pos)
 
   iVar3 = this->aggressionLevel_;
 
-  iVar4 = AIH_Cop_chasePositions[iVar3 * 2][iVar2].y;
+  iVar4 = AIH_Cop_chasePositions[iVar3][iVar2].y;   /* H23: per-aggression stride is 72B = one [6] row; the `*2` (->144B) read OOB for aggression 2 (oracle 0x800658F0 a1*72) */
 
-  iVar5 = AIH_Cop_chasePositions[iVar3 * 2][iVar2].z;
+  iVar5 = AIH_Cop_chasePositions[iVar3][iVar2].z;
 
-  pos->x = AIH_Cop_chasePositions[iVar3 * 2][iVar2].x;
+  pos->x = AIH_Cop_chasePositions[iVar3][iVar2].x;
 
   pos->y = iVar4;
 
