@@ -7,7 +7,7 @@
 extern "C" void SetDQA(short dqa)
 {
 #if defined(__mips__)
-    __asm__ volatile("ctc2 %0,$27" :: "r"((int)dqa));
+    __asm__ volatile("ctc2 %0,$27" : : "r"((int)dqa));
 #else
     (void)dqa;
 #endif
@@ -17,7 +17,7 @@ extern "C" void SetDQA(short dqa)
 extern "C" void SetDQB(long dqb)
 {
 #if defined(__mips__)
-    __asm__ volatile("ctc2 %0,$28" :: "r"((int)dqb));
+    __asm__ volatile("ctc2 %0,$28" : : "r"((int)dqb));
 #else
     (void)dqb;
 #endif
