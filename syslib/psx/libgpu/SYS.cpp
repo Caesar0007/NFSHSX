@@ -722,6 +722,8 @@ static int _gpu_init_videomode(int mode)
 /* @0x800ED7E4 : turn the display on (mask!=0) or off (mask==0). */
 extern "C" void SetDispMask(int mask)
 {
+    if (_gpu_debug >= 2)
+        GPU_printf("SetDispMask(%d)...\n", mask);   /* @0x80056DA0 (oracle @0x800ed7fc-824) */
     if (mask == 0)
         _memset(_genv_dispenv, -1, 0x14);
     _send_gp1(mask ? 0x03000000u : 0x03000001u);
@@ -901,7 +903,7 @@ extern "C" void *PutDrawEnv(void *env)
 }
 
 /* @0x800EDDE4 : program the GPU display environment (display area, mode, H/V ranges). */
-extern "C" void PutDispEnv(void *env)
+extern "C" void *PutDispEnv(void *env)
 {
     short   *es = (short *)env;
     u_short *eu = (u_short *)env;
@@ -980,4 +982,5 @@ extern "C" void PutDispEnv(void *env)
     }
 done:
     memcpy(_genv_dispenv, env, 0x14);
+    return env;                                  /* oracle @0x800ee2c0 $v0 = $s1 = env */
 }
