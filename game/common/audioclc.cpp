@@ -194,9 +194,12 @@ int AudioClc_CalcDopplerShiftRatio(coorddef *objectPos,coorddef *objectVel)
   coorddef local_20;
   
   pcVar1 = AudioClc_gCameraVelocity;
-  local_20.x = objectPos->x >> 8;
-  local_20.y = objectPos->y >> 8;
-  local_20.z = objectPos->z >> 8;
+  /* @0x800749AC-EC: vectorToSound = (objectPos - AudioClc_gRenderView.translation) >> 8 per axis.
+   * disasm $a1=0x8010E428=&AudioClc_gRenderView.translation; the camera-translation subtraction
+   * was dropped (H41), normalizing the world-space position instead of the camera-relative vector. */
+  local_20.x = (objectPos->x - AudioClc_gRenderView.translation.x) >> 8;
+  local_20.y = (objectPos->y - AudioClc_gRenderView.translation.y) >> 8;
+  local_20.z = (objectPos->z - AudioClc_gRenderView.translation.z) >> 8;
   Math_NormalizeVector(&local_20);
   iVar8 = 0;
   if (objectVel != (coorddef *)0x0) {
