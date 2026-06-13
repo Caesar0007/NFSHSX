@@ -118,6 +118,7 @@ extern "C" void vramfxya(int shapep, short imgX, short imgY, short clutX, short 
                        ((unsigned int)imgY & 0xfff) << 0x10;
                 *(unsigned char *)c = (unsigned char)*c | 8;
                 rect.x = imgX;
+                rect.y = imgY;                       /* H04: was missing (oracle 0x800F6A80 *(short*)(18+sp)=imgY) */
                 bits   = (short)c[1] * shapedepth((unsigned char *)c);
                 w      = bits + 0xf;
                 if (w < 0)
@@ -138,6 +139,7 @@ extern "C" void vramfxya(int shapep, short imgX, short imgY, short clutX, short 
                ((unsigned int)clutY & 0xfff) << 0x10;
         *(unsigned char *)c = (unsigned char)*c | 8;
         rect.x = clutX;
+        rect.y = clutY;                          /* H04: was missing (oracle 0x800F6BC4 *(short*)(18+sp)=clutY) */
         rect.w = (short)c[1];
         rect.h = 1;
         vramimage(&rect, data);
