@@ -30,17 +30,18 @@ int Risk_ReadNextValue(char **aScript)
   int n;
 
   n = 0;
-  pcVar2 = *aScript;
-  while (Script = pcVar2, cVar1 = IsNumChar(*Script), cVar1 == '\0') {
-    pcVar2 = Script + 1;
-    if (*Script == '/') {
-      cVar1 = Script[1];
-      pcVar2 = Script + 2;
-      while (cVar1 != '/') {
-        cVar1 = *pcVar2;
-        pcVar2 = pcVar2 + 1;
+  Script = *aScript;
+  while (IsNumChar(*Script) == '\0') {     /* skip to the next number; oracle loop @0x80091f24 */
+    if (*Script == '/') {                    /* '/comment/' delimiter (@0x80091f48) */
+      Script = Script + 1;                   /* past the opening '/' (@0x80091f4c) */
+      if (*Script != '/') {                  /* not an empty "//" (@0x80091f58) */
+        Script = Script + 1;                 /* into the comment body (@0x80091f5c) */
+        while (*Script != '/')               /* scan to the closing '/' (@0x80091f64) */
+          Script = Script + 1;
+        Script = Script + 1;                 /* past the closing '/' (@0x80091f70) */
       }
     }
+    /* a non-numeric, non-'/' char does NOT advance Script (oracle F48 branches back) */
   }
   while (true) {
     cVar1 = IsNumChar(*Script);
