@@ -177,18 +177,20 @@ extern "C" int _cd_get_intr(void)
 /* ---- interrupt drain (shared by CD_sync/CD_ready/CD_cw and exported as _cd_intr_dispatch) ----- */
 static void _cd_drain(void)
 {
-    unsigned      pending = CDREG0;
+    /* @0x80107744-77C8 (inlined drain loop, identical at CD_sync/CD_ready/CD_cw/_cd_intr_dispatch):
+     * the loop is driven off the RETURN of _cd_get_intr() ($s0), NOT a CDREG0 read; it loops until
+     * _cd_get_intr() returns 0, and the &4/&2 tests + callback return values are on that ret (cb
+     * returns discarded). The reconstruction looped on `pending = CDREG0` and captured cbsync's
+     * return -- wrong loop variable + extra CDREG0 read (H47). */
     unsigned char restore = CDREG0 & 3;
     for (;;) {
-        _cd_get_intr();
-        if (pending == 0)
+        int r = _cd_get_intr();
+        if (r == 0)
             break;
-        if ((pending & 4) != 0 && CD_cbready != 0)
+        if ((r & 4) != 0 && CD_cbready != 0)
             ((CdCB)CD_cbready)(_cd_ready_res, _cd_ready_buf);
-        unsigned sync = pending & 2;
-        pending = 0;
-        if (sync != 0 && CD_cbsync != 0)
-            pending = ((CdCB)CD_cbsync)(_cd_sync_res, _cd_sync_buf);
+        if ((r & 2) != 0 && CD_cbsync != 0)
+            ((CdCB)CD_cbsync)(_cd_sync_res, _cd_sync_buf);
     }
     CDREG0 = restore;
 }
