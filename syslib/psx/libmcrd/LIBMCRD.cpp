@@ -162,7 +162,7 @@ static int _MemCardExist_cb(void *pv)
         ev = _get_card_event();
         _mc_exrslt = ev;
         if (ev < 3) {
-            if (ev < 1) {               /* ev == 0 : I/O complete */
+            if (ev == 0) {              /* ev == 0 : I/O complete (oracle if(v1==0) goto done @0x800facac) */
                 _mc_exrslt = 0;
                 if ((_mc_present & (1 << (_mc_chan & 0x1f))) == 0)
                     _mc_exrslt = 4;     /* never seen -> "no card" */
@@ -241,7 +241,7 @@ static int _MemCardCmd_cb(void *pv)
         ev = _get_card_event();
         _mc_evrslt = ev;
         if (ev < 3) {
-            if (ev < 1) {               /* ev == 0 : done */
+            if (ev == 0) {              /* ev == 0 : done (oracle if(v1==0) goto done @0x800faf84) */
                 if (_mc_cleared != 0) { _mc_rslt = 3; return 1; }
                 _mc_rslt = 0;
                 return 1;
