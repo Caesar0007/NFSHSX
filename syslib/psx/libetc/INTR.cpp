@@ -163,10 +163,13 @@ extern "C" void _set_intr_callback(unsigned int idx, int handler)   /* @0x800F2C
             imask = imask | bit;
             g_intr.enabled = g_intr.enabled | bit;
         }
-        if (idx == 0) { ChangeClearPAD(handler == 0); ChangeClearRCnt(0, 0); }
-        if (idx == 4)   ChangeClearRCnt(0, 0);
-        if (idx == 5)   ChangeClearRCnt(0, 0);
-        if (idx == 6)   ChangeClearRCnt(0, 0);
+        /* @0x800F2CC0-D20: ChangeClearRCnt(<per-IRQ root-counter index>, handler==0). $a0 = the timer
+         * id (idx0->RCnt3, idx4->0, idx5->1, idx6->2), $a1 = $s0 = (handler<1) = (handler==0) = the
+         * clear flag. Reconstruction passed (0,0) to all four -- wrong timer + ignored handler (H48). */
+        if (idx == 0) { ChangeClearPAD(handler == 0); ChangeClearRCnt(3, handler == 0); }
+        if (idx == 4)   ChangeClearRCnt(0, handler == 0);
+        if (idx == 5)   ChangeClearRCnt(1, handler == 0);
+        if (idx == 6)   ChangeClearRCnt(2, handler == 0);
     }
     I_MASK = imask;
 }
