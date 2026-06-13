@@ -5,7 +5,7 @@
  *   __vtbl_ptr_type entries); deleting dtors. Each ctor/dtor installs AIState_<C>_vtable.
  *   Faithful C++ (option A). NOT original source; SYM-faithful, recompilable. vs disasm-v2.
  */
-#include <new>
+#include "../../lib/nfs4_new.h"
 #include "../../nfs4_types.h"
 #include "aih_opp_externs.h"
 
