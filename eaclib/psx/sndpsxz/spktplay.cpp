@@ -142,13 +142,13 @@ extern "C" int SNDPKTPLAY_start(int p, int rate, int hdr, int params)
     MB(ch, 0x31)  = 0;
     MB(ch, 0x32)  = 0;
     MB(ch, 0x33)  = 1;
-    MB(ch, 0x2f)  = MB(hdr, 9);
-    MB(ch, 0x34)  = MB(params, 9);
-    MB(ch, 0x35)  = MB(hdr, 10);
+    MB(ch, 0x2f)  = MB(params, 9);   /* H09: src was hdr (oracle 0x80102B90 *(u8)(9+$s4=params)) */
+    MB(ch, 0x34)  = MB(hdr, 9);      /* H09: src was params (oracle 0x80102BAC *(u8)(9+$s5=hdr)) */
+    MB(ch, 0x35)  = MB(params, 10);  /* H09: src was hdr (oracle 0x80102BB8 *(u8)(10+$s4=params)) */
     MH(ch, 0x5a)  = (short)(MSB(hdr, 10) * 100);
     MB(ch, 0x37)  = 0;
     MB(ch, 0x36)  = 0;
-    MB(ch, 0x3d)  = MB(hdr, 7);
+    MB(ch, 0x3d)  = MB(params, 7);   /* H09: src was hdr (oracle 0x80102BE8 *(u8)(7+$s4=params)) */
     MI(ch, 0x40)  = 0;
     MI(ch, 0x44)  = 0;
     MI(ch, 0x48)  = 0;
