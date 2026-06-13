@@ -371,13 +371,18 @@ extern "C" void iSNDpacketserve(void)
             }
             *(int *)(pp + 0x18) += adv;
             iSNDpacketpurgeframes(p, (unsigned)servePos, (int)adv);
-            *(int *)(pp + 0x1c) = newPos;
-            if (*(int *)(pp + 0x14) - *(int *)(pp + 0x18) < *(int *)(pp + 0x10) &&
-                iSNDdmcomplete(*(int *)(pp + 0x20)) != 0) {
-                unsigned int idx = (unsigned)*(unsigned short *)(pp + 0x3a) + 1;
-                if (*(unsigned short *)(pp + 0x38) <= idx)
-                    idx -= *(unsigned short *)(pp + 0x38);
-                iSNDfillspuwithpackets(p, (int)idx);
+            /* @0x80104148-415C: *(pp+0x1c)=newPos (served-position advance) is stored ONLY when the
+             * buffer-level check passes (bufLevel < threshold), BEFORE the iSNDdmcomplete refill gate.
+             * The recon stored newPos UNCONDITIONALLY (before the check), advancing the served pos even
+             * when the buffer was full enough that no refill was due (M08). */
+            if (*(int *)(pp + 0x14) - *(int *)(pp + 0x18) < *(int *)(pp + 0x10)) {
+                *(int *)(pp + 0x1c) = newPos;
+                if (iSNDdmcomplete(*(int *)(pp + 0x20)) != 0) {
+                    unsigned int idx = (unsigned)*(unsigned short *)(pp + 0x3a) + 1;
+                    if (*(unsigned short *)(pp + 0x38) <= idx)
+                        idx -= *(unsigned short *)(pp + 0x38);
+                    iSNDfillspuwithpackets(p, (int)idx);
+                }
             }
         }
     }
