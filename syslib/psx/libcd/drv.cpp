@@ -353,6 +353,9 @@ extern "C" int CD_initvol(void)
     CD_VOL_L = 0x3fff;
     CD_VOL_R = 0x3fff;
     SPUCNT = 0xc001;
+    CDREG0 = 2;
+    CDREG2 = 0x80;
+    CDREG3 = 0;
     CDREG0 = 3;
     CDREG1 = 0x80;
     CDREG2 = 0;
