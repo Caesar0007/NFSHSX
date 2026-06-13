@@ -23,7 +23,7 @@ extern "C" int iSNDdivu64(unsigned int hi, unsigned int lo, unsigned int div)
     int i = 0x1f;
     do {
         q = q * 2;
-        lo = lo * 2 - (hi >> 0x1f);
+        lo = lo * 2 + (hi >> 0x1f);   /* H07: ADD carry bit; hi is unsigned so >>31 is logical 0/1 (oracle 0x801034E0 $a1+=$v0). Was `- (hi>>31)` which is only correct for SIGNED hi (math64a.cpp). */
         hi = hi << 1;
         if (div <= lo) {
             lo = lo - div;
