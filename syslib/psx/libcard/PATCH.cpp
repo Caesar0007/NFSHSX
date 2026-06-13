@@ -29,8 +29,11 @@ static const unsigned int _patch2_code[5] = { 0x3c08a001, 0x2508df80, 0x0100f809
 static int *_bios_b0_table(int idx)
 {
     int *t;
-    __asm__ volatile("move $t1,%1\n\t li $t2,0xB0\n\t jalr $t2\n\t nop\n\t move %0,$v0"
-                     : "=r"(t) : "r"(idx) : "$t1", "$t2", "$ra", "$v0", "memory");
+    /* BIOS B0-table thunk. Oracle disasm-v3 _patch_card @0x8010CA78: `$t1=<func#>; $t2=0xB0;
+     * jalr $t2; ... = $v0`. PsyQ aspsx needs NUMERIC reg names in asm text: $t1=$9/$t2=$10/$v0=$2
+     * ($a0=$4=%1). Same physical regs as oracle. gcc2.7.2 clobbers use ABI names w/o `$`. */
+    __asm__ volatile("move $9,%1\n\t li $10,0xB0\n\t jalr $10\n\t nop\n\t move %0,$2"
+                     : "=r"(t) : "r"(idx) : "t1", "t2", "ra", "v0", "memory");
     return t;
 }
 #endif
