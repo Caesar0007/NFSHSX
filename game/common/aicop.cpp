@@ -54,7 +54,7 @@ void AICop_StartUp(void)
 void AICop_Restart(void)
 {
   if ((AICop_rawTriggers != (u_char *)0x0) && (GameSetup_gData.cops != 0)) {
-    triggerManagerCops->Init(AICop_rawTriggers);
+    triggerManagerCops->Init((char *)AICop_rawTriggers);
   }
   AICop_spikeBelt.active_ = 0;
   AICop_numArrestedHumans = 0;
