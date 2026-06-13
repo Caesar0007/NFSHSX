@@ -208,9 +208,13 @@ extern "C" unsigned int iSNDpacketpurgeframes(int p, unsigned int byteoff, int c
         }
         byteoff = byteoff + span;
         wrapped = (unsigned)(byteoff < *(unsigned int *)(pp + 0xc));
-        count = count - span;
-        if (wrapped == 0)
+        /* @0x80103B14-1C: count -= span AND byteoff = 0 happen ONLY in the wrapped==0 (byteoff>=limit)
+         * fall-through. The recon decremented count UNCONDITIONALLY, so the purge consumed `count` on
+         * every step instead of only on a buffer wrap (M07). */
+        if (wrapped == 0) {
+            count = count - span;
             byteoff = 0;
+        }
     } while (0 < count);
     return wrapped;
 }
