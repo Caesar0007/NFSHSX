@@ -1129,17 +1129,17 @@ int AISpeeds_GetUpgradeBrakeMult(int carIndex)
   int brakeMult;
   int a;
   Car_tObj *pCVar1;
-  
+
   pCVar1 = Cars_gList[carIndex];
   a = 0x10000;
   if (pCVar1->carInfo->EngineMods == 1) {
-    a = fixedmult(0x10000,0);
+    a = fixedmult(0x10000,engineUpgrade.brakeMult);   /* @0x8006F20C $a1=*(&lbl_8010DCE4)=engineUpgrade[+4]=brakeMult (H37) */
   }
   if (pCVar1->carInfo->WeightTransfer == 1) {
-    a = fixedmult(a,0);
+    a = fixedmult(a,suspensionUpgrade.brakeMult);   /* @0x8006F234 $a1=*(&lbl_8010DCF4)=suspensionUpgrade[+4] */
   }
   if (pCVar1->carInfo->GroundEffects == 1) {
-    a = fixedmult(a,0);
+    a = fixedmult(a,aeroUpgrade.brakeMult);   /* @0x8006F25C $a1=*(&lbl_8010DD04)=aeroUpgrade[+4] */
   }
   return a;
 }
