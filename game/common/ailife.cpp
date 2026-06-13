@@ -16,6 +16,7 @@ void AILife_PlaceCarAtLocation(Car_tObj *carObj,int rotation1024);
 void AILife_ReencarnateTraffic(Car_tObj *carObj);
 void AILife_ReencarnateCopBySlice(Car_tObj *carObj,int slice,int travelDirection,int roadSide,int moving);
 void AILife_ReencarnateCopByPosition(Car_tObj *carObj,int slice,int travelDirection,coorddef *pos,matrixtdef *ori);
+void AILife_ReencarnateTrafficByPosition(Car_tObj *carObj,int slice,int travelDirection,coorddef *pos,matrixtdef *ori);
 void AILife_ReencarnateCopByLatPosAndRotation(Car_tObj *carObj,int slice,int travelDirection,int latPos,int rotation1024);
 int AILife_IsCoordInThisLiveArea(coorddef *tPos,Car_tObj *racer);
 Car_tObj * AILife_IsTrafficCarInAnyLiveArea(Car_tObj *traffic);
@@ -331,7 +332,10 @@ void AILife_ReencarnateTraffic(Car_tObj *carObj)
 }
 
 /* ---- AILife_ReencarnateTrafficByPosition__FP8Car_tObjiiP8coorddefP10matrixtdef  [@0x80067f94] ---- */
-AILife_ReencarnateTrafficByPosition(Car_tObj *carObj,int slice,int travelDirection,coorddef *pos,matrixtdef *ori)
+/* @0x80067F94: mangled __FP8Car_tObjiiP8coorddefP10matrixtdef -> returns void; the recon omitted the
+ * return-type token (ill-formed in C++; gcc-2.7.2 fell back to implicit-int) and dropped the forward
+ * decl. Added `void` + the intra-TU forward declaration (sibling of AILife_ReencarnateCopByPosition) (M19). */
+void AILife_ReencarnateTrafficByPosition(Car_tObj *carObj,int slice,int travelDirection,coorddef *pos,matrixtdef *ori)
 {
   coorddef zero;
   coorddef offset;
