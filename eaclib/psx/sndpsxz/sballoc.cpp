@@ -8,7 +8,8 @@ extern "C" int sndgs[];
 extern "C" int iSNDbankalloc(void);   /* @0x801027BC */
 
 /* iSNDbankalloc @0x801027BC : return the index of the first empty bank table entry (sndgs[0x26], 0xc
- *   stride, +0 == 0 means free), or the count if the table is full.  (Ghidra lost the return value.) */
+ *   stride, +0 == 0 means free), or -9 (SND_BANKFULL) if the table is empty/full.  (Ghidra lost the
+ *   return value; IDA gives int.) */
 extern "C" int iSNDbankalloc(void)
 {
     int  i = 0;
@@ -21,5 +22,5 @@ extern "C" int iSNDbankalloc(void)
             e = e + 3;
         } while (i < (int)(unsigned)(unsigned short)sndgs[3]);
     }
-    return i;
+    return -9;   /* H06: SND_BANKFULL on count==0 and no-empty-slot fall-through (oracle 0x80102804 $v0=-9); was `return i` */
 }
