@@ -9,6 +9,7 @@ static int _vtdtor_tDialogBase(tDialogBase *p){ p->~tDialogBase(); return 0; }
 static int _vtdtor_tDialogHelp(tDialogHelp *p){ p->~tDialogHelp(); return 0; }
 static int _vtdtor_tDialogInteractive(tDialogInteractive *p){ p->~tDialogInteractive(); return 0; }
 static int _vtdtor_tDialogMessageString(tDialogMessageString *p){ p->~tDialogMessageString(); return 0; }
+static int _vtdtor_tDialogMessageStringWithTimeout(tDialogMessageStringWithTimeout *p){ p->~tDialogMessageStringWithTimeout(); return 0; }
 static int _vtdtor_tDialogNoInputMessage(tDialogNoInputMessage *p){ p->~tDialogNoInputMessage(); return 0; }
 static int _vtdtor_tDialogYesNo(tDialogYesNo *p){ p->~tDialogYesNo(); return 0; }
 static int _vtdtor_tDialogYesNoMem(tDialogYesNoMem *p){ p->~tDialogYesNoMem(); return 0; }
@@ -69,6 +70,23 @@ __vtbl_ptr_type tDialogMessageString_vtable[12] = {   /* @0x800104f0 */
   {0, 0, (int (*)(...))&tDialogBase::ProcessInput},  /* @0x80010538  ProcessInput__11tDialogBase7tPlayerR13tInputKeyTypeR12tMenuCommand */
   {0, 0, (int (*)(...))&tDialogMessageString::CalculateDimensions}, /* @0x80010540  CalculateDimensions__20tDialogMessageString */
   {0, 0, (int (*)(...))&tDialogMessageString::Draw}, /* @0x80010548  Draw__20tDialogMessageString */
+};
+/* tDialogMessageStringWithTimeout vtable @0x80010098 (M10): byte-identical to tDialogMessageString_vtable
+ * EXCEPT slot 4 (dtor) = ~tDialogMessageStringWithTimeout (@0x80015760) vs ~tDialogMessageString. Verified
+ * by per-slot fnptr compare against nfs4-f.exe @0x80010098 vs @0x800104F0 (11/12 identical). */
+__vtbl_ptr_type tDialogMessageStringWithTimeout_vtable[12] = {   /* @0x80010098 */
+  {0, 0, (int (*)(...))0},                           /* @0x80010098  null */
+  {0, 0, (int (*)(...))&tScreen::GetShapeInfo},      /* @0x800100a0  GetShapeInfo__7tScreenRsT1PPcT3 */
+  {0, 0, (int (*)(...))&tScreen::DrawBackground},    /* @0x800100a8  DrawBackground__7tScreen */
+  {0, 0, (int (*)(...))&tScreen::DrawForeground},    /* @0x800100b0  DrawForeground__7tScreen */
+  {0, 0, (int (*)(...))&_vtdtor_tDialogMessageStringWithTimeout}, /* @0x800100b8  ~tDialogMessageStringWithTimeout (@0x80015760) */
+  {0, 0, (int (*)(...))&tScreen::PreLoad},           /* @0x800100c0  PreLoad__7tScreen */
+  {0, 0, (int (*)(...))&tScreen::Initialize},        /* @0x800100c8  Initialize__7tScreen */
+  {0, 0, (int (*)(...))&tScreen::Cleanup},           /* @0x800100d0  Cleanup__7tScreen */
+  {0, 0, (int (*)(...))&tScreen::TransitionIsFinished}, /* @0x800100d8  TransitionIsFinished__7tScreen */
+  {0, 0, (int (*)(...))&tDialogBase::ProcessInput},  /* @0x800100e0  ProcessInput__11tDialogBase7tPlayerR13tInputKeyTypeR12tMenuCommand */
+  {0, 0, (int (*)(...))&tDialogMessageString::CalculateDimensions}, /* @0x800100e8  CalculateDimensions__20tDialogMessageString */
+  {0, 0, (int (*)(...))&tDialogMessageString::Draw}, /* @0x800100f0  Draw__20tDialogMessageString */
 };
 __vtbl_ptr_type tDialogNoInputMessage_vtable[12] = {   /* @0x80010430 */
   {0, 0, (int (*)(...))0},                           /* @0x80010430  null */

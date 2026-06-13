@@ -4416,6 +4416,7 @@ struct tDialogHelp {   /* 212 bytes */
 
 struct tDialogMessageStringWithTimeout {   /* 152 bytes */
     tDialogMessageString _base_tDialogMessageString;   /* +0x0 */
+    ~tDialogMessageStringWithTimeout();   /* @0x80015760 -- vtable slot 4 (M10) */
 };
 
 struct tDialogNoInputMessage {   /* 152 bytes */

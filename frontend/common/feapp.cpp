@@ -63,10 +63,14 @@ tFEApplication::tFEApplication()
   (this->helpPopup).variant = -1;
   (this->helpPopup)._base_tDialogBase.timeOutTicks = 0x578;
   this_tDialogNoInputMessage = &this->NoInputMemCardDialog;
+  /* @0x800130B8/BC/C0: three _vf stores to MemCardDialog (this+0x238): tDialogBase, tDialogMessageString,
+   * then the FINAL = tDialogMessageStringWithTimeout vtable @0x80010098. The recon mis-decoded the absolute
+   * VA 0x80010098 (0x80010000+0x98) as a runtime `bigBuf + 0x98` pointer, leaving _vf pointing at garbage
+   * (wrong virtual dispatch). Adversarially verified: the 0x80010550 the audit suggested was helpPopup's
+   * tDialogHelp vtable, mis-attributed (M10). */
   *(void **)&((this->MemCardDialog)._base_tDialogMessageString._base_tDialogBase._base_tScreen._vf) = (void *)tDialogBase_vtable;
   *(void **)&((this->MemCardDialog)._base_tDialogMessageString._base_tDialogBase._base_tScreen._vf) = (void *)tDialogMessageString_vtable;
-  (this->MemCardDialog)._base_tDialogMessageString._base_tDialogBase._base_tScreen._vf =
-       (__vtbl_ptr_type (*) [10])(bigBuf + 0x98);
+  *(void **)&((this->MemCardDialog)._base_tDialogMessageString._base_tDialogBase._base_tScreen._vf) = (void *)tDialogMessageStringWithTimeout_vtable;
   (this->MemCardDialog)._base_tDialogMessageString._base_tDialogBase.currentlyOn = 0;
   (this->MemCardDialog)._base_tDialogMessageString._base_tDialogBase.reservedheight = 0;
   (this->MemCardDialog)._base_tDialogMessageString._base_tDialogBase.MaxH = 0;
