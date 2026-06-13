@@ -9,9 +9,9 @@ extern "C" void SetFarColor(int r, int g, int b)
     g <<= 4;
     b <<= 4;
 #if defined(__mips__)
-    __asm__ volatile("ctc2 %0,$21" :: "r"(r));
-    __asm__ volatile("ctc2 %0,$22" :: "r"(g));
-    __asm__ volatile("ctc2 %0,$23" :: "r"(b));
+    __asm__ volatile("ctc2 %0,$21" : : "r"(r));
+    __asm__ volatile("ctc2 %0,$22" : : "r"(g));
+    __asm__ volatile("ctc2 %0,$23" : : "r"(b));
 #else
     (void)r; (void)g; (void)b;
 #endif
