@@ -15,7 +15,7 @@ fn_void *gCurrentBlitter;
 void Font_TextColor(int color);
 void Font_TextTint(int rgb);
 void Font_SetABR(int abr);
-int Font_Blit(int x,int y,void *src,int u,int v,charactertbl *ch,int arg6);
+void Font_Blit(int x,int y,void *src,int u,int v,charactertbl *ch,int arg6);
 void Font_ComputeColors(int colour,int forecolour,int backcolour,char in_game);
 charactertbl * Font_Getcharacter(int targetindex);
 void Font_SetBlitter(fn_void *blitter);
@@ -61,7 +61,7 @@ void Font_SetABR(int abr)
 }
 
 /* ---- Font_Blit__FiiPviiP12charactertbli  [FONT.CPP:128-152] SLD-FLAG:NONMONO ---- */
-int Font_Blit(int x,int y,void *src,int u,int v,charactertbl *ch,int arg6)
+void Font_Blit(int x,int y,void *src,int u,int v,charactertbl *ch,int arg6)
 
 {
   int fontClut;
@@ -97,7 +97,7 @@ int Font_Blit(int x,int y,void *src,int u,int v,charactertbl *ch,int arg6)
   uVar1 = fontClut << 0x10 | (((iVar2 << 4) >> 0x14) + v & 0xffU) << 8 | u;
   *(u_int *)(sprt + 0xc) = uVar1;
   SetSemiTrans(sprt,1);
-  return uVar1;
+  return;   /* Font_Blit is void per disasm-v3 (Ghidra void-return mis-infer) */
 }
 
 /* ---- Font_ComputeColors__Fiiic  [FONT.CPP:168-280] SLD-VERIFIED ---- */
