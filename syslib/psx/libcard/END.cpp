@@ -10,6 +10,9 @@ extern "C" void FlushCache(void);           /* BIOS A0:0x44 @0x800F43D4 */
 static int *_bios_b0_table(int idx)
 {
     int *t;
+    /* BIOS B0-table thunk. Oracle disasm-v3 _patch_card @0x8010CA78: `$t1=<func#>; $t2=0xB0;
+     * jalr $t2; ... = $v0`. PsyQ aspsx needs NUMERIC reg names in asm text (no ABI mnemonics):
+     * $t1=$9 (func#), $t2=$10 (=0xB0), $v0=$2 (ret), $a0=$4 (=%1). Same physical regs as oracle. */
     __asm__ volatile("move $9,%1\n\t li $10,0xB0\n\t jalr $10\n\t nop\n\t move %0,$2"
                      : "=r"(t) : "r"(idx) : "t1", "t2", "ra", "v0", "memory");
     return t;
