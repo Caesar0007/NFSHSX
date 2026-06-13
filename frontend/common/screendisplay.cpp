@@ -10,19 +10,15 @@ void tScreenDisplay::DrawBackground()
 
 {
   short fade;
-  int shapeIdx;
   int i;
-  int shapeFlags;
-  int shapeX;
-  int shapeY;
-  
+
   fade = (short)((menuDefs->menuDisplayOptions).fScreenFade >> 1);
   i = 0;
   if (0x80 < fade) {
     fade = 0x80;
   }
   do {
-    DrawShapeExtended(shapeIdx,shapeFlags,shapeX,shapeY,(int)fade,0,
+    DrawShapeExtended(0xB,0,0,0,(int)fade,0,    /* H15: args 0-3 were uninitialized; oracle 0x80045998 $a0=$s0+0xB=11 (const, set once before loop), $a1=$a2=$a3=0 */
                (tDrawShapeExtended *)0x0);
     i = i + 1;
   } while (i < 0x20);
