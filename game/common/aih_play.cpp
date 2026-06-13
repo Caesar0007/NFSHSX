@@ -1476,7 +1476,7 @@ void AIHigh_Player::HandleCops()
 
         (this->_base_AIHigh_BasicPerp).basicPerpInfo_.copsAssigned_[1] < 1) {
 
-      (this->perpChaseInfo_).copFreeTicks_ = (this->perpChaseInfo_).copFreeTicks_;
+      (this->perpChaseInfo_).copFreeTicks_ = (this->perpChaseInfo_).copFreeTicks_ + AI_elapsedTime;   /* H28: += dropped (m2c self-assign fold); oracle 0x80062C28-34 */
 
     }
 
