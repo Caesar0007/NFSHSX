@@ -770,7 +770,6 @@ void ScaleShapeExtended(int index,int flags,int x,int y,int fade,int abr,tDrawSh
 
 {
   tTexture_ShapeInfo *shapeTbl;
-  int shp;
   tTexture_ShapeInfo *tShp;
   int scalex;
   int scaley;
@@ -785,16 +784,18 @@ void ScaleShapeExtended(int index,int flags,int x,int y,int fade,int abr,tDrawSh
   if ((flags & 0x200) != 0) {
     shapeTbl = extra->custom_shapes;
   }
-  AdjustShapeDrawing
-            ((tTexture_ShapeInfo *)(0x80 - fade),&x,&y,&flags,(0x80 - fade) * 0x10000 >> 0x10,color,
-             extra);
+  /* @0x8004EAE4-E8 / EB14 / EB50: tShp = shapeTbl + index (index*0x20) is passed as $a0 to
+   * AdjustShapeDrawing and both Scale draw calls. The recon used (tTexture_ShapeInfo*)(0x80-fade) as the
+   * AdjustShapeDrawing shape arg (the bright value mis-decoded into the pointer slot) and an
+   * uninitialized `shp` for shapeTbl+shp in both Scale calls -- all should be tShp (the same uninit
+   * shape-pointer class fixed in DrawShapeExtended/M16; this is the ScaleShapeExtended sibling). */
+  tShp = shapeTbl + index;
+  AdjustShapeDrawing(tShp,&x,&y,&flags,(0x80 - fade) * 0x10000 >> 0x10,color,extra);
   if ((flags & 0xc0U) == 0) {
-    ScaleFlatShape
-              (shapeTbl + shp,flags,x,y,0x20000,0x10000,color,abr);
+    ScaleFlatShape(tShp,flags,x,y,0x20000,0x10000,color,abr);
   }
   else {
-    ScaleGouraudShape
-              (shapeTbl + shp,flags,x,y,0x20000,0x10000,color,abr);
+    ScaleGouraudShape(tShp,flags,x,y,0x20000,0x10000,color,abr);
   }
   return;
 }
