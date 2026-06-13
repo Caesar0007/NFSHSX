@@ -12,7 +12,7 @@ extern "C" int          decodeshiftjis(unsigned char **cursor); /* @0x801069EC *
 extern "C" unsigned int remapshiftjiscode(unsigned int c)
 {
     if (c - 0x20 < 0x60)
-        c = (unsigned int)*(unsigned short *)(&DAT_8013bd50 + (c - 0x20) * 2);
+        c = (unsigned int)*(unsigned short *)((char *)&DAT_8013bd50 + (c - 0x20) * 2);  /* H03: byte stride (c-0x20)*2 per oracle 0x801069D8 ($a1<<1); &DAT is u16*, so cast to byte* first */
     return c;
 }
 
