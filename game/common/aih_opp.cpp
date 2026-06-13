@@ -9,6 +9,9 @@
 #include "../../nfs4_types.h"
 #include "aih_opp_externs.h"
 
+extern int          AI_elapsedTime;     /* H24: ai.cpp @0x8013C554 (not in this TU's externs) */
+extern AIHigh_Base *highLevelAIObjs[];  /* H24: @0x8010CD38 (not in this TU's externs) */
+
 
 /* ---- CheckForWipeOut__15AIHigh_Opponent  AIHigh_Opponent::CheckForWipeOut  [AIH_OPP.CPP:38-94] SLD-VERIFIED ---- */
 
@@ -56,20 +59,40 @@ void AIHigh_Opponent::CheckForWipeOut()
 
                 ((this->_base_AIHigh_Player)._base_AIHigh_BasicPerp._base_AIHigh_Base.carObj_)->wipeOutEndTick)) {
 
-      randtemp = fastRandom * randSeed;
+      Car_tObj *oppCar = (this->_base_AIHigh_Player)._base_AIHigh_BasicPerp._base_AIHigh_Base.carObj_;
 
-      fastRandom = randtemp & 0xffff;
-
+      /* H24: reconstructed pre-loop roll + per-human-race-car wipe-out loop (oracle 0x800633AC-0x800634D8;
+         recon had an EMPTY loop AND dropped the pre-loop conditional store -> wipe-out timer never re-armed). */
+      randtemp    = fastRandom * randSeed;                        /* 0x800633AC */
+      fastRandom  = randtemp & 0xffff;                            /* 0x800633C8/E4 */
+      randVal     = (int)(randtemp >> 8) & 0xffff;                /* $t1, 0x800633D4-D8 */
+      perTickProb = AI_elapsedTime * 2 + AI_elapsedTime;          /* $a0 = 3*ae, 0x800633BC-C0 */
+      if (randVal < perTickProb) {                                /* 0x800633DC-E8 */
+        oppCar->wipeOutEndTick = simGlobal.gameTicks + 0xC0;      /* 0x800633EC-F8 */
+      }
       iVar2 = 0;
-
       if ((this->_base_AIHigh_Player).perpChaseInfo_.bestChaseLevelIndex_ !=
-
           ((this->_base_AIHigh_Player).perpChaseInfo_.copGameInfo_)->numLevels + -1) {
-
-        for (; iVar2 < Cars_gNumHumanRaceCars; iVar2 = iVar2 + 1) {
-
+        oppLevel = *(int *)((char *)this + 148);                  /* $t7, prologue */
+        oppFines = *(int *)((char *)oppCar + 932);                /* $t6, prologue */
+        for (hLoop = 0; hLoop < Cars_gNumHumanRaceCars; hLoop = hLoop + 1) {   /* 0x80063450 */
+          Car_tObj    *carObj_h     = Cars_gHumanRaceCarList[hLoop];           /* 0x8006345C */
+          int          field1380    = *(int *)((char *)carObj_h + 1380);       /* 0x80063468 */
+          int          absField1380 = (field1380 < 0) ? -field1380 : field1380;/* 0x80063474-7C */
+          AIHigh_Base *tableEntry   = highLevelAIObjs[*(int *)((char *)carObj_h + 596)]; /* carIndex, 0x80063464-84 */
+          int          oppFines_v1  = *(int *)((char *)carObj_h + 932);        /* 0x80063488 */
+          int          state        = *(int *)((char *)tableEntry + 148);      /* 0x8006348C */
+          if (0xd5554 < absField1380) {                                        /* 0x80063480/90 */
+            if (state < 2 && !(oppLevel < 3)) {                                /* 0x80063494-A0: skips the fines check */
+              /* branch 0x800634A0's DELAY SLOT (0x800634A4 $a0=$t2<<2=116*ae) runs before reaching RANDGATE */
+              if (randVal < AI_elapsedTime * 116)                              /* 0x800634B8 */
+                oppCar->wipeOutEndTick = simGlobal.gameTicks + 0xC0;           /* 0x800634C4-D0 */
+            } else if (2 <= oppFines_v1 - oppFines) {                          /* 0x800634A8-B0 (skip if <2) */
+              if (randVal < AI_elapsedTime * 116)                             /* $t2<<2, 0x800634B4-BC */
+                oppCar->wipeOutEndTick = simGlobal.gameTicks + 0xC0;           /* 0x800634C4-D0 */
+            }
+          }
         }
-
       }
 
     }
