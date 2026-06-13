@@ -125,11 +125,7 @@ void tScreenCongrats::DrawBackground()
   int fadeAmt;
   int bannerframe;
   tCarInfo *carInfo;
-  int scale;
   int fJustFadeOff;
-  int shapeFlags;
-  int shapeX;
-  int shapeY;
   tDrawShapeExtended drawFlags;
   tDrawShapeExtended drawFlags2;
   tDrawShapeExtended drawFlags3;
@@ -234,19 +230,21 @@ void tScreenCongrats::DrawBackground()
     }
     if (bDrawSpin) {
       fadeAmt = 0;
-      ScaleShapeExtended
-                (scale,shapeFlags,shapeX,shapeY,0,0,&drawFlags);
+      ScaleShapeExtended    /* @0x80048584 idx=framenum(132) flags=0x410 x=0 y=(off100==1?0xA:0) */
+                (this->framenum,0x410,0,
+                 (this->congratsMessage == kScreenCongrats_Eliminated) ? 0xA : 0,0,0,&drawFlags);
     }
     else {
       fadeAmt = 0;
-      DrawShapeExtended
-                (bannerframe,shapeFlags,shapeX,shapeY,0,0,&drawFlags);
+      DrawShapeExtended     /* @0x800485c0 idx=framenum flags=0x410 x=0 y=(off100==1?0xA:0) */
+                (this->framenum,0x410,0,
+                 (this->congratsMessage == kScreenCongrats_Eliminated) ? 0xA : 0,0,0,&drawFlags);
     }
     if (1 < this->trophy - kTrophyCar) {
       bannerframe = ticks / 6 + (ticks >> 0x1f);
       fadeAmt = 0x46;
-      ScaleShapeExtended
-                (scale,shapeFlags,shapeX,shapeY,0,0,&drawFlags2);
+      ScaleShapeExtended    /* @0x80048630 idx=(ticks/6)%32 flags=0x610 x=0x46 y=0xF */
+                ((ticks / 6) % 0x20,0x610,0x46,0xF,0,0,&drawFlags2);
     }
     if (kTrophyBronze < this->trophy) {
       if (this->smallSpinningThing == kSpinningGold) {
@@ -257,8 +255,8 @@ void tScreenCongrats::DrawBackground()
           trap(0x1800);
         }
         fadeAmt = 0x29;
-        ScaleShapeExtended
-                  (scale,shapeFlags,shapeX,shapeY,0,0,&drawFlags2);
+        ScaleShapeExtended    /* @0x800486c0 idx=(ticks>>3)%fNumSmallSpinShapes flags=0x610 x=0x29 y=0xBE */
+                  ((ticks >> 3) % this->fNumSmallSpinShapes,0x610,0x29,0xBE,0,0,&drawFlags2);
       }
       else if (this->smallSpinningThing == kSpinningMemCard) {
         drawFlags.tint[0] = 0x551e00;
@@ -269,8 +267,8 @@ void tScreenCongrats::DrawBackground()
           trap(0x1800);
         }
         fadeAmt = -0xc1;
-        DrawShapeExtended
-                  (bannerframe,shapeFlags,shapeX,shapeY,0,0,&drawFlags);
+        DrawShapeExtended     /* @0x80048744 idx=(ticks/20)%fNumSmallSpinShapes flags=0x610 x=-0xC1 y=0x56 */
+                  ((ticks / 0x14) % this->fNumSmallSpinShapes,0x610,-0xC1,0x56,0,0,&drawFlags);
       }
     }
   }
@@ -298,14 +296,16 @@ DrawBgCongrats_setFadeIdx:
     i = 0x30022;
   }
 DrawBgCongrats_emitShape:
+  /* loop base shape-index $s1 (oracle @0x800487b4-c4: off100==0 -> 0x2A, else 0x15) */
+  bannerframe = (this->congratsMessage == kScreenCongrats_Congrats) ? 0x2A : 0x15;
   drawFlags3.tint[0] = CalcFadeVal(i,fadeAmt);
   if ((this->congratsMessage == kScreenCongrats_Congrats) && (i = 1, this->trophy != kTrophyCar)
      ) {
     j = 0;
     do {
       if (i != (j - (i >> 0x1f)) * 3) {
-        DrawShapeExtended
-                  (j,shapeFlags,shapeX,shapeY,
+        DrawShapeExtended    /* @0x80048840 loop1 idx=bannerframe flags=0x410 x=i*2 y=0 */
+                  (bannerframe,0x410,i * 2,0,
                    (int)(this->_base_tScreen).fScreenFadeVal,1,&drawFlags3);
       }
       i = i + 1;
@@ -316,8 +316,8 @@ DrawBgCongrats_emitShape:
     do {
       carInfo = carShape;
       if (i != ((int)carInfo - (i >> 0x1f)) * 3) {
-        DrawShapeExtended
-                  ((int)carInfo,shapeFlags,shapeX,shapeY,
+        DrawShapeExtended    /* loop2/3 idx=bannerframe flags=0x410 x=i*2 y=0 (@0x800488a4/0x80048910) */
+                  (bannerframe,0x410,i * 2,0,
                    (int)(this->_base_tScreen).fScreenFadeVal,1,&drawFlags3);
       }
       i = i + 1;
@@ -330,8 +330,8 @@ DrawBgCongrats_emitShape:
     do {
       carInfo = carShape;
       if (i != ((int)carInfo - (i >> 0x1f)) * 3) {
-        DrawShapeExtended
-                  ((int)carInfo,shapeFlags,shapeX,shapeY,
+        DrawShapeExtended    /* loop2/3 idx=bannerframe flags=0x410 x=i*2 y=0 (@0x800488a4/0x80048910) */
+                  (bannerframe,0x410,i * 2,0,
                    (int)(this->_base_tScreen).fScreenFadeVal,1,&drawFlags3);
       }
       i = i + 1;
