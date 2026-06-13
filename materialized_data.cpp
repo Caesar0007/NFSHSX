@@ -6,6 +6,7 @@
 
 /* ---- extern-referenced game globals (typed to match their declarations) ---- */
 short gFadeBrightness = 128;  /* @0x80052a50 */
+char *DAT_80116470 = 0;  /* @0x80116470 bss (zero in nfs4-f.exe) -- AI bigfile path prefix (char*), set at runtime; the "%s..bin" sprintf arg in AISpeeds_ReadTuningInfo (H34) */
 int ReverseRoadSurfaceFrictionCoeff[10] = { 59637, 62259, 65536, 69009, 72744, 77070, 81920, 87162, 93716, 131072 };  /* @0x80116558 */
 int Sched_ExecuteTimes[7] = { 0, 1, 2, 4, 8, 16, 32 };  /* @0x8011dfdc */
 int Sched_ExecuteElapsedTimes[7] = { 32, 32, 16, 8, 4, 2, 1 };  /* @0x8011dff8 */

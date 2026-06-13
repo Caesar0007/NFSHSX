@@ -5,7 +5,7 @@
 #include "../../nfs4_types.h"
 #include "aispeeds_externs.h"
 
-extern char *DAT_80116470;   /* @0x80116470 -- AI bigfile path prefix for the "%s...bin" sprintf (H34; unmaterialized, #75) */
+extern char *DAT_80116470;   /* @0x80116470 -- AI bigfile path prefix (char*); materialized (bss=0) in materialized_data.cpp */
 
 
 /* ---- aispeeds.obj-owned globals (.bss zero) ---- */
