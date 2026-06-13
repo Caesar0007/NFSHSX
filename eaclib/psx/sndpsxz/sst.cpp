@@ -151,7 +151,7 @@ extern "C" void iSNDstreamreleasecallback(int sample)
  *   played out remove it.  Overflow rolls into the next request. */
 extern "C" void iSNDstreamnotifycallback(int handle, unsigned int bytes)
 {
-    int S = (&sndss)[sndStreamMap[handle]];
+    int S = (&sndss)[(signed char)sndStreamMap[handle]];   /* oracle lb @0x800e8df0 sign-extends */
     do {
         int          req  = MI(S, 0);                   /* head request */
         unsigned int over = 0;
