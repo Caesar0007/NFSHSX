@@ -27,13 +27,13 @@ struct DCB {
 #define BIOS_DCB_BASE   (*(DCB *volatile *)0x150)   /* @kernel 0x150 : DCB table base pointer */
 #define BIOS_DCB_BYTES  (*(volatile int  *)0x154)   /* @kernel 0x154 : DCB table size in bytes */
 
-typedef int (*FirstFn)(int *state, int arg);
+typedef int (*FirstFn)(int *state, int arg, int arg2);
 
 static FirstFn _first_save;          /* @0x80148A7C : saved original device handler */
 static char    _first_devname[16];   /* @0x80148A84 : device prefix extracted from `name` */
 
 /* @0x80109F5C : _first_patch -- restore the device's real handler, then forward the call. */
-static int _first_patch(int *state, int arg)
+static int _first_patch(int *state, int arg, int arg2)
 {
     DCB *e, *end;
 
@@ -47,7 +47,7 @@ static int _first_patch(int *state, int arg)
             break;
         }
     }
-    return (*_first_save)(state, arg);
+    return (*_first_save)(state, arg, arg2);   /* forward $a2=$s5 too (oracle @0x8010a034) */
 }
 
 /* @0x80109DC0 : firstfile */
