@@ -1772,7 +1772,7 @@ LAB_8006322c:
 
   }
 
-  iVar2 = (this->_base_AIHigh_BasicPerp).beatingTicksLeft_;
+  iVar2 = (this->_base_AIHigh_BasicPerp).beatingTicksLeft_ - AI_elapsedTime;   /* H29: decrement dropped (m2c self-assign fold); oracle 0x80062DA0-B8 store+test the decremented value */
 
   (this->_base_AIHigh_BasicPerp).beatingTicksLeft_ = iVar2;
 
