@@ -12,12 +12,13 @@ extern "C" int iSNDatolrv(int angle, int level, int *out_l, int *out_r);        
  *   law) then take their magnitudes -- this absolute variant ignores phase. */
 extern "C" int iSNDatolrv(int angle, int level, int *out_l, int *out_r)
 {
-    unsigned int r;
     iSNDlibatodlrv(angle, level, out_l, out_r);
+    /* @0x8010B0C4-D4 abs(*out_l); @0x8010B0D8-E8 abs(*out_r). The return ($v0) is the (now non-negative)
+     * *out_r in BOTH branches. The recon computed r=-*out_r UNCONDITIONALLY and returned r, so for
+     * *out_r>=0 it returned a wrong-sign (negative) magnitude where the oracle returns abs(*out_r) (M05). */
     if (*out_l < 0)
         *out_l = -*out_l;
-    r = (unsigned int)(-*out_r);
     if (*out_r < 0)
-        *out_r = (int)r;
-    return (int)r;
+        *out_r = -*out_r;
+    return *out_r;
 }
