@@ -869,8 +869,7 @@ void Camera_UpdateTVCam(int player)
   int iVar1;
   int iVar2;
   coorddef *b;
-  int iVar3;
-  
+
   b = &Camera_gInfo[player].position;
   iVar1 = Math_Dist3D(&(Camera_gInfo[player].target)->position,b);
   if (iVar1 < 1) {
@@ -880,11 +879,13 @@ void Camera_UpdateTVCam(int player)
   else {
     iVar1 = Math_Dist3D(&(Camera_gInfo[player].target)->position,b);
   }
-  iVar3 = player * 4;
   iVar2 = Camera_gInfo[player].position.x;
-  if (*(int *)("" + iVar3) != iVar2) {
-    *(int *)("" + iVar3) = iVar2;
-    *(int *)("" + iVar3) = Camera_gInfo[player].position.y;
+  /* @0x80081EC4-F14: TWO distinct fn-statics indexed by player*4 -- lastX[2]@0x8013DD88 and
+   * lastY[2]@0x8013DD90 (8 bytes apart). The reconstruction routed every access through one
+   * Ghidra-ism `*(int*)("" + iVar3)` placeholder, collapsing lastY into lastX (H43). */
+  if (lastX[player] != iVar2) {
+    lastX[player] = iVar2;
+    lastY[player] = Camera_gInfo[player].position.y;
   }
   iVar2 = fixedmult(Camera_gInfo[player].TVHeight >> 2,(iVar1 >> 4) + -0x4000);
   if (Camera_gInfo[player].TVHeight < iVar2) {
@@ -893,7 +894,7 @@ void Camera_UpdateTVCam(int player)
   if (iVar2 < 0) {
     iVar2 = 0;
   }
-  Camera_gInfo[player].position.y = *(int *)("" + iVar3) + iVar2;
+  Camera_gInfo[player].position.y = lastY[player] + iVar2;   /* @0x80081F64 read lastY[player] */
   SetCameraZoom(player,iVar1 >> 4);
   return;
 }
