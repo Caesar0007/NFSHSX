@@ -35,3 +35,6 @@ Thumbs.db
 _ccpsx_gate.json
 _link_report.json
 _link_analysis.json
+build_obj/
+_ccpsx_objs.json
+_ccpsx_link.txt
