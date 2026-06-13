@@ -10,8 +10,8 @@ extern "C" void FlushCache(void);           /* BIOS A0:0x44 @0x800F43D4 */
 static int *_bios_b0_table(int idx)
 {
     int *t;
-    __asm__ volatile("move $t1,%1\n\t li $t2,0xB0\n\t jalr $t2\n\t nop\n\t move %0,$v0"
-                     : "=r"(t) : "r"(idx) : "$t1", "$t2", "$ra", "$v0", "memory");
+    __asm__ volatile("move $9,%1\n\t li $10,0xB0\n\t jalr $10\n\t nop\n\t move %0,$2"
+                     : "=r"(t) : "r"(idx) : "t1", "t2", "ra", "v0", "memory");
     return t;
 }
 #endif
