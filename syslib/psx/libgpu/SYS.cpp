@@ -502,7 +502,7 @@ static int _drs(void *rect, u_long *data)
     rs[3] = ch;
     int words = ((int)rs[2] * (int)rs[3] + 1) >> 1;
     if (words <= 0)
-        return 0;
+        return -1;
     int blocks    = words >> 4;
     int remainder = words & 0xf;
     while ((*GPU_GP1 & 0x04000000) == 0)         /* wait until ready for DMA */
