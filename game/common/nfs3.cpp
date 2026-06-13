@@ -66,7 +66,7 @@ void Nfs2_BefuddleCode(void)
   loop = 0;
   src = befuddleExtensions;
   do {
-    strcpy("",*src);
+    strcpy(befuddleTemp,*src);
     loop = loop + 1;
     src = src + 1;
   } while (loop < 0xe);
