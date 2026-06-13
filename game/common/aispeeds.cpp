@@ -1173,17 +1173,17 @@ int AISpeeds_GetUpgradeTopSpeedMult(int carIndex)
   int topSpeedMult;
   int a;
   Car_tObj *pCVar1;
-  
+
   pCVar1 = Cars_gList[carIndex];
   a = 0x10000;
   if (pCVar1->carInfo->EngineMods == 1) {
-    a = fixedmult(0x10000,0);
+    a = fixedmult(0x10000,engineUpgrade.topSpeedMult);   /* @0x8006F384 $a1=*(&lbl_8010DCEC)=engineUpgrade[+0xC]=topSpeedMult (H39) */
   }
   if (pCVar1->carInfo->WeightTransfer == 1) {
-    a = fixedmult(a,0);
+    a = fixedmult(a,suspensionUpgrade.topSpeedMult);   /* @0x8006F3AC $a1=*(&lbl_8010DCFC)=suspensionUpgrade[+0xC] */
   }
   if (pCVar1->carInfo->GroundEffects == 1) {
-    a = fixedmult(a,0);
+    a = fixedmult(a,aeroUpgrade.topSpeedMult);   /* @0x8006F3D4 $a1=*(&lbl_8010DD0C)=aeroUpgrade[+0xC] */
   }
   return a;
 }
