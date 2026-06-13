@@ -23,6 +23,7 @@ extern "C" void bzero(void *p, unsigned n);           /* libc C40 @0x8010A540 */
 extern "C" int            _padIntExec;
 extern "C" int            _padModeMtap;
 extern "C" int            _padSioChan;
+extern "C" int            _padChanStop;   /* loop-again bound (==2 direct driver); @0x800fdf84 */
 extern "C" int            _padSioState;
 extern "C" int            _padTotalCurr;
 extern "C" unsigned char *_padInfoDir;
@@ -135,7 +136,7 @@ extern "C" unsigned char *_pad_failall(int flag)
         JOY_CTRL = 0;
         _padSioChan = _padSioChan + 1;
         ret = (unsigned char *)1;
-        if (_padSioChan < 2)
+        if (_padSioChan <= _padChanStop)   /* oracle @0x800fdf94-98: call iff !(_padChanStop < _padSioChan) */
             ret = (unsigned char *)(unsigned long)
                   _padInitSioMode(_pad_info + _padSioChan * 0xf0);
         flag = 0xffff;
