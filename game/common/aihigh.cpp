@@ -556,7 +556,11 @@ AIHigh_Base::AIHigh_Base(Car_tObj *carObj)
 
   (new(this_00) AIState_Base(this->carObj_));
 
-  this_00->_vf = (__vtbl_ptr_type (*) [4])AIHigh_Base_vtable;
+  /* @0x8005B360-364: the AIState_Base sub-object (state_, placement-new'd above) carries the AIState_None
+   * vtable (0x80054E1C), NOT AIHigh_Base_vtable (0x80054E04, 0x18 earlier). The recon wrote AIHigh_Base's
+   * vtable, so virtual dispatch through state_ (Execute/dtor/TestForRelease) hit the wrong slots. The
+   * [4]-cast already matched AIState_None_vtable[4] @0x80054e1c (AIHigh_Base_vtable is [3]) (M18). */
+  this_00->_vf = (__vtbl_ptr_type (*) [4])AIState_None_vtable;
 
   pAVar1 = this->state_;
 
