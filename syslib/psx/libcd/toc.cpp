@@ -64,16 +64,18 @@ extern "C" int CdGetToc2(int /*n*/, u_char *toc)
         p += 4;
     }
 
-    if (CD_debug >= 2) {
+    if (CD_debug >= 2) {                         /* @0x80109444 if(CD_debug<2) skip to retail exit */
         int     k;
         u_char *q = toc;
-        for (k = 0; k < cnt; k++) {
+        for (k = 0; k < cnt; k++) {              /* print loop, bound $s1=cnt-1 (@0x80109448) */
             printf("CdGetToc2: %02x:%02x:00\n", q[0], q[1]);
             q += 4;
         }
+        CdSyncCallback(save);
+        return cnt - 1;                          /* $v0 = $s1 = cnt-1 (@0x8010948c) */
     }
     CdSyncCallback(save);
-    return cnt;
+    return (int)p;                               /* retail: $v0 = $s1 = toc write ptr toc+4+cnt*4 (@0x80109480) */
 
 err:
     if (CD_debug != 0)
