@@ -42,7 +42,7 @@ extern "C" int  iSNDdmqueuesplit(int dst_spu, unsigned int src_ram, int len, uns
 /* cop0 Status read/write -- the queue mutations run with interrupts masked on target (host: plain). */
 #if defined(__mips__)
 static inline unsigned int rd_sr(void) { unsigned int s; __asm__ volatile("mfc0 %0,$12" : "=r"(s)); return s; }
-static inline void wr_sr(unsigned int s) { __asm__ volatile("mtc0 %0,$12" :: "r"(s)); }
+static inline void wr_sr(unsigned int s) { __asm__ volatile("mtc0 %0,$12" : : "r"(s)); }
 #else
 static unsigned int g_sr = 0;
 static inline unsigned int rd_sr(void) { return g_sr; }
