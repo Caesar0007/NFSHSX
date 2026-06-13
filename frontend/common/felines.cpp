@@ -27,8 +27,6 @@ void PSXTransDrawBrightEndLine(int col,int x,int y,int w,int h,int side,int fade
   int ga;
   int gb;
   int endbit;
-  int tx;
-  int ty;
   int hh;
   int ww;
   int gc;
@@ -106,7 +104,7 @@ TransBrightEnd_darksidesProcess:
     PSXDrawSquare(col,x,y,w,h);
   }
   else {
-    PSXDrawTransSquare(col,tx,ty,w,h,1);
+    PSXDrawTransSquare(col,x,y,w,h,1);   /* H12: was tx,ty (uninitialized; Ghidra lost the x/y reads) -- oracle 0x8004BDB0 $a1=$s2=x, $a2=$s4=y */
   }
   return;
 }
