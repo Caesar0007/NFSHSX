@@ -88,9 +88,9 @@ static void sdpacket_setirq_cs(void)
 #if defined(__mips__)
     unsigned int sr;
     __asm__ volatile("mfc0 %0,$12" : "=r"(sr));
-    __asm__ volatile("mtc0 %0,$12" :: "r"(sr & 0xfffffbfe));   /* mask IEc */
+    __asm__ volatile("mtc0 %0,$12" : : "r"(sr & 0xfffffbfe));   /* mask IEc */
     iSNDpacketsetirq();
-    __asm__ volatile("mtc0 %0,$12" :: "r"(sr));
+    __asm__ volatile("mtc0 %0,$12" : : "r"(sr));
 #else
     iSNDpacketsetirq();
 #endif
