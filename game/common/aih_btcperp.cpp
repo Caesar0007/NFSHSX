@@ -221,9 +221,10 @@ int AIHigh_BTC_Perp::CheckForControlsPressed()
 
   }
 
-  if (((Cars_gNumHumanRaceCars == 2) && (((*(int *)((char *)Cars_gHumanRaceCarList[0] + 0x260)) & 0x200) != 0)) &&
+  /* H20: player-2 check must read Cars_gHumanRaceCarList[1] (oracle 0x8005FA10 base 0x8010FA4C = list+4), not [0] */
+  if (((Cars_gNumHumanRaceCars == 2) && (((*(int *)((char *)Cars_gHumanRaceCarList[1] + 0x260)) & 0x200) != 0)) &&
 
-     (((*(u_short *)((char *)Cars_gHumanRaceCarList[0] + 0x43c)) != 0 || ((*(u_char *)((char *)Cars_gHumanRaceCarList[0] + 0x445)) == '\x01')))) {
+     (((*(u_short *)((char *)Cars_gHumanRaceCarList[1] + 0x43c)) != 0 || ((*(u_char *)((char *)Cars_gHumanRaceCarList[1] + 0x445)) == '\x01')))) {
 
     iVar1 = 1;
 
