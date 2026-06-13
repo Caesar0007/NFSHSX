@@ -185,7 +185,9 @@ void AIPhysic_HandleShifting(Car_tObj *carObj)
     (carObj->control).gear = (char)gear;
   }
   else {
-    carObj->aiShiftTimer = carObj->aiShiftTimer;
+    /* @0x800693F8-69408: aiShiftTimer -= AIPhysic_elapsedTime. m2c folded the subtraction into a
+     * self-assign (aiShiftTimer = aiShiftTimer), so the AI gear-shift timer never counted down (M20). */
+    carObj->aiShiftTimer = carObj->aiShiftTimer - AIPhysic_elapsedTime;
   }
   iVar2 = carObj->flywheelRpm;
   iVar1 = iVar3 - iVar2;
