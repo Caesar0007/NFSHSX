@@ -14,14 +14,13 @@ extern "C" int iSNDsin(int a);                /* @0x8010CC40 */
 extern "C" int iSNDsin(int a)
 {
     unsigned int quad = (unsigned int)(a >> 8) & 3;
-    unsigned int ph   = (unsigned int)a & 0xff;
     if (quad != 0) {
         if (quad != 1) {
             if (quad == 2)
-                return -(int)(unsigned int)snd_sine_table[ph];
-            return -(int)(unsigned int)snd_sine_table[0x100 - ph];
+                return -(int)(unsigned int)snd_sine_table[a];           /* quad 2: raw a (@0x8010cc94 a<<1) */
+            return -(int)(unsigned int)snd_sine_table[0x100 - a];       /* quad 3: raw a (@0x8010cca4) */
         }
-        ph = 0x100 - ph;
+        return (int)(unsigned int)snd_sine_table[0x100 - a];            /* quad 1: raw a (@0x8010cc80) */
     }
-    return (int)(unsigned int)snd_sine_table[ph];
+    return (int)(unsigned int)snd_sine_table[(unsigned int)a & 0xff];   /* quad 0: phase masked (@0x8010cc4c) */
 }
