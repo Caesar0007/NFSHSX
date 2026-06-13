@@ -1917,7 +1917,7 @@ void AIPhysic_FinishUp(Car_tObj *carObj)
   iVar1 = fixedmult(iVar2,AIPhysic_iTime);   /* H31: 2nd arg was 0 (oracle AIPhysic_iTime) */
   iVar2 = carObj->drag;
   (carObj->N).linearVel.z = (carObj->N).linearVel.z + iVar1;
-  for (iVar1 = 0; (iVar2 != 0 && (iVar1 < 0)); iVar1 = iVar1 + 1) {
+  for (iVar1 = 0; (iVar2 != 0 && (iVar1 < AIPhysic_elapsedTime)); iVar1 = iVar1 + 1) {   /* H32: bound was literal 0 (dead loop); oracle 0x8006C67C counter < AIPhysic_elapsedTime */
     iVar2 = fixedmult((carObj->N).linearVel.x,carObj->drag);
     iVar3 = (carObj->N).linearVel.y;
     iVar9 = carObj->drag;
