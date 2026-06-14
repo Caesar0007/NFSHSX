@@ -22,7 +22,7 @@ objs = sorted(os.path.basename(p) for p in glob.glob(os.path.join(S, '[0-9]*.obj
 stdlibs = ['-llibgte','-llibgpu','-llibgs','-llibetc','-llibapi','-llibcard',
            '-llibmcrd','-llibspu','-llibsnd','-llibcd','-llibpad','-llibpress',
            '-llibmath','-llibc2']
-argv = [CCPSX] + objs + ['-o','nfs4.cpe'] + stdlibs
+argv = [CCPSX, '-Xo0x80010000'] + objs + ['-o','nfs4.cpe'] + stdlibs   # -Xo: PSX RAM origin (default base is 0x0 -> won't run)
 r = subprocess.run(argv, env=ENV, cwd=S, capture_output=True, text=True, timeout=600)
 out = (r.stdout or '') + (r.stderr or '')
 open(os.path.join(S, '_dlink_out.txt'), 'w').write(out)
