@@ -15,7 +15,7 @@ extern tTexture_ShapeInfo *gCurrentShapes;           /* @0x800517cc */
 extern __vtbl_ptr_type tScreen_vtable[];             /* _vt.7tScreen */
 
 /* ===== statics owned by FEScreen.obj ===== */
-static int            _7tScreen_fSuppressLoadingText;   /* @0x800517C8 */
+extern int            _7tScreen_fSuppressLoadingText;  /* def in link_runtime.cpp */   /* @0x800517C8 */
 
 /* ===== rendering / view ===== */
 void  Draw_StartFrameRender();

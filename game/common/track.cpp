@@ -21,7 +21,7 @@ char *Track_gShapeNamePtrs_end[1] = { "tbon" };    /* @0x80055AC4 : [28] (loop-b
  * gcc2.7.2/ccpsx has no __attribute__((alias)); keep the alias for the modern pre-gate, and
  * resolve the underscore-symbol bridge (hudpmx.cpp) in the deferred linkage/hygiene pass. */
 #ifndef NFS4_PSYQ_HEADERS
-extern char *_Track_gShapeNamePtrs_end[] __attribute__((alias("Track_gShapeNamePtrs_end")));
+/* _Track_gShapeNamePtrs_end removed: hudpmx.cpp now uses Track_gShapeNamePtrs_end directly. */
 #endif
 char *Track_gTachNamePtrs[25] = {                  /* @0x80055AC8 : [29..53] */
     "nslk","nbz3","nhsv","nfor","nz28","ntra","ndb7","nxkr","nnm5","nvet",
@@ -1171,7 +1171,7 @@ void Track_InitPersistentData(SerializedGroup *perGroup)
   
   iVar2 = 0;
   gObjDefOffsetsGroup = (Group *)0x0;
-  tp3 = (char *)alloca((((u_int)(perGroup->m_num_elements << 5) >> 3) + 7 & 0xfffffff8));
+  tp3 = (char *)__builtin_alloca((((u_int)(perGroup->m_num_elements << 5) >> 3) + 7 & 0xfffffff8));
   tp4 = tp3;
   if (0 < perGroup->m_num_elements) {
     do {

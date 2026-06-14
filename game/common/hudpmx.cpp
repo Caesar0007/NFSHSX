@@ -99,7 +99,7 @@ void HudPmx_InitTextures(void)
     ppuVar1 = ppuVar1 + 4;
     puVar3 = puVar3 + 4;
   } while (ppuVar1 != (u_char **)&Track_gShapeNamePtrs_end);
-  *puVar3 = (u_char *)_Track_gShapeNamePtrs_end;
+  *puVar3 = (u_char *)Track_gShapeNamePtrs_end;
   puVar3 = local_4d0;
   ppuVar1 = (u_char **)&Track_gTachNamePtrs;
   do {

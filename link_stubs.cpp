@@ -14,3 +14,8 @@ extern "C" void STREAM_enterCS(void) {}
 extern "C" void STREAM_leaveCS(void) {}
 void FROOT_enterCS(void) {}   /* C++ linkage -> FROOT_enterCS__Fv */
 void FROOT_leaveCS(void) {}   /* C++ linkage -> FROOT_leaveCS__Fv */
+
+/* C++ trap(int)/trap(unsigned) overloads -> trap__Fi / trap__FUi (panic/div-trap; */
+/*   declared without extern "C" in screencongrats/screencontroller externs). Return. */
+void trap(int code)          { (void)code; }
+void trap(unsigned int code) { (void)code; }

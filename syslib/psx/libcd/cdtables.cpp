@@ -8,14 +8,17 @@
 
 extern "C" {
 
-const int _cd_result_flag[32] = {   /* @0x8013C08C */
+/* `extern` is REQUIRED: in C++ a file-scope `const` has INTERNAL linkage even
+ * inside extern "C" {} (which only sets C naming), so without it the symbol is
+ * never exported and drv.cpp/cdcont.cpp's `extern const int[]` stays unresolved. */
+extern const int _cd_result_flag[32] = {   /* @0x8013C08C */
     0, 0, 0, 1, 1, 1, 1, 0,         /* 0x00-0x07 */
     0, 0, 0, 0, 0, 0, 0, 0,         /* 0x08-0x0F */
     0, 0, 0, 0, 0, 1, 1, 0,         /* 0x10-0x17 */
     0, 0, 0, 1, 0, 0, 0, 0          /* 0x18-0x1F */
 };
 
-const int _cd_param_count[32] = {   /* @0x8013C18C */
+extern const int _cd_param_count[32] = {   /* @0x8013C18C */
     0, 0, 3, 0, 0, 0, 0, 0,         /* 0x00-0x07 : CdlSetloc(0x02)=3 */
     0, 0, 0, 0, 0, 2, 1, 0,         /* 0x08-0x0F : 0x0D=2, CdlSetmode(0x0E)=1 */
     0, 0, 1, 0, 1, 0, 0, 0,         /* 0x10-0x17 : 0x12=1, CdlGetTD(0x14)=1 */
