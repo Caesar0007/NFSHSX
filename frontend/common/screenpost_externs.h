@@ -46,7 +46,7 @@ static char WaitingString[50];            /* STAT @0x80052c58 */
 /* vtable data refs (Ghidra _DAT_) + per-class vtables */
 extern __vtbl_ptr_type tScreenCarSelect_vtable[], tScreenCarSelectDuel_vtable[], tScreenCarSelectTwoPlayer_vtable[], tScreenPinkSlipStandings_vtable[];
 /* singletons (EXT) */
-tScreenCarSelect *screenCarSelect;
+extern tScreenCarSelect *screenCarSelect;   /* def in screencarselect.cpp */
 
 /* ===== base ctor/dtor helpers ===== */
 void tScreen_ctor(tScreen*); void tScreen_dtor(tScreen*);
@@ -91,7 +91,7 @@ tTrackInformation *GetTrackByID(tTrackManager*, short); void GetTrackToRace(tTou
 int   LoadGame(...);
 void  MCRD_handlecardevents(...);
 char *Platform_GetDCTBuffer(...); void Platform_ResetDCTBuffer();
-void  Draw_MenuRenderingView(...); void *Draw_gPlayer1View;
+void  Draw_MenuRenderingView(...); extern void *Draw_gPlayer1View;   /* int def in render.cpp */
 void  SetOffset(...);
 void  SetValid(...); void Hide(void*); void Display(void*); void Redraw(void*);
 

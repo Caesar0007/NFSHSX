@@ -90,7 +90,7 @@ tTrackInformation *GetTrackByID(tTrackManager*, short); void GetTrackToRace(tTou
 int   LoadGame(...);
 void  MCRD_handlecardevents(...);
 char *Platform_GetDCTBuffer(...); void Platform_ResetDCTBuffer();
-void  Draw_MenuRenderingView(...); void *Draw_gPlayer1View;
+void  Draw_MenuRenderingView(...); extern void *Draw_gPlayer1View;   /* int def in render.cpp */
 void  SetOffset(...);
 void  SetValid(...); void Hide(void*); void Display(void*); void Redraw(void*);
 

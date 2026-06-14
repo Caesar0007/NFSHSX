@@ -75,7 +75,7 @@ extern "C" unsigned int inbetween(unsigned int a, unsigned int b, unsigned int c
 extern "C" int  decbufferusage(int s, int amount);                             /* @0x800FC374 */
 extern "C" int *getfreerequest(int s);                                         /* @0x800FC400 */
 extern "C" int  queuerequest(int s, int req);                                  /* @0x800FC478 */
-extern "C" int  locaterequest(int s, unsigned int reqid);                      /* @0x800FC4E4 */
+static int  locaterequest(int s, unsigned int reqid);                          /* @0x800FC4E4 */
 extern "C" int  freerequest(int s, int req);                                   /* @0x800FC548 */
 extern "C" unsigned int filterchunk(int s, int chunk);                         /* @0x800FC5E4 */
 extern "C" int  parsechunks(int s);                                            /* @0x800FC634 */
@@ -189,7 +189,7 @@ extern "C" int queuerequest(int s, int req)
 
 /* locaterequest @0x800FC4E4 : map a request id back to its slot, validating the slot index (low byte),
  *   the full id, and that the slot is in use.  Returns the request pointer or 0. */
-extern "C" int locaterequest(int s, unsigned int reqid)
+static int locaterequest(int s, unsigned int reqid)
 {
     unsigned int *req;
     if (MI(s, 0xc) <= (int)(reqid & 0xff))     /* slot index out of range */

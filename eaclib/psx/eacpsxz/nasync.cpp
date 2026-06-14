@@ -83,7 +83,7 @@ extern "C" int newrequestid(AsyncReq *r)
 
 /* locaterequest @0x800F0BF4 : id -> its live AsyncReq, or 0 if the id is invalid/stale.
  *   slot = id & 0xFF; valid only if id >= 0x100, slot < numrequests and request[slot].id == id. */
-extern "C" AsyncReq *locaterequest(int id)
+static AsyncReq *locaterequest(int id)
 {
     int slot;
     AsyncReq *r;

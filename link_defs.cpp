@@ -45,7 +45,7 @@ extern unsigned char gSndState[] __attribute__((alias("sndgs")));
 /* CF_DVLC @0x80123838-region NAME COLLISION NOTE: the game-side CF_DVLC is a 49096-byte BSS
  *   load/overlay buffer (asyncloadfileat target; speech-bank-pool overlay), NOT the MDEC table.
  *   psxfront/video/nfs3/draww take its address; zero-init BSS is faithful. */
-unsigned char CF_DVLC[49096];                              /* @BSS : 49096B load buffer */
+extern unsigned char CF_DVLC[];                            /* @BSS : 49096B load buffer */
 int sndmm;                                                 /* @80148780 588B */
 unsigned char sndpd;                                       /* @80147918 1836B FIXME storage undersized vs SYM 1836B (decl is scalar; buffer-base) */
 int sndpp;                                                 /* @80148578 52B */

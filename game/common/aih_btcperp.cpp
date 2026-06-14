@@ -2041,17 +2041,6 @@ AIHigh_BTC_Perp::~AIHigh_BTC_Perp()
 
 
 
-/* ---- Execute__17AIState_NonActive  AIState_NonActive::Execute  [AIH_BTCPERP.CPP:?] SLD-FLAG:NO_SLD ---- */
-
-void AIState_NonActive::Execute()
-
-
-
-{
-
-  return;
-
-}
 
 
 
@@ -2060,27 +2049,6 @@ void AIState_NonActive::Execute()
 
 
 
-/* ---- _._17AIState_NonActive  AIState_NonActive::dtor  [AIH_BTCPERP.CPP:?] SLD-FLAG:NO_SLD ---- */
-
-AIState_NonActive::~AIState_NonActive()
-
-
-
-{
-
-
-  
-
-  (this->_base_AIState_Base)._vf = (__vtbl_ptr_type (*) [4])AIState_NonActive_vtable;
-
-  (((this->_base_AIState_Base).carObj_)->N).active = '\x01';
-
-  (this->_base_AIState_Base)._vf = (__vtbl_ptr_type (*) [4])AIState_NonActive_vtable;
-
-
-  return;
-
-}
 
 
 
@@ -2089,17 +2057,6 @@ AIState_NonActive::~AIState_NonActive()
 
 
 
-/* ---- TestForRelease__12AIState_Base  AIState_Base::TestForRelease  [AIH_BTCPERP.CPP:?] SLD-FLAG:NO_SLD ---- */
-
-int AIState_Base::TestForRelease()
-
-
-
-{
-
-  return 0;
-
-}
 
 
 
@@ -2108,23 +2065,6 @@ int AIState_Base::TestForRelease()
 
 
 
-/* ---- _._12AIState_Base  AIState_Base::dtor  [AIH_BTCPERP.CPP:?] SLD-FLAG:NO_SLD ---- */
-
-AIState_Base::~AIState_Base()
-
-
-
-{
-
-
-  
-
-  this->_vf = (__vtbl_ptr_type (*) [4])AIState_Base_vtable;
-
-
-  return;
-
-}
 
 
 

@@ -4,5 +4,6 @@
  *   object (__SN_ENTRY_POINT/start @0x800E402C: set $sp, clear .bss from _bss_obj..._bss_objend, jump
  *   to main) is the target boot stub -- inherently machine code, not part of the recompilable tree. */
 
-/* @0x800E4024 : __main -- no global constructors to run. */
-extern "C" void __main(void) { }
+/* @0x800E4024 : __main -- no global constructors to run.
+ * Definition is owned by syslib/psx/2mbyte/2mbyte.cpp; declared here only. */
+extern "C" void __main(void);

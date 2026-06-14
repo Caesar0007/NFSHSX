@@ -6,6 +6,10 @@
 extern "C" void *reservememadr(int mode, unsigned size, int align); /* SN heap @0x800E533C */
 extern "C" void  purgememadr(void *p);                              /* SN heap @0x800E5540 */
 
+/* NOTE: the four __builtin_* allocator hooks are canonically defined in
+ * game/common/new.cpp (same VAs @0x800A3D5C/D84/DAC/DCC).  Disabled here to
+ * avoid multiply-defined-symbol LINK errors. */
+#if 0
 /* @0x800A3D5C (_OP_NEW)  : operator new */
 extern "C" void *__builtin_new(unsigned size)       { return reservememadr(0, size, 0); }
 /* @0x800A3D84 (_OP_VNEW) : operator new[] */
@@ -14,3 +18,4 @@ extern "C" void *__builtin_vec_new(unsigned size)   { return reservememadr(0, si
 extern "C" void  __builtin_delete(void *p)          { purgememadr(p); }
 /* @0x800A3DCC (_OP_VDEL) : operator delete[] */
 extern "C" void  __builtin_vec_delete(void *p)      { purgememadr(p); }
+#endif

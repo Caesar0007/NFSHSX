@@ -152,8 +152,8 @@ extern tScreenTrackRecords *screenTrackRecords;
 extern tScreenTrackSelect *screenTrackSelect;
 extern tScreenTrophyInfo *screenTrophyInfo;
 extern tScreenTrophyRoom *screenTrophyRoom;
-extern int tBlankMenuItemGoToMenuNFS4Button_vtable;
-extern int tBlankMenuItemNFS4LeftRightChoice_vtable;
+extern __vtbl_ptr_type tBlankMenuItemGoToMenuNFS4Button_vtable[];   /* real def in game/common/vtables_tmenu.cpp */
+extern __vtbl_ptr_type tBlankMenuItemNFS4LeftRightChoice_vtable[];   /* real def in game/common/vtables_tmenu.cpp */
 extern int tDialogYesNoTri_vtable;
 extern int tInsideBoxControllerLeftRightSlider_vtable;
 extern int tMemoryCardMenuItem_vtable;

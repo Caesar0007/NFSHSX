@@ -5,12 +5,12 @@
  */
 extern "C" void fixedsincos(unsigned int angle, int *s, int *c);   /* fsincos.obj */
 
-extern "C" int fixedxformx(int *out, int angle);   /* @0x800EABAC */
-extern "C" int fixedxformy(int *out, int angle);   /* @0x800EAC10 */
-extern "C" int fixedxformz(int *out, int angle);   /* @0x800EAC74 */
+static int fixedxformx(int *out, int angle);   /* @0x800EABAC */
+static int fixedxformy(int *out, int angle);   /* @0x800EAC10 */
+static int fixedxformz(int *out, int angle);   /* @0x800EAC74 */
 
 /* fixedxformx : rotation about X. */
-extern "C" int fixedxformx(int *out, int angle)
+static int fixedxformx(int *out, int angle)
 {
     int s, c;
     fixedsincos((unsigned int)angle, &s, &c);
@@ -20,7 +20,7 @@ extern "C" int fixedxformx(int *out, int angle)
 }
 
 /* fixedxformy : rotation about Y. */
-extern "C" int fixedxformy(int *out, int angle)
+static int fixedxformy(int *out, int angle)
 {
     int s, c;
     fixedsincos((unsigned int)angle, &s, &c);
@@ -30,7 +30,7 @@ extern "C" int fixedxformy(int *out, int angle)
 }
 
 /* fixedxformz : rotation about Z. */
-extern "C" int fixedxformz(int *out, int angle)
+static int fixedxformz(int *out, int angle)
 {
     int s, c;
     fixedsincos((unsigned int)angle, &s, &c);

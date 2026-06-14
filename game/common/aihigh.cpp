@@ -626,24 +626,6 @@ AIHigh_Base::~AIHigh_Base()
 
 
 
-/* ---- _._15AIHigh_BTC_Perp  AIHigh_BTC_Perp::dtor  [AIHIGH.CPP:267-276] SLD-VERIFIED ---- */
-
-AIHigh_BTC_Perp::~AIHigh_BTC_Perp()
-
-
-
-{
-
-  (this->_base_AIHigh_BasicPerp)._base_AIHigh_Base._vf = (__vtbl_ptr_type (*) [3])AIHigh_BasicPerp_vtable;
-
-
-  return;
-
-}
-
-
-
-
 
 
 
@@ -731,17 +713,6 @@ AIState_None::~AIState_None()
 
 
 
-/* ---- TestForRelease__12AIState_Base  AIState_Base::TestForRelease  [AIHIGH.CPP:?] SLD-FLAG:NO_SLD ---- */
-
-int AIState_Base::TestForRelease()
-
-
-
-{
-
-  return 0;
-
-}
 
 
 
@@ -750,23 +721,6 @@ int AIState_Base::TestForRelease()
 
 
 
-/* ---- _._12AIState_Base  AIState_Base::dtor  [AIHIGH.CPP:?] SLD-FLAG:NO_SLD ---- */
-
-AIState_Base::~AIState_Base()
-
-
-
-{
-
-
-  
-
-  this->_vf = (__vtbl_ptr_type (*) [4])AIState_Base_vtable;
-
-
-  return;
-
-}
 
 
 

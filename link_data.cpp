@@ -9,7 +9,7 @@ extern "C" {
 
 int Audio_direct3davail;                                       /* @8013d4fc 4B */
 tBTCPerpInfo BTCPerpInfo[2][10];                               /* @80120bc0 320B */
-int CD_nopen;                                                  /* @8013bf5c 4B */
+extern int CD_nopen;                                           /* @8013bf5c 4B */
 shapetbl * CarIO_Plate1[2];                                    /* @8013d748 8B */
 shapetbl * CarIO_Plate2[2];                                    /* @8013d750 8B */
 int CarIO_carPixMapCount;                                      /* @8013d73c 4B */

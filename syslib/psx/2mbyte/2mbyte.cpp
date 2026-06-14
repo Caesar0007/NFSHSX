@@ -32,8 +32,8 @@ extern unsigned int _stacksize;   /* linker sym: bytes reserved for the stack (s
 /* stack-top table @0x800E40D8 (real EXE bytes: four words, all 2 MiB); stup1 reads slot [1]. */
 static const unsigned int _stacktab[4] = { 0x00200000u, 0x00200000u, 0x00200000u, 0x00200000u };
 
-/* ---- __main @0x800E4024 : GCC global-ctor hook -- empty (SN runtime runs no ctor list here) ---- */
-void __main(void) { }
+/* ---- __main @0x800E4024 : GCC global-ctor hook -- provided by PsyQ libsn (crt0 pulls it). ---- */
+extern "C" void __main(void);
 
 /* ---- start @0x800E402C (stup2 -> stup1 -> stup0) : program entry point ---- */
 void start(void)
