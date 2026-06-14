@@ -71,7 +71,7 @@ unsigned char DAT_80135d58[256] = {
     0x88,0x48,0x49,0x89,0x4b,0x8b,0x8a,0x4a,0x4e,0x8e,0x8f,0x4f,0x8d,0x4d,0x4c,0x8c,
     0x44,0x84,0x85,0x45,0x87,0x47,0x46,0x86,0x82,0x42,0x43,0x83,0x41,0x81,0x80,0x40,
 };
-short DAT_80136cae;                                                                        /* @80136cae 0B IMG */
+/* DAT_80136cae owned by eaclib/psx/sndpsxz/scdvol.cpp (= 127, @0x80136CAE); stray dup removed (datamat audit) */
 unsigned char DAT_80136df0;                                                                /* @80136df0 0B IMG */
 unsigned short DAT_8013bd50 = 0x8140;                                                      /* @8013bd50 rcossin_tbl+0x4030 CPE 4081498167819481 */
 unsigned char DAT_8013be0f = 0x81;                                                         /* @8013be0f rcossin_tbl+0x40ef CPE 810110be13800001 */
