@@ -1,5 +1,7 @@
 /* link_trampolines.cpp -- AUTO-GENERATED flat->member bridges (LINK phase). */
 #include "nfs4_types.h"
+#include <stddef.h>
+inline void* operator new(size_t, void* p) { return p; }
 
 void Display(tDialogBase* a0) {
   a0->Display();
@@ -168,4 +170,34 @@ void ProcessInput(tScreen * a0, tPlayer a1, tInputKeyType & a2, tMenuCommand & a
 }
 tCarInfo * GetCarFromSimID(tCarManager * a0, short a1) {
   return (tCarInfo *)(a0->GetCarFromSimID(a1));
+}
+void tScreen_ctor(tScreen* a0) {
+  new((void*)a0) tScreen();
+}
+void tScreen_dtor(tScreen* a0, int a1) {
+  ((tScreen*)a0)->~tScreen();
+}
+void tDialogYesNo_ctor(tDialogYesNo* a0) {
+  new((void*)a0) tDialogYesNo();
+}
+void tListIterator_dtor(tListIterator* a0) {
+  ((tListIterator*)a0)->~tListIterator();
+}
+void tScreen_dtor(tScreen* a0) {
+  ((tScreen*)a0)->~tScreen();
+}
+void tScreenCarSelect_ctor(tScreenCarSelect* a0) {
+  new((void*)a0) tScreenCarSelect();
+}
+void tScreenCarSelect_dtor(tScreenCarSelect* a0) {
+  ((tScreenCarSelect*)a0)->~tScreenCarSelect();
+}
+void tScreenCarSelectTwoPlayer_dtor(tScreenCarSelectTwoPlayer* a0) {
+  ((tScreenCarSelectTwoPlayer*)a0)->~tScreenCarSelectTwoPlayer();
+}
+void tScreenCarSelectDuel_dtor(tScreenCarSelectDuel* a0) {
+  ((tScreenCarSelectDuel*)a0)->~tScreenCarSelectDuel();
+}
+void tScreenPinkSlipsCarSelect_dtor(tScreenPinkSlipsCarSelect* a0) {
+  ((tScreenPinkSlipsCarSelect*)a0)->~tScreenPinkSlipsCarSelect();
 }
