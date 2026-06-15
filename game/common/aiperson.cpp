@@ -257,11 +257,11 @@ void AIPerson_Startup(void)
   char acStack_80 [112];
   
   AIPerson_LoadGridAndSetPersonalityIndexes();
-  sprintf(acStack_80,"%sprsonal.bin");
+  sprintf(acStack_80,"%sprsonal.bin",Paths_Paths[2]);   /* byte-match backport: pass the %s path prefix (was missing) */
   pUVar1 = Udff_Opena(acStack_80,(char *)0x0,1);
   AIPerson_LoadPersonalityData(pUVar1);
   Udff_Close(pUVar1);
-  sprintf(acStack_80,"%sscripts.bin");
+  sprintf(acStack_80,"%sscripts.bin",Paths_Paths[2]);
   pUVar1 = Udff_Opena(acStack_80,(char *)0x0,1);
   AIPerson_LoadScriptData(pUVar1);
   Udff_Close(pUVar1);
@@ -276,7 +276,7 @@ void AIPerson_Startup(void)
   else {
     fmt = "%sglue.bin";
   }
-  sprintf(acStack_80,fmt);
+  sprintf(acStack_80,fmt,Paths_Paths[2]);
   pUVar1 = Udff_Opena(acStack_80,(char *)0x0,1);
   AIPerson_LoadGlue(pUVar1);
   Udff_Close(pUVar1);

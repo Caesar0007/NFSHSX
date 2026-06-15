@@ -18,5 +18,6 @@ extern int   Udff_GetInt(Udff_tInfo *handle);
 extern void AIScript_Assign(AIScript_t *aiscriptt,AIScript_tReactionDetails (*arg2) [7]);
 extern void Udff_Close(Udff_tInfo *handle);
 extern void Udff_GetBuffer(Udff_tInfo *handle,char *mem,int size);
+extern char *Paths_Paths[];   /* 0x80116468 (paths.obj); [2] = path prefix at +8 */
 
 #endif /* _GAME_COMMON_CAMERA_EXTERNS_H_ */
