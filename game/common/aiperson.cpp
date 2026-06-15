@@ -77,7 +77,9 @@ void AIPerson_SetPersonality(Car_tObj *carObj,int personalityIndex)
   iVar1 = personalityIndex % 5;
   carObj->personalityIndex = iVar1;
   carObj->personality = AIPerson_PersonalityData + iVar1;
-  AIScript_Assign(&carObj->script,(AIScript_tReactionDetails (*) [7])(AIPerson_ScriptData + iVar1 * 7));
+  /* byte-match backport: ScriptData is [9][7]; personality iVar1 selects row iVar1
+   * (iVar1*56 bytes). The prior `+ iVar1 * 7` overshot 7x (iVar1*392). */
+  AIScript_Assign(&carObj->script,AIPerson_ScriptData + iVar1);
   return;
 }
 
