@@ -34,7 +34,7 @@ void AITune_CleanUp2(void);
 int AITune_GetOneWay(void)
 {
   if (0xb < GameSetup_gData.track) {
-    return (u_int)(*(u_char *)(BWorldSm_slices + 0x3d) >> 4 == 0);
+    return (u_int)(*(u_char *)((int)BWorldSm_slices + 0x3d) >> 4 == 0);   /* byte-match backport: +61 bytes, not +0x3d*sizeof(Trk_NewSlice=32) */
   }
   return AITune_trackInfo[GameSetup_gData.track].oneWay;
 }
