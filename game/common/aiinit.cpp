@@ -122,10 +122,10 @@ void AIInit_Reset2(void)
       iVar2 = iVar2 + 1;
     } while (iVar2 < Cars_gNumCars);
   }
-  leaderBoard.leadHumanRacer = (Car_tObj *)0x0;
-  leaderBoard.leadRacer = (Car_tObj *)0x0;
-  leaderBoard.lastAIRacer = (Car_tObj *)0x0;
-  leaderBoard.leadAIRacer = (Car_tObj *)0x0;
+  leaderBoard.leadHumanRacer = Cars_gHumanRaceCarList[0];   /* byte-match backport: was (Car_tObj*)0x0 */
+  leaderBoard.leadRacer = Cars_gHumanRaceCarList[0];
+  leaderBoard.lastAIRacer = Cars_gAIRaceCarList[0];
+  leaderBoard.leadAIRacer = Cars_gAIRaceCarList[0];
   AIPhysic_Reset();
   AI_Info.blockingCars[2] = (Car_tObj *)0x0;
   AI_Info.blockingCars[1] = (Car_tObj *)0x0;
@@ -535,7 +535,7 @@ int AIInit_IsNonStandardCarFile(int index)
     piVar2 = puVar5 + 4;
   } while (puVar3 + 4 != (u_int *)(u_int *)(kAIInitNonStandardTable + 48));
   uVar6 = puVar3[5];
-  puVar5[4] = 0;
+  puVar5[4] = puVar3[4];   /* byte-match backport: was 0 (dropped element [48]) */
   puVar5[5] = uVar6;
   if (index < 0x32) {
     iVar4 = nonStandardList[index];
