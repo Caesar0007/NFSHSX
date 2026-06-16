@@ -75,60 +75,69 @@ void AIScript_SubmitPlayerAction(AIScript_t *script,int humCarIndex,AIScript_tPl
 /* ---- AIScript_ProcessActionsAndReactions__FP10AIScript_ti  [@0x8006f7f0] ---- */
 void AIScript_ProcessActionsAndReactions(AIScript_t *script,int elapsedTicks)
 {
-  AIScript_tReactionDetails*scriptData[7];
+  /* Byte-verified 100% body backported from the matching-decomp tree
+     (NFSHS-PSX-decomp aiscript.cpp, objdiff 100% vs nfs4-f.exe @0x8006f7f0).
+     The new_var2 hoist / do-while(0) / one-seven-two temps are the verified
+     source shape; behaviour is identical to a plain while-loop. */
+  AIScript_tReactionDetails (*scriptData) [7];
   int go;
-  int*lastReactionIndex;
-  AIScript_tAIReaction newReaction;
-  int newTime;
-  bool bVar1;
+  int one;
+  int seven;
+  int two;
+  int *lastReactionIndex;
+  AIScript_tReactionDetails *new_var2;
+  unsigned int new_var;
   int iVar2;
-  u_int uVar3;
-  int *piVar4;
-  AIScript_tReactionDetails (*paAVar5) [7];
-  
-  paAVar5 = script->data;
-  if (script->actionIndex == 7) {
-    bVar1 = true;
+  int newReaction;
+  int newTime;
+
+  scriptData = script->data;
+  if ((newReaction = script->actionIndex) == 7) {
+    go = 1;
     if (script->detectAction != 7) {
       script->actionIndex = script->detectAction;
+      script->actionHumCarIndex = script->detectHumCarIndex;
       script->detectAction = 7;
       script->reactionTicksLeft = 0;
-      piVar4 = script->lastReactionIndex + script->actionIndex;
-      script->actionHumCarIndex = script->detectHumCarIndex;
-      iVar2 = *piVar4;
-      script->reaction = 1;
-      script->reactionIndex = iVar2;
-      while (bVar1) {
+      lastReactionIndex = script->lastReactionIndex + script->actionIndex;
+      new_var = *lastReactionIndex;
+      one = (script->reaction = 1);
+      seven = 7;
+      two = 2;
+      script->reactionIndex = new_var;
+      new_var2 = *scriptData;
+     loopTop:
+      if (go != 0) {
         iVar2 = script->reactionIndex + 1;
         if ((iVar2 < 4) &&
-           (1 << ((u_char)(*paAVar5)[script->actionIndex].reaction[iVar2] & 0x1f) != 2)) {
+           ((newReaction = one << (u_char)new_var2[script->actionIndex].reaction[iVar2]) != two)) {
           script->reactionIndex = iVar2;
-          *piVar4 = *piVar4 + 1;
+          do { *lastReactionIndex = *lastReactionIndex + 1; } while (0);
         }
-        script->reaction =
-             script->reaction |
-             1 << ((u_char)(*paAVar5)[script->actionIndex].reaction[script->reactionIndex] & 0x1f);
-        uVar3 = (u_int)(u_char)(*paAVar5)[script->actionIndex].halfSeconds[script->reactionIndex];
-        if (uVar3 != 0) {
-          script->reactionTicksLeft = uVar3 << 4;
-          bVar1 = false;
+        newReaction = one << (u_char)new_var2[script->actionIndex].reaction[script->reactionIndex];
+        script->reaction = script->reaction | newReaction;
+        newTime = (u_char)new_var2[script->actionIndex].halfSeconds[script->reactionIndex];
+        if (newTime != 0) {
+          script->reactionTicksLeft = newTime << 4;
+          go = 0;
         }
-        if (script->reaction == 1) {
-          script->actionIndex = 7;
-          script->detectAction = 7;
+        if (script->reaction == one) {
+          script->actionIndex = seven;
+          script->detectAction = seven;
         }
+        goto loopTop;
       }
     }
     if (script->actionIndex == 7) {
       return;
     }
   }
-  if (0 < script->reactionTicksLeft) {
-    script->reactionTicksLeft = script->reactionTicksLeft - elapsedTicks;
+  if (script->reactionTicksLeft <= 0) {
+    script->actionIndex = 7;
+    script->detectAction = 7;
     return;
   }
-  script->actionIndex = 7;
-  script->detectAction = 7;
+  script->reactionTicksLeft = script->reactionTicksLeft - elapsedTicks;
   return;
 }
 
