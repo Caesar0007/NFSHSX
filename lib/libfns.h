@@ -95,7 +95,7 @@ u_int PAD_state(...);   /* (int port) */
 void PAD_update(...);
 int SND3dpos(...);   /* (u_int tag, u_int x, int y) */
 int SNDSTRM_autovol(...);   /* (int handle, int ticks, int flag) */
-void SNDSTRM_create(...);   /* (void * arg0) */
+int SNDSTRM_create(...);   /* (void *opts, int mode, int chunks, void *buf, int size) -- disasm-verified 5-arg, returns stream handle (was mis-doc'd 1-arg void) */
 int SNDSTRM_destroy(...);   /* (int handle) */
 int SNDSTRM_getvol(...);   /* (int handle) */
 int SNDSTRM_overhead(...);   /* (int a, int b) */
@@ -109,7 +109,7 @@ int SNDSTRM_status(...);   /* (int handle, int statusptr) */
 int SNDSTRM_vol(...);   /* (int handle, int vol) */
 int SNDSYS_getopts(...);   /* (void * outOpts) */
 void SNDSYS_init(...);   /* (void *, int, int) */
-void SNDSYS_restore(...);   /* (int arg0) */
+void SNDSYS_restore(...);   /* (void) -- disasm-verified: only call site (Audio_DeInitDriver 0xabc9c) sets no a0 (was mis-doc'd 1-arg) */
 int SNDSYS_setopts(...);   /* (void * newOpts) */
 void SNDSYS_vectortoreal(...);   /* (void) */
 void SNDautovol(...);   /* (void *, int, int) */
