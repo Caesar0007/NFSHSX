@@ -584,17 +584,19 @@ void AudioMus_DriverStartUp(int buffersize,int spusize)
     piVar1 = &AudioMus_g->streamhandle;
     AudioMus_g->threshold = buffersize + spusize >> 5;
     if ((*piVar1 < 0) && (pAVar2->streambuffer != (char *)0x0)) {
+      chunks = buffersize;
       if (buffersize < 0) {
-        buffersize = buffersize + 0x3ff;
+        chunks = buffersize + 0x3ff;
       }
-      SNDSTRM_overhead(0x1,buffersize >> 10);
-      SNDgetlimits(aiStack_40);
+      chunks = chunks >> 10;
+      SNDSTRM_overhead(0x1,chunks);
+      size = buffersize + SNDgetlimits(aiStack_40);   /* oracle 0x6ab5c: size = buffersize + SNDgetlimits ret */
       local_30 = spusize;
       SNDsetlimits(aiStack_40);
       SNDplaysetdef(aiStack_28);
       local_20 = 0;
-      pAVar2 = AudioMus_g;
-      SNDSTRM_create();
+      pAVar2 = (AudioMus_tMusicGlobals *)
+               SNDSTRM_create(aiStack_28,1,chunks,AudioMus_g->streambuffer,size);   /* oracle 0x6ab90: 5 real args, returns stream handle (was stubbed: 0 args + bogus pAVar2=AudioMus_g) */
       AudioMus_g->streamhandle = (int)pAVar2;
       if (-1 < (int)pAVar2) {
         SNDSTRM_setgreedylevel(pAVar2,0);
