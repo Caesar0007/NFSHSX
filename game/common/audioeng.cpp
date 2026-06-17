@@ -350,7 +350,7 @@ void AudioEng_LoadDef(char *filename,char *name,int handle,long offset,long size
   pAVar1 = reservememadr(name,size,0x10);
   *ed = pAVar1;
   if (pAVar1 != (AudioEng_tDef *)0x0) {
-    FILE_readsync();
+    FILE_readsync(handle,offset,*ed,size,0x64);   /* oracle 0x8007be1c: a0=h a1=off a2=*ed a3=size stk=0x64 */
   }
   return;
 }
@@ -465,10 +465,10 @@ int AudioEng_StartUp(int player,char *carname)
     pcVar9 = (char *)loadbigfileheader(acStack_80,(void *)0x10);
     if (pcVar9 == (char *)0x0) goto LAB_8007c1ac;
   }
-  FILE_opensync(acStack_80);
+  FILE_opensync(acStack_80,1,0x64,&local_40);   /* oracle 0x8007c03c: a3=&handle out */
   for (iVar15 = 0; iVar4 = bigcount(pcVar9), iVar15 < iVar4;
       iVar15 = iVar15 + 1) {
-    pThis = locatebigentry(pcVar9,(char *)0x0);
+    pThis = locatebigentry(pcVar9,(char *)0x0,iVar15,&local_3c,&local_38);   /* oracle 0x8007c06c: a2=i a3=&offset stk=&size */
     iVar4 = wildcard((u_char *)pThis,"*.bnk");
     if ((iVar4 == 0) || (bVar1)) {
       iVar4 = wildcard((u_char *)pThis,"*.ltb");
@@ -486,7 +486,7 @@ int AudioEng_StartUp(int player,char *carname)
       pdata = reservememadr(pThis,local_38,0x10);
       if (pdata != (char *)0x0) {
         bVar1 = true;
-        FILE_readsync();
+        FILE_readsync(local_40,local_3c,pdata,local_38,0x64);   /* oracle 0x8007c0c8: a0=h a1=off a2=pdata a3=size stk=0x64 */
         iVar17 = AudioCmn_AddBank((char *)pThis,local_38,pdata,player);
         pAVar3->bhandle = (char)gSndBnk[player].bnkID;
       }

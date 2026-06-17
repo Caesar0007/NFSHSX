@@ -6,7 +6,7 @@
  *
  *   PsyQ-SDK split (B-integration): under ccpsx (NFS4_PSYQ_HEADERS, set in nfs4_types.h),
  *   the PsyQ standard-library functions (libgpu/libgte/libetc/libapi/libpad) are supplied by the
- *   REAL PsyQ headers — declaring them here too would clash (return-type / macro / linkage), so they
+ *   REAL PsyQ headers ï¿½ declaring them here too would clash (return-type / macro / linkage), so they
  *   are gated OFF. Under the modern-gcc pre-gate they stay ON as the varargs boundary decls.
  *   EA eaclib/syslib (FILE_*, SND*, fixed-point, loaders) + libc + libgcc soft-float are ALWAYS on
  *   (no PsyQ header declares them, so no conflict in either toolchain).
@@ -85,7 +85,7 @@ int FILE_closesync(...);   /* (int h) */
 int FILE_completeop(...);   /* (int oph) */
 void FILE_delbigsync(...);   /* (char *name, void *a, int b, int *handle) */
 void FILE_init(...);   /* (int a, int b, int c) */
-int FILE_opensync(...);   /* (char *name, int mode, int prio, void *cb) */
+int FILE_opensync(...);   /* (char *name, int mode, int prio, int *handleOut) -- disasm-verified a3 = &handle out-ptr */
 int FILE_operror(...);   /* (int oph) */
 int FILE_opstatus(...);   /* (int oph) */
 int FILE_read(...);   /* (int arg0) */
@@ -203,7 +203,7 @@ void * loadpackadr(...);   /* (char *name, void *dst) */
 void * loadpackadrz(...);   /* (char *name, void *dst) */
 int loadshapeadr(...);   /* (char *name, void *dst) */
 void * locatebig(...);   /* (char *big, char *name, int from) */
-void *locatebigentry(...);   /* (char *bigfile, char *name, int a, int *b, int sizeOut) */
+void *locatebigentry(...);   /* (char *bigfile, char *name, int index, long *offsetOut, long *sizeOut) -- disasm-verified a3=&offset stk=&size out-ptrs */
 void *locatebigentryz(...);   /* (void * arg0) */
 void *locateshape(...);   /* (void *base, const char *tag) -- disasm-verified 2-arg (body reads only a0/a1; was 3) */
 void *locateshapez(...);   /* (char *buf, char *name) */
