@@ -802,7 +802,7 @@ void Camera_UpdateCircleCam(int player)
       (InBetween == 0)) && (simVar.pauseSim == 0)) {
     sVar1 = Camera_gInfo[player].circleAngle + 1;
     Camera_gInfo[player].circleAngle = sVar1;
-    intsincos((int)sVar1);
+    intsincos((int)sVar1,&local_18,&local_14);
     local_48 = fixedmult(0x48000,local_14);
     local_40 = fixedmult(0x60000,local_18);
     if (((int)Camera_gInfo[player].circleAngle + 0x100U & 0x1ff) == 0) {
@@ -1982,7 +1982,7 @@ void Camera_CheckWallCollisions(int player,coorddef *pos)
   local_6c = (pCVar12->anchor->position).y - local_90.y >> 1;
   local_68 = (pCVar12->anchor->position).z - local_90.z >> 1;
   do {
-    intsincos(uVar15);
+    intsincos(uVar15,&local_20,&local_1c);
     iVar13 = fixedmult(local_1c,local_70);
     local_60.x = fixedmult(local_20,local_68);
     local_60.x = iVar13 - local_60.x;
@@ -2018,7 +2018,7 @@ LAB_80084400:
   } while ((int)uVar15 < 0x400);
   uVar15 = 0xffffffff;
   do {
-    intsincos(uVar15);
+    intsincos(uVar15,&local_20,&local_1c);
     iVar13 = fixedmult(local_1c,local_70);
     local_60.x = fixedmult(local_20,local_68);
     local_60.x = iVar13 - local_60.x;
@@ -2268,13 +2268,13 @@ void Camera_OpponentLookBehind(int player,coorddef *pos,int reset)
           iVar3 = fixedmult(((*ppCVar5)->N).orientMat.m[7],local_38.y);
           iVar4 = fixedmult(((*ppCVar5)->N).orientMat.m[8],local_38.z);
           pThis = (iVar2 + iVar3 + iVar4);
-          intarccos(pThis);
+          iVar4 = intarccos(pThis);
           if (iVar4 < 1) {
-            intarccos(pThis);
+            iVar4 = intarccos(pThis);
             iVar4 = -iVar4;
           }
           else {
-            intarccos(pThis);
+            iVar4 = intarccos(pThis);
           }
           if ((iVar4 < 0x80) && (iVar8 < iVar10)) {
             local_48.x = local_38.x;
