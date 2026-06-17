@@ -856,14 +856,14 @@ void Speech_LoadBankHeaders(int param_1,void *header,u_int bn,void *hoffset,int 
   local_3c = 0;
   iVar10 = *(int *)(param_1 + 0x36c) + *(int *)(param_1 + 0x370) * 4;
   locatebigentry(header,"j:eventdat\\event.dat",0,(int *)&local_48,(int)&local_44);
-  FILE_readsync(*(int *)(param_1 + 0x368),local_48,iVar10);
+  FILE_readsync(*(int *)(param_1 + 0x368),local_48,iVar10,local_44,100);   /* oracle 0x85248: +size(local_44) +prio(0x64) */
   SPCH_ResolveData(iVar10);
   pcVar8 = (char *)((int)header + 0x10);
   puVar11 = (u_char *)(iVar10 + local_44);
   local_38 = ((u_int)(((u_int)(((u_int)(*(u_char *)((int)header + 8)) << 8 | (u_char)(*(u_char *)((int)header + 9)))) << 8 | (u_char)(*(u_char *)((int)header + 10)))) << 8 | (u_char)(*(u_char *)((int)header + 0xb)));
   local_34 = reservememadr("spch temp",param_5,0x10);
   uVar12 = 100;
-  FILE_readsync(*(int *)(param_1 + 0x368),hoffset,(int)local_34);
+  FILE_readsync(*(int *)(param_1 + 0x368),hoffset,(int)local_34,param_5,uVar12);   /* oracle 0x852c0: +size(param_5=$s3) +prio(uVar12=0x64) */
   local_30 = reservememadr("spch temp",*(int *)(param_1 + 0x370) << 2,0x10)
   ;
   iVar10 = 0;
