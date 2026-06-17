@@ -385,7 +385,7 @@ void CopSpeak_CleanUp(void)
   pCVar1 = Copspeak_gBank;
   do {
     if (pCVar1->FileOpen != 0) {
-      FILE_closesync(pCVar1->FileHandle);
+      FILE_closesync(pCVar1->FileHandle,100);   /* oracle 0x89b10/b14: a1=0x64 (was dropped) */
       pCVar1->FileOpen = 0;
     }
     if (pCVar1->Index != (CopSpeak_tFileIndex *)0x0) {

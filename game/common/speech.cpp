@@ -1169,7 +1169,7 @@ void Speech_dt(void *param_1,u_int __in_chrg)
     purgememadr(*(void **)((int)param_1 + 0x36c));
   }
   if (*(int *)((int)param_1 + 0x364) != 0) {
-    FILE_closesync(*(int *)((int)param_1 + 0x368));
+    FILE_closesync(*(int *)((int)param_1 + 0x368),100);   /* oracle 0x85b84/b88: a1=0x64 (was dropped) */
   }
   iVar3 = 0;
   __builtin_delete(*(void **)((int)param_1 + 0x3a0));
