@@ -81,9 +81,9 @@ void PadStartCom(...);   /* (void) */
  * ===================================================================== */
 int CdDiskReady(...);   /* (int mode) -- EA wrapper, not PsyQ CdReady */
 int FILE_addbigsync(...);   /* (char *name, void *a, int b, int *handle) */
-int FILE_closesync(...);   /* (int h) */
+int FILE_closesync(...);   /* (int fd, int prio) -- lib-source 2-arg (syncfile.cpp); all 3 call sites a1=0x64 */
 int FILE_completeop(...);   /* (int oph) */
-void FILE_delbigsync(...);   /* (char *name, void *a, int b, int *handle) */
+void FILE_delbigsync(...);   /* (int a0, int a1) -- lib-source 2-arg (syncfile.cpp); prior 4-arg doc was wrong */
 void FILE_init(...);   /* (int a, int b, int c) */
 int FILE_opensync(...);   /* (char *name, int mode, int prio, int *handleOut) -- disasm-verified a3 = &handle out-ptr */
 int FILE_operror(...);   /* (int oph) */
@@ -108,7 +108,7 @@ void SNDSTRM_setpriority(...);   /* (int handle, int prio, int n) */
 int SNDSTRM_status(...);   /* (int handle, int statusptr) */
 int SNDSTRM_vol(...);   /* (int handle, int vol) */
 int SNDSYS_getopts(...);   /* (void * outOpts) */
-void SNDSYS_init(...);   /* (void *, int, int) */
+void SNDSYS_init(...);   /* (int membase, int memsize) -- lib-source 2-arg (ssysinit.cpp) */
 void SNDSYS_restore(...);   /* (void) -- disasm-verified: only call site (Audio_DeInitDriver 0xabc9c) sets no a0 (was mis-doc'd 1-arg) */
 int SNDSYS_setopts(...);   /* (void * newOpts) */
 void SNDSYS_vectortoreal(...);   /* (void) */
@@ -146,7 +146,7 @@ float __mulsf3(...);   /* (float,float) */
 float __truncdfsf2(...);   /* (double) */
 int addsystemtask(...);   /* (void (*fn)(void), void *a, void *b) */
 int addtimer(...);   /* (void (*proc)(void)) */
-void asyncidle(...);   /* (void * arg0) */
+void asyncidle(...);   /* (void) -- lib-source 0-arg (nullfunc.cpp) */
 unsigned int asyncloadfile(...);   /* (char*, void*) */
 unsigned int asyncloadfileat(...);   /* (char*, char*) */
 int asyncloadsegment(...);   /* (char *, void *, int) */
@@ -175,7 +175,7 @@ int fixedsqrt(...);   /* (int x) */
 void fixedxformx(...);   /* (void *m, int angle) */
 int fixedxformy(...);   /* (void *m, int angle) */
 void fixedxformz(...);   /* (void *m, int angle) */
-char * getasyncreadadr(...);   /* (unsigned int, void*) */
+char * getasyncreadadr(...);   /* (int id) -- lib-source 1-arg (nasync.cpp) */
 int getasyncreadstatus(...);   /* (unsigned int) */
 charactertbl * getcharacter(...);   /* (int code) */
 int geti(...);   /* (void *p, int n) */
@@ -202,7 +202,7 @@ int loadfileatadrz(...);   /* (char *filename, void *loadAddr) */
 void * loadpackadr(...);   /* (char *name, void *dst) */
 void * loadpackadrz(...);   /* (char *name, void *dst) */
 int loadshapeadr(...);   /* (char *name, void *dst) */
-void * locatebig(...);   /* (char *big, char *name, int from) */
+void * locatebig(...);   /* (void *buf, char *name) -- lib-source 2-arg (locatbig.cpp @0x800E6218); callers' 3rd 'from' arg = harmless over-supply */
 void *locatebigentry(...);   /* (char *bigfile, char *name, int index, long *offsetOut, long *sizeOut) -- disasm-verified a3=&offset stk=&size out-ptrs */
 void *locatebigentryz(...);   /* (void *big, char *name, int index, int *offsetOut, int *sizeOut) -- disasm-verified 5-arg (copspeak:539/554/602/629), out-ptrs like locatebigentry */
 void *locateshape(...);   /* (void *base, const char *tag) -- disasm-verified 2-arg (body reads only a0/a1; was 3) */
@@ -244,7 +244,7 @@ int systemtask(...);   /* (int taskFlag) */
 void timedwait(...);   /* (int) */
 void transform(...);   /* (void *src, void *mtx, void *dst) */
 void transpose(...);   /* (matrixtdef *, matrixtdef *) */
-long unbtree(...);   /* (void *src, void *dst, int reverse) */
+long unbtree(...);   /* (unsigned char *src, unsigned char *dst) -- lib-source 2-arg (unbtree.cpp) */
 long unhuff(...);   /* (void *src, void *dst, int reverse) */
 long unrefpack(...);   /* (void *src, void *dst, int reverse) */
 void vramfxya(...);   /* (void * shape_data, short x_scale, short y_scale, short angle, int flags) */
