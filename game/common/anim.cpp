@@ -52,7 +52,7 @@ int Anim_InitSystem(char *trackName)
   char acStack_68 [80];
   
   Anim_Restart();
-  sprintf(acStack_68,"%sA.viv");
+  sprintf(acStack_68,"%sA.viv",trackName);
   src = (int *)loadfileadrz(acStack_68,(void *)0x0);
   iVar2 = 9;
   if (src == (int *)0x0) {
@@ -73,7 +73,7 @@ int Anim_InitSystem(char *trackName)
     iVar2 = 0;
     ppTVar3 = animScripts;
     do {
-      sprintf(acStack_68,"tr00a%02d.can");
+      sprintf(acStack_68,"tr00a%02d.can",iVar2);
       pTVar1 = (Trk_AnimateInst *)locatebig(pThis, acStack_68, 0) /* $a2 dropped by Ghidra; 0=from-start, verify #148 */;
       *ppTVar3 = pTVar1;
       iVar2 = iVar2 + 1;

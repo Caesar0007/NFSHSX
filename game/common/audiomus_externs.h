@@ -9,4 +9,5 @@ extern bool Hud_kTurnSongOffNext;
 extern int gMusicHandle;
 void  trap(int code);
 
+extern char           *Paths_Paths[];   /* 0x80116468 (paths.obj) */
 #endif /* _GAME_COMMON_AUDIOMUS_EXTERNS_H_ */

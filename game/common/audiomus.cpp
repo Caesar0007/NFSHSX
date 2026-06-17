@@ -627,7 +627,7 @@ void AudioMus_SysStartUp(int buffersize,int spusize,char *songs)
       pcVar1 = reservememadr("Music Buffer",buffersize + iVar2,0);
       AudioMus_g->streambuffer = pcVar1;
       AudioMus_DriverStartUp(buffersize,spusize);
-      sprintf(AudioMus_g->bigfilename,"%szzz%s.viv");
+      sprintf(AudioMus_g->bigfilename,"%szzz%s.viv",Paths_Paths[27],songs);
       pcVar1 = (char *)loadbigfileheader(AudioMus_g->bigfilename,(void *)0x0)
       ;
       AudioMus_g->bigfileheader = pcVar1;
@@ -783,7 +783,7 @@ int AudioMus_PlaySong(char *pattern)
     if (((pattern != (char *)0x0) &&
         (AudioMus_BuildPattern(pattern), AudioMus_g->availablesongs == 0)) &&
        (uVar3 = strlen(pattern), uVar3 < 0x3d)) {
-      sprintf(acStack_98,"*-%s");
+      sprintf(acStack_98,"*-%s",pattern);
       AudioMus_BuildPattern(acStack_98);
     }
     pAVar2 = AudioMus_g;

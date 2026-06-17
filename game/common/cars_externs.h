@@ -75,4 +75,5 @@ void Control_Human(Car_tObj *carObj);
 void R3DCar_DeInstantiate3DCar(Car_tObj * carObj);
 void R3DCar_Instantiate3DCar(Car_tObj * carObj, int index);
 
+extern char           *Paths_Paths[];   /* 0x80116468 (paths.obj) */
 #endif /* _GAME_COMMON_CARS_EXTERNS_H_ */

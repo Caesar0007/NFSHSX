@@ -2395,20 +2395,20 @@ void Cars_InitCar(Car_tObj *carObj,int index)
   if (index < GameSetup_gData.numCars) {
     iVar1 = AIInit_IsNonStandardCarFile(carObj->carInfo->carType);
     if (iVar1 == 0) {
-      sprintf(acStack_108,"%sSTDR.qda");
+      sprintf(acStack_108,"%sSTDR.qda",Paths_Paths[4]);
     }
     else {
-      sprintf(acStack_108,"%s%s.qda");
+      sprintf(acStack_108,"%s%s.qda",Paths_Paths[4],(char *)carObj + 0x240);
     }
     mem_00 = (char *)loadpackadr(acStack_108,(void *)0x10);
     handle_00 = Udff_Opena((char *)0x0,mem_00,1);
     if (carObj->carInfo->carType < 0x1d) {
-      sprintf(acStack_38,"p%s.dat");
+      sprintf(acStack_38,"p%s.dat",GameSetup_gCarNames[0] + carObj->carInfo->carType * 5);
     }
     else {
       sprintf(acStack_38,"ptram.dat");
     }
-    sprintf(acStack_a0,"%sdusty.viv");
+    sprintf(acStack_a0,"%sdusty.viv",Paths_Paths[3]);
     pThis = loadfileadrz(acStack_a0,(void *)0x10);
     mem = (char *)locatebig(pThis, acStack_38, 0) /* @0x7Axxx: $a2 dropped by Ghidra; 0=locate-from-start, verify #148 */;
     handle = Udff_Opena((char *)0x0,mem,0);
