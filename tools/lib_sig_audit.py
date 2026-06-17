@@ -15,6 +15,14 @@ import re, glob, os
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 
+# exclude genuinely-variadic format fns (covered by sprintf_audit*) and libgcc/soft-float
+# intrinsics (__adddf3 etc.) whose source takes a `double` as 2 split int-halves -- an ABI
+# artifact, not a real arg count, so source-vs-call comparison is meaningless for them.
+FMT = {'sprintf', 'printf', 'fprintf', 'sscanf', 'scanf', 'fscanf', 'snprintf',
+       'vsprintf', 'vprintf'}
+def skip_fn(fn):
+    return fn in FMT or fn.startswith('__')
+
 def arity_of(params):
     params = params.strip()
     if params in ('', 'void'):
@@ -66,7 +74,11 @@ DEF = re.compile(
 
 real_arity = {}
 real_src = {}
-for f in glob.glob('eaclib/**/*.cpp', recursive=True):
+SRC_GLOBS = ['eaclib/**/*.cpp', 'syslib/**/*.cpp', 'syslib/**/*.c']
+src_files = []
+for g in SRC_GLOBS:
+    src_files += glob.glob(g, recursive=True)
+for f in src_files:
     txt = strip_block(open(f, encoding='utf-8', errors='ignore').read())
     for m in DEF.finditer(txt):
         fn, params = m.group(1), m.group(2)
@@ -76,7 +88,7 @@ for f in glob.glob('eaclib/**/*.cpp', recursive=True):
 
 # 3) compare doc vs real; report mismatches
 print("=== libfns.h (...) DOC-ARITY vs EA-lib SOURCE real-arity ===")
-have_real = sorted(set(doc_arity) & set(real_arity))
+have_real = sorted(fn for fn in (set(doc_arity) & set(real_arity)) if not skip_fn(fn))
 mismatches = [fn for fn in have_real if doc_arity[fn] != real_arity[fn]]
 print("%d (...) fns have a reconstructed lib source; %d arity mismatches:"
       % (len(have_real), len(mismatches)))
@@ -107,7 +119,7 @@ def splitargs(s):
 
 # check ALL fns with a reconstructed source (>=2 real args) -- a drop vs REAL arity is
 # a bug regardless of whether the doc over- or under-counts.
-check = {fn for fn in real_arity if real_arity[fn] >= 2}
+check = {fn for fn in real_arity if real_arity[fn] >= 2 and not skip_fn(fn)}
 print("\n=== call sites passing FEWER than REAL (lib-source) arity (dropped-arg) ===")
 hits = []
 for f in glob.glob('game/**/*.cpp', recursive=True) + glob.glob('*.cpp'):
