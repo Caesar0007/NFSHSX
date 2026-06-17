@@ -452,7 +452,7 @@ int AudioEng_StartUp(int player,char *carname)
   else {
     pcVar9 = "%s%seng.viv";
   }
-  sprintf(acStack_80,pcVar9);
+  sprintf(acStack_80,pcVar9,Paths_Paths[28],carname);
   pcVar9 = (char *)loadbigfileheader(acStack_80,(void *)0x10);
   if (pcVar9 == (char *)0x0) {
     if (GameSetup_gData.commMode == 1) {
@@ -461,7 +461,7 @@ int AudioEng_StartUp(int player,char *carname)
     else {
       pcVar9 = "%sp993eng.viv";
     }
-    sprintf(acStack_80,pcVar9);
+    sprintf(acStack_80,pcVar9,Paths_Paths[28]);
     pcVar9 = (char *)loadbigfileheader(acStack_80,(void *)0x10);
     if (pcVar9 == (char *)0x0) goto LAB_8007c1ac;
   }

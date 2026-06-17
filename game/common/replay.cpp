@@ -1388,7 +1388,7 @@ void Replay_LoadCameraFile(void)
       fmt = "tr%02dr.rho";
     }
     iVar6 = GameSetup_gData.track;
-    sprintf(fname,fmt);
+    sprintf(fname,fmt,GameSetup_gData.track);
     addr = (int *)loadfileadrz(fname,(void *)0x0);
     numValidCams = 0;
     FILE_delbigsync((char *)bigFile,(void *)0x64,iVar6,piVar5);
