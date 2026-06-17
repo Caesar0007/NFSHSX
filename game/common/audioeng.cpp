@@ -493,7 +493,7 @@ int AudioEng_StartUp(int player,char *carname)
     }
 LAB_8007c190: ;   /* empty stmt: gcc2.7.2 rejects label before '}' */
   }
-  FILE_closesync();
+  FILE_closesync(local_40);   /* oracle 0x8007c198: a0=handle (was dropped) */
   purgememadr(pcVar9);
 LAB_8007c1ac:
   if (!bVar1) {
