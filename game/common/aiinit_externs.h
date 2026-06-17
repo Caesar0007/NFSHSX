@@ -15,6 +15,7 @@ extern Car_tObj **Cars_gList;
 extern Car_tObj *Cars_gHumanRaceCarList[9];   /* cars.obj (byte-match backport) */
 extern Car_tObj *Cars_gAIRaceCarList[9];      /* cars.obj */
 extern GameSetup_tData   GameSetup_gData;
+extern char             *Paths_Paths[];   /* 0x80116468 (paths.obj) */
 extern Udff_tInfo * Udff_Opena(char *name,char *mem,int abortFlag);
 extern accelscale_t AITune_accelerationScale[];
 extern int            Cars_gNumCars;

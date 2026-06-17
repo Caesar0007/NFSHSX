@@ -200,7 +200,7 @@ void AI_TrafficStartUp(void)
   
   if (GameSetup_gData.trafficDensity != 0) {
     triggerManagerTraffic = __builtin_new(0x34c);
-    sprintf(acStack_70,"%sTr%02d.trf");
+    sprintf(acStack_70,"%sTr%02d.trf",Paths_Paths[18],GameSetup_gData.track);
     AITraffic_rawTriggers = (u_char *)loadfileadrz(acStack_70,(void *)0x0)
     ;
     rawTriggers = AITraffic_rawTriggers;
@@ -234,7 +234,7 @@ void AIInit_LoadConfigs(void)
   Udff_tInfo *handle;
   char acStack_70 [104];
   
-  sprintf(acStack_70,"%strafcfg.dat");
+  sprintf(acStack_70,"%strafcfg.dat",Paths_Paths[2]);
   handle = Udff_Opena((char *)0x0,"\x04",1);
   AIInit_LoadPhysicsConfig(handle);
   Udff_Close(handle);
