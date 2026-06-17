@@ -7,9 +7,19 @@ arity={}
 for hdr in ['lib/libfns.h','lib/eaclib.h']:
     if not os.path.exists(hdr): continue
     for line in open(hdr,encoding='utf-8',errors='ignore'):
-        m=re.search(r'([A-Za-z_]\w*)\s*\(\s*\.\.\.\s*\)\s*;\s*/\*\s*\((.*?)\)', line)
-        if not m: continue
-        fn, params = m.group(1), m.group(2).strip()
+        mf=re.search(r'([A-Za-z_]\w*)\s*\(\s*\.\.\.\s*\)\s*;', line)
+        cm=re.search(r'/\*\s*\(', line)
+        if not mf or not cm: continue
+        fn = mf.group(1)
+        # balanced-paren extraction (fn-ptr params have nested ')' that .*?) breaks on)
+        i=cm.end()-1; d=0; j=i
+        while j<len(line):
+            if line[j]=='(': d+=1
+            elif line[j]==')':
+                d-=1
+                if d==0: break
+            j+=1
+        params=line[i+1:j].strip()
         if params=='' or params=='void': n=0
         else:
             d=0; n=1

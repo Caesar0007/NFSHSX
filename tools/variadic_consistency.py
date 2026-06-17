@@ -31,9 +31,19 @@ for hdr in ['lib/libfns.h', 'lib/eaclib.h']:
             continue
         fn = m.group(1)
         variadic.add(fn)
-        d = re.search(r'\(\s*\.\.\.\s*\)\s*;\s*/\*\s*\((.*?)\)', line)
-        if d:
-            params = d.group(1).strip()
+        # extract the doc-comment param list with BALANCED parens (fn-ptr params
+        # like `void (*fn)(void)` contain nested ')' that a non-greedy .*?) breaks on)
+        cm = re.search(r'/\*\s*\(', line)
+        if cm:
+            i = cm.end() - 1            # index of the opening '('
+            depth = 0; j = i
+            while j < len(line):
+                if line[j] == '(': depth += 1
+                elif line[j] == ')':
+                    depth -= 1
+                    if depth == 0: break
+                j += 1
+            params = line[i + 1:j].strip()
             if params in ('', 'void'):
                 doc_arity[fn] = 0
             else:

@@ -88,7 +88,7 @@ void FILE_init(...);   /* (int a, int b, int c) */
 int FILE_opensync(...);   /* (char *name, int mode, int prio, int *handleOut) -- disasm-verified a3 = &handle out-ptr */
 int FILE_operror(...);   /* (int oph) */
 int FILE_opstatus(...);   /* (int oph) */
-int FILE_read(...);   /* (int arg0) */
+int FILE_read(...);   /* (int handle, long offset, void *dst, int n, int prio, void *cb) -- disasm-verified 6-arg (copspeak:297/900) */
 int FILE_readsync(...);   /* (int h, long offset, void *dst, int n, int prio) -- disasm-verified 5-arg (was 3) */
 void PAD_restore(...);
 u_int PAD_state(...);   /* (int port) */
@@ -100,7 +100,7 @@ int SNDSTRM_destroy(...);   /* (int handle) */
 int SNDSTRM_getvol(...);   /* (int handle) */
 int SNDSTRM_overhead(...);   /* (int a, int b) */
 void SNDSTRM_purge(...);   /* (int handle) */
-void SNDSTRM_queuefile(...);   /* (int arg0) */
+void SNDSTRM_queuefile(...);   /* (int handle, int a1, char *name, long offset) -- disasm-verified 4-arg (oracle 0x6a2a8) */
 int SNDSTRM_requeststatus(...);   /* (int req, u_int statusptr) */
 void SNDSTRM_setgreedylevel(...);   /* (int handle, int level) */
 void SNDSTRM_setgreedystate(...);   /* (int handle, int state) */
@@ -191,7 +191,7 @@ void initmemadr(...);   /* (void *base, int size) */
 void inittimer(...);   /* (int hz) */
 int intarccos(...);   /* (int cosval) */
 int intatan(...);   /* (int dx, int dz) */
-int intsincos(...);   /* (int angle) */
+int intsincos(...);   /* (int angle, int *psin, int *pcos) -- disasm-verified 3-arg (eaclib isincos.cpp:58 @0x800eadbc); psin/pcos are OUT-ptrs */
 int isqrt(...);   /* (int v) */
 int largestunused(...);   /* (void) */
 int loadbigfileheader(...);   /* (char *name, void *hdr) */
@@ -204,7 +204,7 @@ void * loadpackadrz(...);   /* (char *name, void *dst) */
 int loadshapeadr(...);   /* (char *name, void *dst) */
 void * locatebig(...);   /* (char *big, char *name, int from) */
 void *locatebigentry(...);   /* (char *bigfile, char *name, int index, long *offsetOut, long *sizeOut) -- disasm-verified a3=&offset stk=&size out-ptrs */
-void *locatebigentryz(...);   /* (void * arg0) */
+void *locatebigentryz(...);   /* (void *big, char *name, int index, int *offsetOut, int *sizeOut) -- disasm-verified 5-arg (copspeak:539/554/602/629), out-ptrs like locatebigentry */
 void *locateshape(...);   /* (void *base, const char *tag) -- disasm-verified 2-arg (body reads only a0/a1; was 3) */
 void *locateshapez(...);   /* (char *buf, char *name) */
 void * memcpy(...);   /* (void *dest, void *src, uint n) */
