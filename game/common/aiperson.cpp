@@ -103,19 +103,7 @@ void AIPerson_SetPersonalityPointers(void)
 /* ---- AIPerson_LoadPersonalityData__FP10Udff_tInfo  [@0x80068b60] ---- */
 void AIPerson_LoadPersonalityData(Udff_tInfo *handle)
 {
-  int perLoop;
-  int blockingDistance;
-  int cutOffDistance;
-  int lookAhead;
-  int swervyness;
-  int braking;
-  int roadRage;
-  int fishtailControl;
-  int wipeOutFreq;
-  int corneringAbility;
-  int bestLineAbility;
-  int rearEndingTendency;
-  int aggression;
+  int local_40;
   int iVar1;
   int iVar2;
   int iVar3;
@@ -129,13 +117,15 @@ void AIPerson_LoadPersonalityData(Udff_tInfo *handle)
   int iVar11;
   int iVar12;
   int iVar13;
+  int new_var;
   AIPerson_t *pAVar14;
-  int local_40;
-  
   Udff_GetInt(handle);
   pAVar14 = AIPerson_PersonalityData;
   local_40 = 0;
-  while (local_40 < 9) {
+ loopTop:
+  if (local_40 < 9)
+  {
+   do {
     iVar1 = Udff_GetInt(handle);
     iVar2 = Udff_GetInt(handle);
     iVar3 = Udff_GetInt(handle);
@@ -162,20 +152,20 @@ void AIPerson_LoadPersonalityData(Udff_tInfo *handle)
     pAVar14->attackActivationHits = AIPerson_attackActivationHits[iVar6];
     pAVar14->attackTime = AIPerson_attackTimes[iVar6];
     pAVar14->fishtailAngle = AIPerson_fishtailAngles[iVar7];
-    pAVar14->minimumBetweenWipeoutTicks =
-         AIPerson_minimumWipeOutTicks[iVar8 + GameSetup_gData.Weather];
-    pAVar14->randomBetweenWipeoutTicks =
-         AIPerson_randomWipeOutTicks[iVar8 + GameSetup_gData.Weather];
+    pAVar14->minimumBetweenWipeoutTicks = AIPerson_minimumWipeOutTicks[iVar8 + GameSetup_gData.Weather];
+    pAVar14->randomBetweenWipeoutTicks = AIPerson_randomWipeOutTicks[iVar8 + GameSetup_gData.Weather];
     pAVar14->gripLossProbPerSecond = AIPerson_gripLossProbPerSecond[iVar9];
     pAVar14->gripLossMinFactor = AIPerson_gripLossMinFactor[iVar9];
     pAVar14->gripLossRecoveryPerTick = AIPerson_gripLossRecoveryPerTick[iVar9];
     pAVar14->bestLineAbility = AIPerson_bestLineAbilities[iVar10];
     pAVar14->rearBumpProbMask = AIPerson_rearEndProbMask[iVar11];
-    iVar1 = AIPerson_smackProbMask[iVar12];
+    new_var = AIPerson_smackProbMask[iVar12];
     local_40 = local_40 + 1;
     pAVar14->copCollisionFirmness = iVar13;
-    pAVar14->smackProbMask = iVar1;
+    pAVar14->smackProbMask = new_var;
+   } while (0);
     pAVar14 = pAVar14 + 1;
+    goto loopTop;
   }
   return;
 }
@@ -186,27 +176,40 @@ void AIPerson_LoadScriptData(Udff_tInfo *handle)
   int perLoop;
   int actionLoop;
   int reactionLoop;
+  int byteOffset;
+  int actionMul;
+  int byteOff2;
+  int scriptBase;
+  char *addr;
   int iVar1;
-  int iVar2;
-  int iVar3;
-  int iVar4;
-  int iVar5;
-  int iVar6;
-  
+
   Udff_GetInt(handle);
-  iVar5 = 0;
-  for (iVar6 = 0; iVar4 = 0, iVar6 < 9; iVar6 = iVar6 + 1) {
-    for (; iVar2 = 0, iVar4 < 7; iVar4 = iVar4 + 1) {
-      do {
-        iVar1 = Udff_GetInt(handle);
-        ((AIScript_tReactionDetails *)AIPerson_ScriptData)[iVar4].reaction[iVar5 + iVar2] = (char)iVar1;
-        iVar1 = Udff_GetInt(handle);
-        iVar3 = iVar2 + 1;
-        ((AIScript_tReactionDetails *)AIPerson_ScriptData)[iVar4].halfSeconds[iVar5 + iVar2] = (char)iVar1;
-        iVar2 = iVar3;
-      } while (iVar3 < 4);
-    }
-    iVar5 = iVar5 + 0x38;
+  perLoop = 0;
+  scriptBase = (int)AIPerson_ScriptData;
+  byteOffset = 0;
+ loop_1:
+  actionLoop = 0;
+  if (perLoop < 9) {
+    do {                              /* permuter-found while(0) scope: pin-free 100% */
+     loop_2:
+      reactionLoop = 0;
+      if (actionLoop < 7) {
+        actionMul = actionLoop * 8;
+        byteOff2 = byteOffset;
+        do {
+          iVar1 = Udff_GetInt(handle);
+          addr = (char *)(reactionLoop + actionMul + byteOff2 + scriptBase);
+          addr[0] = (char)iVar1;
+          addr[4] = (char)Udff_GetInt(handle);
+          reactionLoop = reactionLoop + 1;
+        } while (reactionLoop < 4);
+        actionLoop = actionLoop + 1;
+        goto loop_2;
+      }
+      byteOffset = byteOffset + 0x38;
+    } while (0);
+    perLoop = perLoop + 1;
+    goto loop_1;
   }
   return;
 }
@@ -219,7 +222,8 @@ void AIPerson_LoadGlue(Udff_tInfo *handle)
   int b;
   int *piVar2;
   int iVar3;
-  
+  int cmp;
+
   Udff_GetInt(handle);
   Udff_GetBuffer(handle,(char *)AIPerson_glueTable,0x54);
   if ((Cars_gNumCopCars != 0) &&
@@ -230,16 +234,18 @@ void AIPerson_LoadGlue(Udff_tInfo *handle)
     piVar2 = AIPerson_glueTable;
     do {
       iVar1 = *piVar2;
-      if (iVar1 < 0x10001) {
-        b = 0xd999;
-        if (iVar1 < 0x10000) goto LAB_8006905c;
-      }
-      else {
+      cmp = 0x10000;
+      if (cmp < iVar1) {
         b = 0x12666;
-LAB_8006905c:
-        iVar1 = fixedmult(iVar1,b);
-        *piVar2 = iVar1;
+        goto LAB_8006905c;
       }
+      cmp = 0xffff;
+      if (cmp < iVar1) goto LAB_skip;
+      b = 0xd999;
+LAB_8006905c:
+      iVar1 = fixedmult(iVar1,b);
+      *piVar2 = iVar1;
+LAB_skip:
       iVar3 = iVar3 + 1;
       piVar2 = piVar2 + 1;
     } while (iVar3 < 0x15);
