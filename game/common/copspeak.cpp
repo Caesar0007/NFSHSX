@@ -604,7 +604,7 @@ CopSpeakStart_langSwitch:
       addr = reservememadr("copspeak temp",local_30[0],0x10);
       Copspeak_gBank[2].FileOpen =
            FILE_opensync(acStack_b8,1,100,-0x7feee13c);
-      FILE_readsync(Copspeak_gBank[2].FileHandle,local_34,(int)addr);
+      FILE_readsync(Copspeak_gBank[2].FileHandle,local_34,(int)addr,local_30[0],100);   /* oracle 0x8a160: +size(local_30[0]) +prio(0x64) */
       bVar1 = false;
       Copspeak_gBank[2].Count = 0;
       for (pcVar5 = addr; pcVar5 < addr + local_30[0]; pcVar5 = pcVar5 + 1) {
