@@ -196,11 +196,13 @@ void AudioMus_QueueRequestedSong(void)
   char *pcVar3;
   int iVar4;
   
-  pcVar3 = locatebigentry(AudioMus_g->bigfileheader,(char *)0x0);
+  pcVar3 = locatebigentry(AudioMus_g->bigfileheader,(char *)0x0,
+                          (u_char)AudioMus_g->playlist[AudioMus_g->requestsong],
+                          &offset,(long *)0x0);   /* oracle 0x6a280: a2=playlist[requestsong] a3=&offset stk=NULL */
   piVar1 = &AudioMus_g->streamhandle;
   AudioMus_g->songname = pcVar3;
   if (-1 < *piVar1) {
-    SNDSTRM_queuefile();
+    SNDSTRM_queuefile(AudioMus_g->streamhandle,0x3e8,AudioMus_g->bigfilename,offset);   /* oracle 0x6a2a8: dropped 3 args (handle,0x3e8,bigfilename,offset) */
     AudioMus_g->requesthandle = (int)pcVar3;
   }
   iVar4 = 2;
@@ -472,8 +474,7 @@ AudioMus_GetSongList(char *pattern,int memtype)
   int iVar6;
   int *piVar7;
   AudioMus_tSongEntry *info;
-  int local_28;
-  
+
   iVar6 = 0;
   if (AudioMus_g == (AudioMus_tMusicGlobals *)0x0) {
     pAVar4 = reservememadr("Song List",8,memtype);
@@ -484,7 +485,7 @@ AudioMus_GetSongList(char *pattern,int memtype)
     iVar5 = 0;
     if (0 < AudioMus_g->totalsongs) {
       do {
-        pbVar2 = locatebigentry(AudioMus_g->bigfileheader,(char *)0x0);
+        pbVar2 = locatebigentry(AudioMus_g->bigfileheader,(char *)0x0,iVar5,(long *)0x0,(long *)0x0);   /* oracle 0x6a8d8: a2=i a3=NULL stk=NULL */
         iVar3 = wildcard(pbVar2,pattern);
         if (iVar3 != 0) {
           iVar6 = iVar6 + 1;
@@ -498,14 +499,14 @@ AudioMus_GetSongList(char *pattern,int memtype)
     pAVar4->numsongs = 0;
     pAVar4->currentsong = -1;
     for (iVar6 = 0; iVar6 < AudioMus_g->totalsongs; iVar6 = iVar6 + 1) {
-      pbVar2 = locatebigentry(AudioMus_g->bigfileheader,(char *)0x0);
+      pbVar2 = locatebigentry(AudioMus_g->bigfileheader,(char *)0x0,iVar6,(long *)0x0,&size);   /* oracle 0x6a974: a2=i a3=NULL stk=&size */
       iVar5 = wildcard(pbVar2,pattern);
       if (iVar5 != 0) {
         info->filename = (char *)pbVar2;
         AudioMus_SetEntry(info);
         *piVar7 = iVar6;
         pAVar1 = AudioMus_g;
-        ((AudioMus_tSongList *)(piVar7 + -1))->numsongs = (local_28 * 10) / 0xfc;
+        ((AudioMus_tSongList *)(piVar7 + -1))->numsongs = (size * 10) / 0xfc;   /* size from locatebigentry (was phantom local_28) */
         if (pbVar2 == (u_char *)pAVar1->songname) {
           pAVar4->currentsong = iVar6;
         }
@@ -748,8 +749,7 @@ void AudioMus_BuildPattern(char *pattern)
         if (0x1f < AudioMus_g->availablesongs) {
           return;
         }
-        pattern_00 = locatebigentry(AudioMus_g->bigfileheader,(char *)0x0)
-        ;
+        pattern_00 = locatebigentry(AudioMus_g->bigfileheader,(char *)0x0,iVar3,(long *)0x0,(long *)0x0);   /* oracle 0x6afb4: a2=i a3=NULL stk=NULL */
         iVar2 = wildcard(pattern_00,pattern);
         if (iVar2 != 0) {
           AudioMus_g->playlist[AudioMus_g->availablesongs] = (char)iVar3;
