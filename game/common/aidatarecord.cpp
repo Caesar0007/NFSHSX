@@ -458,7 +458,7 @@ AIDataRecord_AccTable_t::AIDataRecord_AccTable_t(char *preBuffer,int scale,
 
   this->scale_ = scale;
 
-  sprintf((this->_base_AIDataRecord_t).name_,"%s%s.acc");
+  sprintf((this->_base_AIDataRecord_t).name_,"%s%s.acc",Paths_Paths[5],(char *)Cars_gHumanRaceCarList[0] + 0x240);
 
   return;
 
@@ -537,6 +537,7 @@ AIDataRecord_BestLine_t::AIDataRecord_BestLine_t(AIDataRecord_WhichRecord_t whic
   int iVar1;
 
   char *fmt;
+  char *path;
 
   
 
@@ -551,17 +552,17 @@ AIDataRecord_BestLine_t::AIDataRecord_BestLine_t(AIDataRecord_WhichRecord_t whic
 
   if ((this->_base_AIDataRecord_t).recordMethod_ == 0) {
 
-    fmt = "%sTr%02d.qbe";
+    fmt = "%sTr%02d.qbe"; path = Paths_Paths[12];
 
   }
 
   else {
 
-    fmt = "%sTr%02d.bes";
+    fmt = "%sTr%02d.bes"; path = Paths_Paths[13];
 
   }
 
-  sprintf((this->_base_AIDataRecord_t).name_,fmt);
+  sprintf((this->_base_AIDataRecord_t).name_,fmt,path,GameSetup_gData.track);
 
   return;
 
@@ -583,6 +584,7 @@ AIDataRecord_TrackCurve_t::AIDataRecord_TrackCurve_t(AIDataRecord_WhichRecord_t 
   int iVar1;
 
   char *fmt;
+  char *path;
 
   
 
@@ -597,17 +599,17 @@ AIDataRecord_TrackCurve_t::AIDataRecord_TrackCurve_t(AIDataRecord_WhichRecord_t 
 
   if ((this->_base_AIDataRecord_t).recordMethod_ == 0) {
 
-    fmt = "%sTr%02d.qcr";
+    fmt = "%sTr%02d.qcr"; path = Paths_Paths[10];
 
   }
 
   else {
 
-    fmt = "%sTr%02d.crv";
+    fmt = "%sTr%02d.crv"; path = Paths_Paths[11];
 
   }
 
-  sprintf((this->_base_AIDataRecord_t).name_,fmt);
+  sprintf((this->_base_AIDataRecord_t).name_,fmt,path,GameSetup_gData.track);
 
   return;
 
@@ -648,6 +650,7 @@ AIDataRecord_CurveSpeedTable_t::AIDataRecord_CurveSpeedTable_t(char *carName,AID
 {
 
   char *fmt;
+  char *path;
 
   
 
@@ -660,17 +663,17 @@ AIDataRecord_CurveSpeedTable_t::AIDataRecord_CurveSpeedTable_t(char *carName,AID
 
   if ((this->_base_AIDataRecord_t).recordMethod_ == 0) {
 
-    fmt = "%s%s.qcs";
+    fmt = "%s%s.qcs"; path = Paths_Paths[4];
 
   }
 
   else {
 
-    fmt = "%s%s.csp";
+    fmt = "%s%s.csp"; path = Paths_Paths[5];
 
   }
 
-  sprintf((this->_base_AIDataRecord_t).name_,fmt);
+  sprintf((this->_base_AIDataRecord_t).name_,fmt,path,carName);
 
   return;
 
