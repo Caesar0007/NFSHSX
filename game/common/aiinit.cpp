@@ -472,8 +472,8 @@ void AIInit_DeInitAICar(Car_tObj *carObj)
   }
   pAVar3 = carObj->accelerationRecord;
   if (pAVar3 != (AIDataRecord_AccTable_t *)0x0) {
-    pa_Var1 = (pAVar3->_base_AIDataRecord_t)._vf;
-    (**(int (**)(...))(pa_Var1 + 4))((pAVar3->_base_AIDataRecord_t).name_ + *(short *)(pa_Var1[2] + 2) + -8,3);
+    pa_Var1 = pAVar3->_vf;
+    (**(int (**)(...))(pa_Var1 + 4))(pAVar3->name_ + *(short *)(pa_Var1[2] + 2) + -8,3);
     carObj->accelerationRecord = (AIDataRecord_AccTable_t *)0x0;
   }
   return;
